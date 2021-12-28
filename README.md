@@ -1,2 +1,3 @@
-# YDECommercePlatform
-电子商务平台
+# YDECommercePlatform -- 亿点电子商务平台
+
+## 项目简介
