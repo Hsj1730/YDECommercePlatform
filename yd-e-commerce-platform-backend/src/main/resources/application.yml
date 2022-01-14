@@ -1,0 +1,12 @@
+server:
+  port: 8000
+
+spring:
+  profiles:
+    active: dev
+  main:
+    allow-bean-definition-overriding: true
+
+yd-e-commerce-platform-backend:
+  version: 1.0.0
+

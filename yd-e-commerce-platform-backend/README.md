@@ -1,0 +1,23 @@
+- Spring Boot DevTools
+- Lombok
+- Spring Configuration Processor
+- Spring Security
+- JDBC API
+- Mybatis Framework
+- MySQL Driver
+- Spring Data Redis ( Access + Driver )
+- Java Mail Sender
+- FastJson
+- Druid
+- Swagger
+- Commons-pool2
+- Jedis
+- Commons-lang3
+- Hibernate-Validator
+- Spring Cache
+- Knife4j
+- Hutool
+- Poi
+- XercesImpl
+- EasyCaptcha
+- UserAgentUtils
