@@ -1,12 +1,11 @@
 package com.hsjnb.backend.config;
 
-import com.hsjnb.backend.utils.PropertyUtils;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.context.annotation.Lazy;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
@@ -22,25 +21,20 @@ import java.io.IOException;
  *
  * @author : Hsj1730
  * @version : 1.0
- * @date : Created in 2022/01/15 13:39
- * @description : 自动跳转
+ * @date : Created in 2022/01/16 19:14
+ * @description : 解决匿名用户访问无权限资源时的异常
  */
 
-@Slf4j
-@Lazy
 @Component
-@ConditionalOnProperty(value = "openBrowser.enable", havingValue = "true")
-public class OpenBrowser implements CommandLineRunner {
-
-//    private final String url = PropertyUtils.getProperty("openBrowserUrl");
+public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
     @Override
-    public void run(String... args) {
-        log.info("开始加载index页面");
-//        try {
-//            Runtime.getRuntime().exec("cmd /c start " + url);
-//        } catch (IOException e) {
-//            log.warn("页面加载失败，请手动打开！");
-//        }
+    public void commence(HttpServletRequest request,
+                         HttpServletResponse response,
+                         AuthenticationException authException) throws IOException {
+        // 当用户尝试访问安全的REST资源而不提供任何凭据时，将调用此方法发送401 响应
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED,
+                authException == null ? "Unauthorized" : authException.getMessage());
     }
+
 }

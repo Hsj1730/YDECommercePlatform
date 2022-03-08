@@ -38,18 +38,14 @@ public class BackendApplication {
                         "   \\ \\__\\ \\__\\____\\_\\  \\ \\________\\   \\ \\__Y__/ /     |\\_______\\ \\_______\\\n" +
                         "    \\|__|\\|__|\\_________\\|________|    \\|__|__|/      \\|_______|\\|_______|\n" +
                         "             \\|_________|\n" +
-                        "\n亿点电子商务平台服务端启动成功 \n前端访问地址："
-                        + PropertyUtils.getProperty("frontendProtocol") + "://"
-                        + PropertyUtils.getProperty("frontendIp") + ":"
-                        + PropertyUtils.getProperty("frontendPort")
-                        + PropertyUtils.getProperty("frontendPath")
-                        + "\nGitHub项目地址：" + PropertyUtils.getProperty("githubUrl")
-                        + "\nGitee项目地址：" + PropertyUtils.getProperty("giteeUrl") + "\n\n"
+                        "\n亿点电子商务平台服务端启动成功 " +
+                        "\n前端访问地址：" + PropertyUtils.getProperty("frontendUrl") +
+                        "\nGitHub项目地址：" + PropertyUtils.getProperty("githubUrl") +
+                        "\nGitee项目地址：" + PropertyUtils.getProperty("giteeUrl") + "\n"
         );
     }
 
     @Bean
-    @Lazy(false)
     public SpringContextHolder springContextHolder() {
         return new SpringContextHolder();
     }
@@ -64,10 +60,7 @@ public class BackendApplication {
     @AnonymousAccess
     @ResponseBody
     public JSONObject refreshJump() {
-        String url = PropertyUtils.getProperty("frontendProtocol") + "://"
-                + PropertyUtils.getProperty("frontendIp") + ":"
-                + PropertyUtils.getProperty("frontendPort")
-                + PropertyUtils.getProperty("frontendPath");
+        String url = PropertyUtils.getProperty("frontendUrl");
         Map<String, String> map = new HashMap<>();
         map.put("url",url);
         ResponseDataUtils<Map<String, String>> success = ResponseDataUtils.success(map);

@@ -1,13 +1,12 @@
-package com.hsjnb.backend.config;
+package com.hsjnb.backend.domain;
 
-import com.hsjnb.backend.utils.PropertyUtils;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Component;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.io.IOException;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
@@ -22,25 +21,23 @@ import java.io.IOException;
  *
  * @author : Hsj1730
  * @version : 1.0
- * @date : Created in 2022/01/15 13:39
- * @description : 自动跳转
+ * @date : Created in 2022/01/16 16:03
+ * @description : 公共模型
  */
 
-@Slf4j
-@Lazy
-@Component
-@ConditionalOnProperty(value = "openBrowser.enable", havingValue = "true")
-public class OpenBrowser implements CommandLineRunner {
+@Getter
+@Setter
+public class BaseDomain implements Serializable {
 
-//    private final String url = PropertyUtils.getProperty("openBrowserUrl");
+    private static final long serialVersionUID = 1L;
 
-    @Override
-    public void run(String... args) {
-        log.info("开始加载index页面");
-//        try {
-//            Runtime.getRuntime().exec("cmd /c start " + url);
-//        } catch (IOException e) {
-//            log.warn("页面加载失败，请手动打开！");
-//        }
-    }
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date creationTime;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date modificationTime;
+
+    @JsonIgnore
+    private Integer isDelete;
+
 }

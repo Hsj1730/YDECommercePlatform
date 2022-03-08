@@ -1,13 +1,13 @@
-package com.hsjnb.backend.config;
+package com.hsjnb.backend.aspect;
 
-import com.hsjnb.backend.utils.PropertyUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.context.annotation.Lazy;
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.AfterThrowing;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
-
-import java.io.IOException;
 
 /**
  * █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
@@ -22,25 +22,39 @@ import java.io.IOException;
  *
  * @author : Hsj1730
  * @version : 1.0
- * @date : Created in 2022/01/15 13:39
- * @description : 自动跳转
+ * @date : Created in 2022/01/16 15:34
+ * @description : 日志处理
  */
 
 @Slf4j
-@Lazy
+@Aspect
 @Component
-@ConditionalOnProperty(value = "openBrowser.enable", havingValue = "true")
-public class OpenBrowser implements CommandLineRunner {
+public class LogAspect {
 
-//    private final String url = PropertyUtils.getProperty("openBrowserUrl");
-
-    @Override
-    public void run(String... args) {
-        log.info("开始加载index页面");
-//        try {
-//            Runtime.getRuntime().exec("cmd /c start " + url);
-//        } catch (IOException e) {
-//            log.warn("页面加载失败，请手动打开！");
-//        }
+    /**
+     * 配置切入点
+     */
+    @Pointcut("@annotation(com.hsjnb.backend.annotation.Log)")
+    public void logPointcut() {
+        // 该方法无方法体,主要为了让同类中其他方法使用此切入点
     }
+
+//    /**
+//     * 配置环绕通知,使用在方法logPointcut()上注册的切入点
+//     */
+//    @Around("logPointcut()")
+//    public Object logAround(ProceedingJoinPoint joinPoint) {
+//        Object result;
+//
+//        return result;
+//    }
+//
+//    /**
+//     * 配置异常通知
+//     */
+//    @AfterThrowing(pointcut = "logPointcut()", throwing = "e")
+//    public void logAfterThrowing(JoinPoint joinPoint, Throwable e) {
+//
+//    }
+
 }

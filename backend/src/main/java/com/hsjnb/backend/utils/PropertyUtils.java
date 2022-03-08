@@ -2,10 +2,14 @@ package com.hsjnb.backend.utils;
 
 import com.hsjnb.backend.config.PropertyConfig;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.text.StringSubstitutor;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -65,14 +69,24 @@ public class PropertyUtils {
         if (props == null) {
             loadProps();
         }
-        return props.getProperty(key);
+        return existPlaceholder(props.getProperty(key));
     }
 
     public static String getProperty(String key, String defaultValue) {
         if (props == null) {
             loadProps();
         }
-        return props.getProperty(key, defaultValue);
+        return existPlaceholder(props.getProperty(key, defaultValue));
+    }
+
+    public static String existPlaceholder(String context) {
+        List<String> placeholderList = PlaceholderUtils.getPlaceholderList(context);
+        if (placeholderList.size() != 0) {
+            Map<String, String> placeholderMap = new HashMap<>();
+            placeholderList.forEach((e) -> placeholderMap.put(e,props.getProperty(e)));
+            context = new StringSubstitutor(placeholderMap).replace(context);
+        }
+        return context;
     }
 
 }

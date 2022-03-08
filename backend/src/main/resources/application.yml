@@ -4,3 +4,19 @@ server:
 spring:
   profiles:
     active: dev
+  thymeleaf:
+    mode: HTML
+    cache: false
+  messages:
+    encoding: UTF-8
+
+# 日志级别配置
+logging:
+  level:
+    com.hsjnb.backend: debug
+    org.springframework.web: error
+
+# 是否开启自动跳转index页面
+openBrowser:
+  enabled: true
+

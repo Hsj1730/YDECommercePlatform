@@ -1,13 +1,9 @@
-package com.hsjnb.backend.config;
+package com.hsjnb.backend.annotation;
 
-import com.hsjnb.backend.utils.PropertyUtils;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Component;
-
-import java.io.IOException;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
@@ -22,25 +18,16 @@ import java.io.IOException;
  *
  * @author : Hsj1730
  * @version : 1.0
- * @date : Created in 2022/01/15 13:39
- * @description : 自动跳转
+ * @date : Created in 2022/01/16 15:30
+ * @description : 用于日志切入
  */
 
-@Slf4j
-@Lazy
-@Component
-@ConditionalOnProperty(value = "openBrowser.enable", havingValue = "true")
-public class OpenBrowser implements CommandLineRunner {
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Log {
 
-//    private final String url = PropertyUtils.getProperty("openBrowserUrl");
+    String value() default "";
 
-    @Override
-    public void run(String... args) {
-        log.info("开始加载index页面");
-//        try {
-//            Runtime.getRuntime().exec("cmd /c start " + url);
-//        } catch (IOException e) {
-//            log.warn("页面加载失败，请手动打开！");
-//        }
-    }
+    int type() default 0;
+
 }

@@ -1,4 +1,4 @@
-# frontend
+# yd_e-commerce_platform_vue
 
 ## Project setup
 ```

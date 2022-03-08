@@ -1,13 +1,8 @@
 package com.hsjnb.backend.config;
 
-import com.hsjnb.backend.utils.PropertyUtils;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.context.annotation.Lazy;
+import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
-
-import java.io.IOException;
 
 /**
  * █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
@@ -22,25 +17,37 @@ import java.io.IOException;
  *
  * @author : Hsj1730
  * @version : 1.0
- * @date : Created in 2022/01/15 13:39
- * @description : 自动跳转
+ * @date : Created in 2022/01/16 19:35
+ * @description : JWT参数配置
  */
 
-@Slf4j
-@Lazy
+@Data
 @Component
-@ConditionalOnProperty(value = "openBrowser.enable", havingValue = "true")
-public class OpenBrowser implements CommandLineRunner {
+@ConfigurationProperties(prefix = "jwt")
+public class SecurityProperties {
 
-//    private final String url = PropertyUtils.getProperty("openBrowserUrl");
+    // 请求头 ： 授权 Authorization
+    private String header;
 
-    @Override
-    public void run(String... args) {
-        log.info("开始加载index页面");
-//        try {
-//            Runtime.getRuntime().exec("cmd /c start " + url);
-//        } catch (IOException e) {
-//            log.warn("页面加载失败，请手动打开！");
-//        }
+    // 令牌前缀，最后留个空格 Bearer
+    private String tokenStartWith;
+
+    // 必须使用最少88位的Base64对该令牌进行编码
+    private String base64Secret;
+
+    private String secret;
+
+    // 令牌过期时间 此处单位/毫秒
+    private Long tokenValidityInSeconds;
+
+    // 在线用户 key，根据 key 查询 redis 中在线用户的数据
+    private String onlineKey;
+
+    // 验证码 key
+    private String codeKey;
+
+    public String getTokenStartWith() {
+        return tokenStartWith + " ";
     }
+
 }

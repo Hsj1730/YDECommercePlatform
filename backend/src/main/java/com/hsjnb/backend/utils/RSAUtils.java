@@ -39,10 +39,10 @@ import java.util.Map;
 public class RSAUtils {
 
     // 加密算法RSA
-    public static final String KEY_ALGORITHM = "RSA";
+    private static final String KEY_ALGORITHM = "RSA";
 
     // 签名算法
-    public static final String SIGNATURE_ALGORITHM = "MD5withRSA";
+    private static final String SIGNATURE_ALGORITHM = "MD5withRSA";
 
     // 获取公钥的key
     private static final String PUBLIC_KEY = "RSAPublicKey";
