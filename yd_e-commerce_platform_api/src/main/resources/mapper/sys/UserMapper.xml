@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hsjnb.yd_ecommerce_platform_api.mapper.UserMapper">
+
+    <select id="getLoginUserInfo" parameterType="integer" resultType="user">
+        select id, avatar, nickname, i_frame from yd_user where id = #{id}
+    </select>
+
+    <select id="getUserByUsername" parameterType="string" resultType="user">
+        select id, username, password, effective from yd_user where username = #{username}
+    </select>
+
+    <select id="getUserRoleCode" parameterType="integer" resultType="string">
+        SELECT code FROM yd_role WHERE id IN (SELECT role_id FROM yd_user_role WHERE  user_id = #{id})
+    </select>
+
+</mapper>

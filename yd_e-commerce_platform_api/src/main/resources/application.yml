@@ -1,0 +1,44 @@
+spring:
+  application:
+    name: YD(亿点)电子商务平台后台后端
+  freemarker:
+    check-template-location: false
+    enabled: true
+    cache: false
+    charset: UTF-8
+  profiles:
+    active: dev
+  messages:
+    encoding: UTF-8
+  security:
+    user:
+      name: user
+      password: 111111
+
+
+mybatis:
+  mapper-locations:
+    - classpath:mapper/*/*.xml
+  type-aliases-package: com.hsjnb.yd_ecommerce_platform_api.entity,com.hsjnb.yd_ecommerce_platform_api.dto
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+hsjnb:
+  jwt:
+    header: Authorization
+    expire: 86400 #1天，秒单位
+    secret: hagxvkndkg3495mllgfgfgd1fs1dq4fs  # 秘钥随机的32位
+  default:
+    i_frame:
+    n_frame:
+  rsa:
+    privateKey: MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAIRRB8Txar2R8amufpYJkBEXCcFS2/RihP3b6OmRWiwNcPVtTnxQBhZbeg5VwLUthX1KMlR8FCz5aj/ACfTVDQ7n2Yv7dcjAUKhnaB7xKga+Lu6mHu1k26VnhlIeMLiWxpwHJr4jvbg3Qb2EXi+opMi0FDRjIXSGh/9/g9KZt+MFAgMBAAECgYAv/yi/UwdyPqeX8pkumcdtu5qpSwJIsxgk8gmZ+ETqZ/HKxVzMEUc0AvjSjF68GggrO6foJ5419j+JYoL6EfKLKBvWEQHuoBYRdFxIUNGaf+hJYL14JJnV3eRqWAOt+7UVo2lNTh2GYCUVuN9JY3fs5SQv2jo2qNXK2Abc7vMpoQJBANAkmVpuk+Z3+TniF7ibm55tOMmM0CK4OH5pDNOPGWnOi6rKwlqgCMcR+Tewv0UOMujphoYBr1bLKkYasYdB8Q0CQQCivT+X4rzIIrDEVuidnqdpVxwY/pu+n2i8P+kTeYfWC3cOB52AsxJZwvaOgV8WLkQ+LzO2RUR4R8AQ6dW/kwvZAkEAm3T6ZKR6KoQozKak+Oifzi/dXguh2IynBSMIxWn3nSL7BdDyYCVu6N/vtzx3Xug/9d2U77mKb9TF+h4twcvqcQJACNUmr3Kx9lbTq0RgSbXDtlbxAnZHM7hpMdZyKwlskvR6WLuXE9YkR9TqFt/0rjqCn7FmKB1oUvLp/MEEReqQOQJANiPJrXK6zA91GYEaSHcjVZvmvu2ijVEb+4gk3GSN3kqtr5KUj8rFyfB405DOZC5FFh93Q52X1AL90csvM2avqg==
+  qiniuyun:
+    access-key: GI_KC69nt0_w3fF1HinQBHIFAq226fNd13wna1-s  # 七牛云AccessKey
+    secret-key: llqGtEgSj3xzWyISguPAH2dTV37sDrk0Wsz85LGY  # 七牛云SecretKey
+    bucket: yd-e-commerce-platform-resources  # 七牛云上传空间名称
+    domain: resources.hsjnb.com # 七牛云资源下载地址
+    useHttps: false # 是否启用https
+    expireInSeconds: 604800 # 过期时间（s）

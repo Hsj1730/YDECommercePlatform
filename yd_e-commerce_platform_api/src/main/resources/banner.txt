@@ -1,0 +1,17 @@
+${AnsiColor.BRIGHT_GREEN}
+ ___  ___  ________        ___    _____  ________  ________  ________
+|\  \|\  \|\   ____\      |\  \  / __  \|\_____  \|\_____  \|\   __  \
+\ \  \\\  \ \  \___|_     \ \  \|\/_|\  \\|___/  /\|____|\ /\ \  \|\  \
+ \ \   __  \ \_____  \  __ \ \  \|/ \ \  \   /  / /     \|\  \ \  \\\  \
+  \ \  \ \  \|____|\  \|\  \\_\  \   \ \  \ /  / /     __\_\  \ \  \\\  \
+   \ \__\ \__\____\_\  \ \________\   \ \__Y__/ /     |\_______\ \_______\
+    \|__|\|__|\_________\|________|    \|__|__|/      \|_______|\|_______|
+             \|_________|
+
+${AnsiColor.BRIGHT_CYAN}
+Application Name: ${spring.application.name}
+Application Profile: ${spring.profiles.active}
+Server Port: ${server.port}
+Spring Boot Version: ${spring-boot.version}${spring-boot.formatted-version}
+
+

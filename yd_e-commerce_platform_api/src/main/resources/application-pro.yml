@@ -1,0 +1,11 @@
+server:
+  port: 8099
+
+debug: false
+
+spring:
+  devtools:
+    restart:
+      enabled: false
+    livereload:
+      port: 35729

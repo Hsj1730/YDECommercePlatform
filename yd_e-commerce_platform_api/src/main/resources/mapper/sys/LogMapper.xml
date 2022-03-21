@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hsjnb.yd_ecommerce_platform_api.mapper.LogMapper">
+
+    <insert id="insertLog" parameterType="log">
+        insert into
+            yd_log (name, url, ip, user_id, status, execute_time)
+        values
+            (#{log.name},#{log.url},#{log.ip},#{log.userId},#{log.status},#{log.executeTime})
+    </insert>
+
+</mapper>

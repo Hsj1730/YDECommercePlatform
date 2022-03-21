@@ -1,33 +1,46 @@
-import Vue from 'vue'
-import App from './App.vue'
-import router from './router'
-import store from './store'
+import Vue from "vue";
+import App from "./App.vue";
+import router from "./router";
+import store from "./store";
 
-import Element from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
+import Element from "element-ui";
+import "element-ui/lib/theme-chalk/index.css";
 
-import axios from './axios'
+import axios from "./axios/axios";
 
-import settings from './settings'
+import Cookies from "js-cookie";
 
-import rsa from './utils/rsa'
+import settings from "./settings";
 
-Vue.prototype.rsa = rsa
+import rsa from "./utils/ras";
 
-Vue.prototype.settings = settings
+import dataValidate from "./utils/validate";
 
-require('./mock') // 引入mock数据，关闭则注释该行
+import "./styles/index.scss";
+
+import "normalize.css/normalize.css"; // A modern alternative to CSS resets
+
+import "./icons"; // icon
+
+Vue.prototype.rsa = rsa;
+
+Vue.prototype.settings = settings;
+
+Vue.prototype.dataValidate = dataValidate;
+
+// require("./mock/mock"); // 引入mock数据，关闭则注释该行
 
 Vue.use(Element, {
-  size: 'small',
-  zIndex: 2000
-})
+  size: "small",
+  zIndex: 2000,
+});
 
-Vue.prototype.$axios = axios
-Vue.config.productionTip = false
+Vue.prototype.$axios = axios;
+Vue.prototype.Cookies = Cookies;
+Vue.config.productionTip = false;
 
 new Vue({
   router,
   store,
-  render: h => h(App)
-}).$mount('#app')
+  render: (h) => h(App),
+}).$mount("#app");
