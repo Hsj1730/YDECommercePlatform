@@ -82,6 +82,7 @@
 <script>
 import sideMenu from "./inc/sideMenu";
 import tabs from "./inc/tabs";
+import store from "../store";
 import { removeToken } from "../utils/auth";
 export default {
   name: "home",
@@ -92,7 +93,7 @@ export default {
   data() {
     return {
       userInfo: {
-        id: "",
+        id: 0,
         nickname: "",
         avatar: "",
       },
@@ -105,18 +106,17 @@ export default {
     getUserInfo() {
       this.$axios.post("/user/getLoginUserInfo").then((res) => {
         this.userInfo = res.data.data;
+        store.commit("setUserId", this.userInfo.id);
       });
     },
     logout() {
       this.$axios.post("/logout").then((res) => {
-        // TODO 后期可以rm
-        localStorage.clear();
         removeToken();
         sessionStorage.clear();
         this.$message.success(res.data.msg);
         this.$store.commit("resetState");
         this.$router.push("/login");
-        location.reload();
+        location.reload(); // 为了重新实例化vue-router对象 避免bug
       });
     },
   },

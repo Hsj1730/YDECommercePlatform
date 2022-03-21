@@ -55,6 +55,8 @@ public class User implements Serializable, UserDetails {
 
     private String email;
 
+    private String enable;
+
     private String effective;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
@@ -65,11 +67,11 @@ public class User implements Serializable, UserDetails {
 
     private List<String> roleName;
 
-    public User(Integer id, String username, String password, String effective, Collection<? extends GrantedAuthority> authorities) {
+    public User(Integer id, String username, String password, String enable, Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
         this.password = password;
-        this.effective = effective;
+        this.enable = enable;
         this.authorities = authorities;
     }
 
@@ -107,7 +109,7 @@ public class User implements Serializable, UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return StrUtil.equals(this.effective, "1");
+        return StrUtil.equals(this.enable, "1");
     }
 
 }

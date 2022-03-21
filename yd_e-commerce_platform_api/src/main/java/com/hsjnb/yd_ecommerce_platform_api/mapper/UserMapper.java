@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
@@ -34,4 +35,11 @@ public interface UserMapper {
 
     List<String> getUserRoleCode(@Param("id") Integer id);
 
+    List<User> getUserList(@Param("nickname") String nickname);
+
+    List<String> getUserRoleName(@Param("userId") Integer id);
+
+    void deleteUser(@Param("id") Integer id);
+
+    void deleteUserRoleByUserId(@Param("userId") Integer id);
 }

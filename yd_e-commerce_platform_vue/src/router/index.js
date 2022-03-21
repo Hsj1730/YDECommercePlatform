@@ -14,7 +14,6 @@ const routes = [
     path: "/",
     name: "home",
     component: home,
-    redirect: "/index",
     children: [
       {
         path: "/index",
@@ -25,12 +24,12 @@ const routes = [
         component: index,
       },
       {
-        path: "/userCenter",
+        path: "/user/userCenter",
         name: "userCenter",
         meta: {
           title: "个人中心",
         },
-        component: () => import("../views/manage/center/index"),
+        component: () => import("../views/manage/userCenter"),
       },
     ],
   },
@@ -68,9 +67,9 @@ router.beforeEach((to, from, next) => {
       // 动态绑定路由
       const newRouter = router.options.routes;
 
-      store.commit("setMenuList", res.data);
+      store.commit("setMenuList", res.data.data);
 
-      res.data.map((item) => {
+      res.data.data.map((item) => {
         if (item.children) {
           item.children.map((m) => {
             const route = menuToRoute(m);

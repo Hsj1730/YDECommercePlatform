@@ -1,9 +1,12 @@
-package com.hsjnb.yd_ecommerce_platform_api.service.sys;
+package com.hsjnb.yd_ecommerce_platform_api.mapper;
 
-import com.github.pagehelper.PageInfo;
-import com.hsjnb.yd_ecommerce_platform_api.entity.User;
+import com.hsjnb.yd_ecommerce_platform_api.dto.MenuDto;
+import com.hsjnb.yd_ecommerce_platform_api.entity.Menu;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
-import java.util.Map;
+import java.util.List;
 
 /**
  * █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
@@ -18,21 +21,28 @@ import java.util.Map;
  *
  * @author : Hsj1730
  * @version : 1.0
- * @date : Created in 2022/03/20 22:49
+ * @date : Created in 2022/03/21 22:11
  * @description :
  */
 
-public interface UserService {
+@Mapper
+@Repository
+public interface MenuMapper {
 
-    /**
-     * 获取登录用户信息
-     * @param id 用户id
-     * @return user
-     */
-    User getLoginUserInfo(Integer id);
+    List<Menu> getMenuList();
 
-    PageInfo<User> getUserList(Map<String,Object> param);
+    Menu getMenuById(@Param("id") Integer id);
 
-    boolean deleteUser(Integer id);
+    int changeEnable(@Param("dto") MenuDto dto);
+
+    int changeHidden(@Param("dto") MenuDto dto);
+
+    void deleteMenu(@Param("id") Integer id);
+
+    void deleteRoleMenuByMenuId(@Param("menuId") Integer id);
+
+    int addMenu(@Param("dto") MenuDto dto);
+
+    int editMenu(@Param("dto") MenuDto dto);
 
 }

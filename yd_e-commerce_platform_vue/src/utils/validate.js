@@ -4,6 +4,10 @@ export default {
     const pattern = /^[^一-龥]+$/;
     return !pattern.test(username) ? "用户名不能存在中文字符" : "";
   },
+  validateNameChinese(username) {
+    const pattern = /^[^一-龥]+$/;
+    return !pattern.test(username) ? "菜单名称不能存在中文字符" : "";
+  },
   // 验证密码
   validatePass(pass, level) {
     let result = "";

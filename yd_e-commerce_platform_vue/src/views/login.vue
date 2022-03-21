@@ -127,8 +127,6 @@ export default {
     const validateUserName = (rule, value, callback) => {
       if (value === "" || value === null) {
         callback(new Error("请输入用户名"));
-      } else if (value.length < 5) {
-        callback(new Error("用户名最小长度为5位"));
       } else if (value.length > 18) {
         callback(new Error("用户名最大长度为18位"));
       } else {
@@ -205,11 +203,13 @@ export default {
             rememberAccount.username = compile.Encrypt(user.username);
             rememberAccount.password = compile.Encrypt(user.password);
             rememberAccount.rememberMe = compile.Encrypt(user.rememberMe);
-            this.Cookies.set(
-              "rememberAccount",
-              compile.Encrypt(JSON.stringify(rememberAccount)),
-              { expires: this.settings.passCookieExpires }
-            );
+            if (!this.Cookies.get("rememberAccount")) {
+              this.Cookies.set(
+                "rememberAccount",
+                compile.Encrypt(JSON.stringify(rememberAccount)),
+                { expires: this.settings.passCookieExpires }
+              );
+            }
           } else {
             this.Cookies.remove("rememberAccount");
           }

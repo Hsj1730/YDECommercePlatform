@@ -7,7 +7,6 @@ export default new Vuex.Store({
   state: {
     token: "",
     menuList: [], // 菜单列表
-    permList: [],
     hasMenus: false, // 判断是否已加载菜单
     editableTabsValue: "Index",
     editableTabs: [
@@ -16,6 +15,7 @@ export default new Vuex.Store({
         name: "/index",
       },
     ],
+    userId: 0,
   },
   mutations: {
     SET_TOKEN: (state, token) => {
@@ -25,11 +25,11 @@ export default new Vuex.Store({
     setMenuList(state, menuList) {
       state.menuList = menuList;
     },
-    setPermList(state, perms) {
-      state.permList = perms;
-    },
     setHasMenus(state, hasMenus) {
       state.hasMenus = hasMenus;
+    },
+    setUserId(state, userId) {
+      state.userId = userId;
     },
     addTab(state, val) {
       let index = state.editableTabs.findIndex(

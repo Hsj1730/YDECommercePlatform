@@ -4,7 +4,6 @@ import com.google.code.kaptcha.Producer;
 import com.hsjnb.yd_ecommerce_platform_api.annotation.AnonymousAccess;
 import com.hsjnb.yd_ecommerce_platform_api.common.lang.Constant;
 import com.hsjnb.yd_ecommerce_platform_api.common.lang.Result;
-import com.hsjnb.yd_ecommerce_platform_api.utils.QiNiuYunUtil;
 import com.hsjnb.yd_ecommerce_platform_api.utils.RedisUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -57,8 +56,8 @@ public class LoginController {
      * @return Result
      */
     @AnonymousAccess
-    @PostMapping(value = "/getCaptcha",produces = "application/json;charset=utf-8")
-    @ApiOperation(value = "获取验证码",httpMethod = "POST",response = Result.class)
+    @PostMapping(value = "/getCaptcha",produces = Constant.CONTENT_TYPE)
+    @ApiOperation(value = "获取验证码",httpMethod = Constant.HTTP_POST,response = Result.class)
     public Result getCaptcha() {
         String code = producer.createText();
         String key = UUID.randomUUID().toString();
@@ -66,7 +65,7 @@ public class LoginController {
         BufferedImage image = producer.createImage(code);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try {
-            ImageIO.write(image, "jpg", outputStream);
+            ImageIO.write(image, Constant.IMG_SUFFIX, outputStream);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -76,8 +75,8 @@ public class LoginController {
         Map<String,String> result = new HashMap<>();
         // 存储到redis中
         redisUtil.set(key,code, 120); // 设置验证码120秒过期
-        result.put("key", key);
-        result.put("captchaImg", captchaImg);
+        result.put(Constant.KEY, key);
+        result.put(Constant.CAPTCHA_IMG, captchaImg);
         return Result.success(result);
     }
 }

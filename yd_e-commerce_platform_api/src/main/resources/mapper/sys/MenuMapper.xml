@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hsjnb.yd_ecommerce_platform_api.mapper.MenuMapper">
+
+    <select id="getMenuList" resultType="menu">
+        SELECT * FROM yd_menu WHERE effective = '1' ORDER BY sort
+    </select>
+
+    <select id="getMenuById" parameterType="integer" resultType="menu">
+        SELECT * FROM yd_menu WHERE id = #{id} AND effective = '1'
+    </select>
+
+    <update id="changeEnable" parameterType="menuDto">
+        UPDATE yd_menu SET enable = #{dto.enable} WHERE id = #{dto.id}
+    </update>
+
+    <update id="changeHidden" parameterType="menuDto">
+        UPDATE yd_menu SET enable = #{dto.hidden} WHERE id = #{dto.id}
+    </update>
+
+    <update id="deleteMenu" parameterType="integer">
+        UPDATE yd_menu SET effective = '0' WHERE id = #{id}
+    </update>
+
+    <delete id="deleteRoleMenuByMenuId" parameterType="integer">
+        DELETE FROM yd_role_menu WHERE menu_id = #{menuId}
+    </delete>
+
+    <insert id="addMenu" parameterType="menuDto">
+        INSERT INTO
+            yd_menu (parent_id, name, path, component, sort, icon, type)
+        VALUES (#{dto.parentId},#{dto.name},#{dto.path},#{dto.component},#{dto.sort},#{dto.icon},#{dto.type})
+    </insert>
+
+    <update id="editMenu" parameterType="menuDto">
+        UPDATE
+            yd_menu
+        SET
+            parent_id = #{dto.parentId},name = #{dto.name},path = #{dto.path},
+            component = #{dto.component},icon = #{dto.icon},sort = #{dto.sort},type = #{dto.type}
+        WHERE
+            id = #{dto.id}
+    </update>
+
+</mapper>

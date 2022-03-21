@@ -27,4 +27,12 @@ public class Constant {
 
     public static final String I_FRAME_0 = "0";
 
+    public static final String IMG_SUFFIX = "jpg";
+
+    public static final String HTTP_POST = "POST";
+
+    public static final String KEY = "key";
+
+    public static final String CAPTCHA_IMG = "captchaImg";
+
 }

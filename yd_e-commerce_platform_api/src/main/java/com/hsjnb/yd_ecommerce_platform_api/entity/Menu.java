@@ -1,9 +1,10 @@
-package com.hsjnb.yd_ecommerce_platform_api.service.sys;
+package com.hsjnb.yd_ecommerce_platform_api.entity;
 
-import com.github.pagehelper.PageInfo;
-import com.hsjnb.yd_ecommerce_platform_api.entity.User;
+import lombok.Data;
 
-import java.util.Map;
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 
 /**
  * █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
@@ -18,21 +19,39 @@ import java.util.Map;
  *
  * @author : Hsj1730
  * @version : 1.0
- * @date : Created in 2022/03/20 22:49
+ * @date : Created in 2022/03/21 21:59
  * @description :
  */
 
-public interface UserService {
+@Data
+public class Menu implements Serializable {
 
-    /**
-     * 获取登录用户信息
-     * @param id 用户id
-     * @return user
-     */
-    User getLoginUserInfo(Integer id);
+    private Integer id;
 
-    PageInfo<User> getUserList(Map<String,Object> param);
+    private Integer parentId;
 
-    boolean deleteUser(Integer id);
+    private String name;
+
+    private String path;
+
+    private String component;
+
+    private Integer sort;
+
+    private String icon;
+
+    private String type;
+
+    private String hidden;
+
+    private String enable;
+
+    private String effective;
+
+    private Date createTime;
+
+    private Date updateTime;
+
+    private List<Menu> children;
 
 }

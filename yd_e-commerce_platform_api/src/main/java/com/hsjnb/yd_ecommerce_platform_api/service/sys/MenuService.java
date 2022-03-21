@@ -1,9 +1,9 @@
 package com.hsjnb.yd_ecommerce_platform_api.service.sys;
 
-import com.github.pagehelper.PageInfo;
-import com.hsjnb.yd_ecommerce_platform_api.entity.User;
+import com.hsjnb.yd_ecommerce_platform_api.dto.MenuDto;
+import com.hsjnb.yd_ecommerce_platform_api.entity.Menu;
 
-import java.util.Map;
+import java.util.List;
 
 /**
  * █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
@@ -18,21 +18,24 @@ import java.util.Map;
  *
  * @author : Hsj1730
  * @version : 1.0
- * @date : Created in 2022/03/20 22:49
+ * @date : Created in 2022/03/21 21:56
  * @description :
  */
 
-public interface UserService {
+public interface MenuService {
 
-    /**
-     * 获取登录用户信息
-     * @param id 用户id
-     * @return user
-     */
-    User getLoginUserInfo(Integer id);
+    List<Menu> getMenuList();
 
-    PageInfo<User> getUserList(Map<String,Object> param);
+    Menu getMenuById(Integer id);
 
-    boolean deleteUser(Integer id);
+    int changeEnable(MenuDto dto);
+
+    int changeHidden(MenuDto dto);
+
+    boolean deleteMenu(Integer id);
+
+    int addMenu(MenuDto dto);
+
+    int editMenu(MenuDto dto);
 
 }
