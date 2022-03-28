@@ -51,6 +51,7 @@
                 type="text"
                 maxlength="18"
                 auto-complete="off"
+                clearable
               >
                 <svg-icon
                   slot="prefix"
@@ -65,6 +66,7 @@
                 type="password"
                 maxlength="18"
                 auto-complete="off"
+                clearable
               >
                 <svg-icon
                   slot="prefix"
@@ -79,6 +81,7 @@
                 type="text"
                 maxlength="5"
                 style="width: 151px; float: left"
+                clearable
               >
                 <svg-icon
                   slot="prefix"
@@ -198,12 +201,16 @@ export default {
             rememberMe: this.loginForm.rememberMe,
             key: this.loginForm.key,
           };
+          const rememberAccount = {};
+          rememberAccount.username = compile.Encrypt(user.username);
+          rememberAccount.password = compile.Encrypt(user.password);
+          rememberAccount.rememberMe = compile.Encrypt(user.rememberMe);
           if (user.rememberMe) {
-            const rememberAccount = {};
-            rememberAccount.username = compile.Encrypt(user.username);
-            rememberAccount.password = compile.Encrypt(user.password);
-            rememberAccount.rememberMe = compile.Encrypt(user.rememberMe);
-            if (!this.Cookies.get("rememberAccount")) {
+            if (
+              !this.Cookies.get("rememberAccount") ||
+              this.Cookies.get("rememberAccount") !==
+                compile.Encrypt(JSON.stringify(rememberAccount))
+            ) {
               this.Cookies.set(
                 "rememberAccount",
                 compile.Encrypt(JSON.stringify(rememberAccount)),
@@ -211,7 +218,12 @@ export default {
               );
             }
           } else {
-            this.Cookies.remove("rememberAccount");
+            if (
+              this.Cookies.get("rememberAccount") ===
+              compile.Encrypt(JSON.stringify(rememberAccount))
+            ) {
+              this.Cookies.remove("rememberAccount");
+            }
           }
           user.password = this.rsa.encrypt(user.password);
           this.$axios({

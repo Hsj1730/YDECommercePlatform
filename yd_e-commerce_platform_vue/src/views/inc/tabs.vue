@@ -2,7 +2,7 @@
   <el-tabs
     v-model="editableTabsValue"
     type="card"
-    closable="closable"
+    closable
     @tab-remove="fnRemoveTab"
     @tab-click="fnClickTab"
   >
@@ -18,38 +18,37 @@
 <script>
 export default {
   name: "tabs",
-  data() {
-    return {};
-  },
   computed: {
-    editableTabs: {
-      get() {
-        return this.$store.state.menus.editableTabs;
-      },
-      set(val) {
-        this.$store.state.menus.editableTabs = val;
-      },
-    },
+    // 标签当前选中的值
     editableTabsValue: {
       get() {
-        return this.$store.state.menus.editableTabsValue;
+        return this.$store.state.editableTabsValue;
       },
       set(val) {
-        this.$store.state.menus.editableTabsValue = val;
+        this.$store.state.editableTabsValue = val;
+      },
+    },
+    // 标签的内容值
+    editableTabs: {
+      get() {
+        return this.$store.state.editableTabs;
+      },
+      set(val) {
+        this.$store.state.editableTabs = val;
       },
     },
   },
   methods: {
     fnClickTab(target) {
       if (target.name !== this.$route.path) {
-        this.$router.push({ name: target.name });
+        this.$router.push(target.name);
       }
     },
     fnRemoveTab(targetName) {
       const tabs = this.editableTabs;
       let activeName = this.editableTabsValue;
       // 首页不能删除
-      if (activeName === "Index") {
+      if (activeName === "/index" || activeName === "index") {
         return;
       }
       if (activeName === targetName) {
@@ -64,7 +63,7 @@ export default {
       }
       this.editableTabsValue = activeName;
       this.editableTabs = tabs.filter((tab) => tab.name !== targetName);
-      this.$router.push({ name: activeName });
+      this.$router.push(activeName);
     },
   },
 };

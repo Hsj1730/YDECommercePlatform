@@ -8,14 +8,14 @@ export default new Vuex.Store({
     token: "",
     menuList: [], // 菜单列表
     hasMenus: false, // 判断是否已加载菜单
-    editableTabsValue: "Index",
+    editableTabsValue: "index",
     editableTabs: [
       {
         title: "首页",
         name: "/index",
       },
     ],
-    userId: 0,
+    userInfo: {},
   },
   mutations: {
     SET_TOKEN: (state, token) => {
@@ -28,8 +28,8 @@ export default new Vuex.Store({
     setHasMenus(state, hasMenus) {
       state.hasMenus = hasMenus;
     },
-    setUserId(state, userId) {
-      state.userId = userId;
+    setUserInfo(state, userInfo) {
+      state.userInfo = userInfo;
     },
     addTab(state, val) {
       let index = state.editableTabs.findIndex(
@@ -46,9 +46,10 @@ export default new Vuex.Store({
     },
     resetState: (state) => {
       state.menuList = [];
-
+      state.token = "";
+      state.userId = {};
       state.hasMenus = false;
-      state.editableTabsValue = "Index";
+      state.editableTabsValue = "index";
       state.editableTabs = [
         {
           title: "首页",

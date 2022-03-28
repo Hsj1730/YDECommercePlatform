@@ -62,9 +62,12 @@ public class SystemLogAspect {
         assert attributes != null;
         HttpServletRequest request = attributes.getRequest();
 
-        // 拿到ip地址、请求路径、token
+        // 拿到ip地址、请求路径、token,浏览器
         String url = request.getRequestURL().toString();
         String ip = IpUtil.getIpAddress(request);
+        String browser = IpUtil.getBrowser(request);
+        String version = IpUtil.getVersion(request);
+        String os = IpUtil.getOs(request);
 
         // 从切面织入点处通过反射机制获取织入点处的方法
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
@@ -81,7 +84,9 @@ public class SystemLogAspect {
         Result result = (Result) joinPoint.proceed(joinPoint.getArgs());
         long endTime = System.currentTimeMillis();
         long totalTime = endTime - startTime;
-        log.info("**********   Url: {}, Start: {}, End: {}, Total: {}ms, Code: {}   **********", url, DateTimeUtil.dateFormat(new Date(startTime), "yyyy-MM-dd HH:mm:ss:SSS"), DateTimeUtil.dateFormat(new Date(endTime), "yyyy-MM-dd HH:mm:ss:SSS"), totalTime, result.getCode());
+        log.info("**********   Url: {}, Start: {}, End: {}, Total: {}ms, Browser: {} Code: {}   **********",
+                url, DateTimeUtil.dateFormat(new Date(startTime), "yyyy-MM-dd HH:mm:ss:SSS"),
+                DateTimeUtil.dateFormat(new Date(endTime), "yyyy-MM-dd HH:mm:ss:SSS"), totalTime, browser, result.getCode());
 
         // 插入系统日志表
         // 插入系统日志表
@@ -89,11 +94,14 @@ public class SystemLogAspect {
         sysLog.setName(methodName);
         sysLog.setUrl(url);
         sysLog.setIp(ip);
+        sysLog.setBrowser(browser);
+        sysLog.setVersion(version);
+        sysLog.setOs(os);
         // 获取用户信息
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         sysLog.setUserId(user.getId());
         sysLog.setStatus(result.getCode());
-        sysLog.setExecuteTime(totalTime + " ms");
+        sysLog.setExecuteTime(totalTime);
         logMapper.insertLog(sysLog);
         return result;
     }

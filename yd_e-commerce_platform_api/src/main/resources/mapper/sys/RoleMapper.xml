@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hsjnb.yd_ecommerce_platform_api.mapper.RoleMapper">
+
+    <select id="queryRoleList" resultType="role">
+        SELECT * FROM yd_role WHERE effective = '1'
+    </select>
+
+    <select id="getRoleList" parameterType="string" resultType="role">
+        SELECT * FROM yd_role WHERE effective = '1'
+        <if test="name != null and name != ''">
+            AND name LIKE CONCAT('%', #{name}, '%')
+        </if>
+    </select>
+
+    <select id="getHaveMenu" parameterType="integer" resultType="integer">
+        SELECT menu_id FROM yd_role_menu WHERE role_id = #{roleId}
+    </select>
+
+    <select id="getRoleById" parameterType="integer" resultType="role">
+        SELECT id,name,code FROM yd_role WHERE id = #{id} AND effective = '1'
+    </select>
+
+    <update id="changeEnable" parameterType="roleDto">
+        UPDATE yd_role SET enable = #{dto.enable} WHERE id = #{dto.id}
+    </update>
+
+    <update id="deleteRole" parameterType="integer">
+        UPDATE yd_role SET effective = '0' WHERE id = #{id}
+    </update>
+
+    <delete id="deleteUserRoleByRoleId" parameterType="integer">
+        DELETE FROM yd_user_role WHERE role_id = #{id}
+    </delete>
+
+    <insert id="addRole" parameterType="roleDto">
+        INSERT INTO yd_role (code, name) VALUES (#{dto.code},#{dto.name})
+    </insert>
+
+    <update id="editRole" parameterType="roleDto">
+        UPDATE yd_role
+        <set>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="code != null and code != ''">
+                code = #{code},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteRoleMenuById" parameterType="integer">
+        DELETE FROM yd_role_menu WHERE role_id = #{id}
+    </delete>
+
+    <insert id="insetRoleMenu" parameterType="roleMenuDto">
+        INSERT INTO yd_role_menu (role_id, menu_id)
+        VALUES
+        <foreach collection="dto.menuIds" item="item" index="index" separator=",">
+            (#{dto.roleId},#{item})
+        </foreach>
+    </insert>
+
+</mapper>

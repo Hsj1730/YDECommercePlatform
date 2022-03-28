@@ -6,9 +6,13 @@
 
     <insert id="insertLog" parameterType="log">
         insert into
-            yd_log (name, url, ip, user_id, status, execute_time)
+            yd_log (name, url, ip, user_id, browser, version, os, status, execute_time)
         values
-            (#{log.name},#{log.url},#{log.ip},#{log.userId},#{log.status},#{log.executeTime})
+            (#{log.name},#{log.url},#{log.ip},#{log.userId},#{log.browser},#{log.version},#{log.os},#{log.status},#{log.executeTime})
     </insert>
+
+    <select id="getUserLogList" parameterType="integer" resultType="log">
+        select * from yd_log where user_id =  #{userId} order by create_time desc
+    </select>
 
 </mapper>

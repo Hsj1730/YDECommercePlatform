@@ -6,6 +6,88 @@ debug: false
 spring:
   devtools:
     restart:
-      enabled: false
+      enabled: false # 设置开启热部署
     livereload:
       port: 35729
+  datasource:
+    druid:
+      # 数据库类型
+      db-type: com.alibaba.druid.pool.DruidDataSource
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://hsjnb.com:3306/e-commerce?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8&useSSL=true
+      username: e-commerce
+      password: e-commerce
+      # 初始化时建立物理连接的个数
+      initial-size: 5
+      # 最大连接池数量
+      max-active: 20
+      # 最小连接池数量
+      min-idle: 5
+      # 获取连接时最大等待时间，单位毫秒。
+      max-wait: 60000
+      # 连接有效性检测时间
+      time-between-eviction-runs-millis: 90000
+      # 最大空闲时间
+      min-evictable-idle-time-millis: 1800000
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      validation-query: select 1
+      # 配置监控统计拦截的filters
+      filters: stat, wall
+      filter:
+        # 监控统计
+        stat:
+          # 数据库类型
+          db-type: mysql
+          # 慢SQL
+          log-slow-sql: true
+          # 慢SQL执行时间
+          slow-sql-millis: 5000
+        wall:
+          enabled: true
+          db-type: mysql
+          config:
+            delete-allow: true
+            drop-table-allow: false
+      # statViewServlet配置
+      stat-view-servlet:
+        # 是否启用statViewServlet配置
+        enabled: true
+        # 访问监控页面
+        url-pattern: /druid/*
+        # 禁止手动重置监控数据
+        reset-enable: false
+        # 设置监控页面的登陆名
+        login-username: druid
+        # 设置监控页面的登陆密码
+        login-password: druid
+      # webStatFilter配置
+      web-stat-filter:
+        # 是否启用webStatFilter
+        enabled: true
+        # 访问路径
+        url-pattern: /*
+        # 排除不必要的url
+        exclusions: "*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*"
+        # 监控最大session数，默认是1000
+        session-stat-max-count: 1000
+        # 是否启用session的统计功能
+        session-stat-enable: true
+        # 是否启用监控单个Url调用的sql列表
+        profile-enable: true
+  redis:
+    #数据库索引
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    password:
+    jedis:
+      pool:
+        max-active: 16 # 连接池最大连接数（使用负值表示没有限制）
+        max-wait: -1ms # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-idle: 8 # 连接池中的最大空闲连接
+        min-idle: 0 # 连接池中的最小空闲连接
+    #连接超时时间
+    timeout: 5000
+

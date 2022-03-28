@@ -2,12 +2,12 @@ export default {
   /**
    * 是否是服务器
    */
-  isServer: false,
+  isServer: true,
 
   /**
    * 密码级别1,2,3,4,5
    */
-  level: 1,
+  level: 4,
 
   /**
    * 网站后台服务端本地地址
@@ -17,7 +17,7 @@ export default {
   /**
    * 网站后台服务端服务器地址
    */
-  serverServerAddress: "http://hsjnb.com:9090",
+  serverServerAddress: "http://hsjnb.com:8099",
 
   /**
    * 网站标题
@@ -94,22 +94,18 @@ export default {
       },
       {
         id: "5",
-        describe: "MybatisPlus",
-      },
-      {
-        id: "6",
         describe: "Jwt",
       },
       {
-        id: "7",
+        id: "6",
         describe: "Redis",
       },
       {
-        id: "8",
+        id: "7",
         describe: "Vue",
       },
       {
-        id: "9",
+        id: "8",
         describe: "Element-UI",
       },
     ],

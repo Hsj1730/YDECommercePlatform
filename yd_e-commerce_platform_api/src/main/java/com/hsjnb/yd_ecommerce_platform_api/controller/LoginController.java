@@ -61,7 +61,6 @@ public class LoginController {
     public Result getCaptcha() {
         String code = producer.createText();
         String key = UUID.randomUUID().toString();
-        code = "11111";
         BufferedImage image = producer.createImage(code);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         try {

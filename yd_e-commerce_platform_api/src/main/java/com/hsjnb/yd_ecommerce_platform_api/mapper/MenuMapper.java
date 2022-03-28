@@ -45,4 +45,6 @@ public interface MenuMapper {
 
     int editMenu(@Param("dto") MenuDto dto);
 
+    int queryChildren(@Param("id") Integer id);
+
 }

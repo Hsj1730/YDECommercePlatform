@@ -43,11 +43,7 @@ public class User implements Serializable, UserDetails {
 
     private String password;
 
-    private String salt;
-
     private String avatar;
-
-    private String iFrame;
 
     private String gender;
 

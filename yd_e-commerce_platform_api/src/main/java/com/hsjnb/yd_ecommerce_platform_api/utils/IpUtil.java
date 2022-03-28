@@ -1,5 +1,9 @@
 package com.hsjnb.yd_ecommerce_platform_api.utils;
 
+import cn.hutool.http.useragent.Browser;
+import cn.hutool.http.useragent.UserAgent;
+import cn.hutool.http.useragent.UserAgentUtil;
+
 import javax.servlet.http.HttpServletRequest;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -52,6 +56,15 @@ public class IpUtil {
         // 如果是多级代理，那么取第一个ip为客户ip
         if (ip != null && ip.contains(",")) {
             ip = ip.substring(ip.lastIndexOf(",") + 1).trim();
+        }
+        String localhost = "127.0.0.1";
+        if (localhost.equals(ip)) {
+            // 获取本机真正的ip地址
+            try {
+                ip = InetAddress.getLocalHost().getHostAddress();
+            } catch (UnknownHostException e) {
+                e.printStackTrace();
+            }
         }
         return ip;
     }
@@ -211,6 +224,25 @@ public class IpUtil {
             }
         }
         return localIP;
+    }
+
+    // 获取用户浏览器
+    public static String getBrowser(HttpServletRequest request) {
+        UserAgent userAgent = UserAgentUtil.parse(request.getHeader("User-Agent"));
+        Browser browser = userAgent.getBrowser();
+        return browser.getName();
+    }
+
+    // 获取浏览器版本
+    public static String getVersion(HttpServletRequest request) {
+        UserAgent userAgent = UserAgentUtil.parse(request.getHeader("User-Agent"));
+        return userAgent.getVersion();
+    }
+
+    // 系统版本
+    public static String getOs(HttpServletRequest request) {
+        UserAgent userAgent = UserAgentUtil.parse(request.getHeader("User-Agent"));
+        return userAgent.getOs().toString();
     }
 
     /**

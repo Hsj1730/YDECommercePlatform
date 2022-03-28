@@ -14,6 +14,7 @@ const routes = [
     path: "/",
     name: "home",
     component: home,
+    redirect: { name: "index" },
     children: [
       {
         path: "/index",
@@ -29,7 +30,7 @@ const routes = [
         meta: {
           title: "个人中心",
         },
-        component: () => import("../views/manage/userCenter"),
+        component: () => import("../views/manage/center/userCenter"),
       },
     ],
   },
@@ -54,7 +55,6 @@ router.beforeEach((to, from, next) => {
   if (to.meta.title) {
     document.title = to.meta.title;
   }
-
   let hasMenus = store.state.hasMenus;
   if (to.path === "/login") {
     next();
@@ -102,6 +102,11 @@ const menuToRoute = (menu) => {
   };
   route.component = () => import("@/views/" + menu.component + ".vue");
   return route;
+};
+
+const originalPush = VueRouter.prototype.push;
+VueRouter.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch((err) => err);
 };
 
 export default router;

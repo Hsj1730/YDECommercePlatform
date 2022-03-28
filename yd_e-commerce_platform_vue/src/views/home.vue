@@ -13,7 +13,8 @@
       >
         亿点电子商务平台
       </div>
-      <side-menu class="side-menu" />
+
+      <side-menu />
     </el-aside>
 
     <el-container>
@@ -40,20 +41,39 @@
               }}<i class="el-icon-arrow-down el-icon--right" />
             </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item :underline="false">
-                <router-link to="/" style="font-size: 16px"
-                  >&nbsp;首页</router-link
-                >
-              </el-dropdown-item>
-              <el-dropdown-item :underline="false">
-                <router-link
-                  :to="{ name: 'userCenter' }"
+              <router-link to="/">
+                <el-dropdown-item
+                  @click.native="
+                    selectMenu({ name: '/index', name: '首页', path: '/index' })
+                  "
                   style="font-size: 16px"
-                  >&nbsp;个人中心</router-link
+                  ><svg-icon
+                    icon-class="dashboard"
+                    style="margin-right: 8px"
+                  />首页</el-dropdown-item
                 >
-              </el-dropdown-item>
+              </router-link>
+              <router-link to="/user/userCenter">
+                <el-dropdown-item
+                  @click.native="
+                    selectMenu({
+                      name: '/user/userCenter',
+                      name: '个人中心',
+                      path: '/user/userCenter',
+                    })
+                  "
+                  style="font-size: 16px"
+                  ><svg-icon
+                    icon-class="user"
+                    style="margin-right: 8px"
+                  />个人中心</el-dropdown-item
+                >
+              </router-link>
               <el-dropdown-item @click.native="logout" style="font-size: 16px"
-                >&nbsp;退出</el-dropdown-item
+                ><svg-icon
+                  icon-class="logout"
+                  style="margin-right: 8px"
+                />&nbsp;退出</el-dropdown-item
               >
             </el-dropdown-menu>
           </el-dropdown>
@@ -80,33 +100,32 @@
 </template>
 
 <script>
-import sideMenu from "./inc/sideMenu";
-import tabs from "./inc/tabs";
 import store from "../store";
+import tabs from "./inc/tabs";
+import sideMenu from "./inc/sideMenu";
 import { removeToken } from "../utils/auth";
 export default {
   name: "home",
   components: {
-    sideMenu: sideMenu,
-    tabs: tabs,
-  },
-  data() {
-    return {
-      userInfo: {
-        id: 0,
-        nickname: "",
-        avatar: "",
-      },
-    };
+    tabs,
+    sideMenu,
   },
   mounted() {
     this.getUserInfo();
   },
+  computed: {
+    // 菜单列表
+    userInfo: {
+      get() {
+        return this.$store.state.userInfo;
+      },
+    },
+  },
   methods: {
     getUserInfo() {
       this.$axios.post("/user/getLoginUserInfo").then((res) => {
-        this.userInfo = res.data.data;
-        store.commit("setUserId", this.userInfo.id);
+        const userInfo = res.data.data;
+        store.commit("setUserInfo", userInfo);
       });
     },
     logout() {
@@ -116,8 +135,11 @@ export default {
         this.$message.success(res.data.msg);
         this.$store.commit("resetState");
         this.$router.push("/login");
-        location.reload(); // 为了重新实例化vue-router对象 避免bug
+        // location.reload(); // 为了重新实例化vue-router对象 避免bug
       });
+    },
+    selectMenu(item) {
+      this.$store.commit("addTab", item);
     },
   },
 };
@@ -163,5 +185,11 @@ a {
 .side-menu {
   width: 213px;
   position: fixed;
+}
+
+.el-menu-vertical-demo {
+  height: 100vh;
+  font-size: 24px;
+  font-weight: bolder;
 }
 </style>

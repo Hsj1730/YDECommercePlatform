@@ -1,99 +1,100 @@
 <template>
-  <!--  <el-menu-->
-  <!--    :default-active="this.$store.state.menus.editableTabsValue"-->
-  <!--    class="el-menu-vertical-demo"-->
-  <!--    background-color="#545c64"-->
-  <!--    text-color="#fff"-->
-  <!--    active-text-color="#ffd04b">-->
-
-  <!--    <router-link to="/index">-->
-  <!--      <el-menu-item index="Index" @click="selectMenu({name: 'Index', title: '首页'})">-->
-  <!--        <template slot="title">-->
-  <!--          <i class="el-icon-s-home"></i>-->
-  <!--          <span slot="title">首页</span>-->
-  <!--        </template>-->
-  <!--      </el-menu-item>-->
-  <!--    </router-link>-->
-  <!--    <el-submenu :index="menu.name" v-for="menu in menuList" :key="menu.name">-->
-  <!--      <template slot="title">-->
-  <!--        <i :class="menu.icon"></i>-->
-  <!--        <span>{{menu.title}}</span>-->
-  <!--      </template>-->
-  <!--      <router-link :to="item.path" v-for="item in menu.children" :key="item.path">-->
-  <!--        <el-menu-item :index="item.name" @click="selectMenu(item)">-->
-  <!--          <template slot="title">-->
-  <!--            <i :class="item.icon"></i>-->
-  <!--            <span slot="title">{{item.title}}</span>-->
-  <!--          </template>-->
-  <!--        </el-menu-item>-->
-  <!--      </router-link>-->
-  <!--    </el-submenu>-->
-  <!--  </el-menu>-->
   <el-menu
-    class="el-menu-vertical-demo"
+    :default-active="$route.path"
+    class="el-menu-vertical-demo side-menu"
     background-color="#545c64"
     text-color="#fff"
     active-text-color="#ffd04b"
   >
     <router-link to="/index">
-      <el-menu-item index="0">
+      <el-menu-item
+        index="/index"
+        @click="selectMenu({ name: '/index', name: '首页', path: '/index' })"
+      >
         <template slot="title">
           <i class="el-icon-s-home"></i>
           <span slot="title">首页</span>
         </template>
       </el-menu-item>
     </router-link>
-    <el-submenu index="1">
-      <template slot="title">
-        <i class="el-icon-s-operation"></i>
-        <span>系统管理</span>
-      </template>
-      <router-link to="/manage/user">
-        <el-menu-item index="1-1">
+    <div v-for="(menu, index) in menuList" :key="index">
+      <el-submenu
+        :index="menu.path + ''"
+        v-if="
+          menu.path === '' ||
+          menu.path == null ||
+          menu.component === '' ||
+          menu.component == null
+        "
+      >
+        <template slot="title">
+          <i :class="menu.icon"></i>
+          <svg-icon
+            :icon-class="menu.icon"
+            style="
+              margin-right: 5px;
+              width: 24px;
+              fill: currentColor;
+              text-align: center;
+              font-size: 14px;
+              vertical-align: middle;
+            "
+          />
+          <span>{{ menu.name }}</span>
+        </template>
+        <router-link
+          :to="item.path"
+          v-for="item in menu.children"
+          :key="item.path"
+        >
+          <el-menu-item :index="item.path + ''" @click="selectMenu(item)">
+            <template slot="title">
+              <svg-icon
+                :icon-class="item.icon"
+                style="
+                  margin-right: 5px;
+                  width: 24px;
+                  fill: currentColor;
+                  text-align: center;
+                  font-size: 14px;
+                  vertical-align: middle;
+                "
+              />
+              <span slot="title">{{ item.name }}</span>
+            </template>
+          </el-menu-item>
+        </router-link>
+      </el-submenu>
+      <router-link :to="menu.path" v-else>
+        <el-menu-item :index="menu.path + ''" @click="selectMenu(menu)">
           <template slot="title">
-            <i class="el-icon-s-custom"></i>
-            <span slot="title">用户管理</span>
+            <svg-icon
+              :icon-class="menu.icon"
+              style="
+                margin-right: 5px;
+                width: 24px;
+                fill: currentColor;
+                text-align: center;
+                font-size: 14px;
+                vertical-align: middle;
+              "
+            />
+            <span slot="title">{{ menu.name }}</span>
           </template>
         </el-menu-item>
       </router-link>
-      <router-link to="/manage/role">
-        <el-menu-item index="1-2">
-          <template slot="title">
-            <i class="el-icon-rank"></i>
-            <span slot="title">角色管理</span>
-          </template>
-        </el-menu-item>
-      </router-link>
-      <router-link to="/manage/menu">
-        <el-menu-item index="1-3">
-          <template slot="title">
-            <i class="el-icon-menu"></i>
-            <span slot="title">菜单管理</span>
-          </template>
-        </el-menu-item>
-      </router-link>
-      <router-link to="/manage/dict">
-        <el-menu-item index="1-4">
-          <template slot="title">
-            <i class="el-icon-s-order"></i>
-            <span slot="title">字典管理</span>
-          </template>
-        </el-menu-item>
-      </router-link>
-    </el-submenu>
+    </div>
   </el-menu>
 </template>
 
 <script>
 export default {
   name: "sideMenu",
-  data() {
-    return {};
-  },
   computed: {
+    // 菜单列表
     menuList: {
       get() {
-        return this.$store.state.menus.menuList;
+        return this.$store.state.menuList;
       },
     },
   },
@@ -105,7 +106,12 @@ export default {
 };
 </script>
 
-<style scoped type="text/css">
+<style scoped>
+.side-menu {
+  width: 213px;
+  position: fixed;
+}
+
 .el-menu-vertical-demo {
   height: 100vh;
   font-size: 24px;

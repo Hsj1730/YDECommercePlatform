@@ -38,7 +38,13 @@ public class Log implements Serializable {
 
     private Integer status;
 
-    private String executeTime;
+    private String browser;
+
+    private String version;
+
+    private String os;
+
+    private Long executeTime;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;

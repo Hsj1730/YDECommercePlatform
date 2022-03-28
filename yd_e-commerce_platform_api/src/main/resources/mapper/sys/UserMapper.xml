@@ -5,11 +5,11 @@
 <mapper namespace="com.hsjnb.yd_ecommerce_platform_api.mapper.UserMapper">
 
     <select id="getLoginUserInfo" parameterType="integer" resultType="user">
-        select id, avatar, nickname, i_frame from yd_user where id = #{id}
+        select id, avatar, nickname from yd_user where id = #{id}
     </select>
 
     <select id="getUserByUsername" parameterType="string" resultType="user">
-        select id, username, password, effective from yd_user where username = #{username}
+        select id, username, password, enable from yd_user where username = #{username}
     </select>
 
     <select id="getUserRoleCode" parameterType="integer" resultType="string">
@@ -39,5 +39,85 @@
     <delete id="deleteUserRoleByUserId" parameterType="integer">
         DELETE FROM yd_user_role WHERE user_id = #{userId}
     </delete>
+
+    <update id="resetPassword" parameterType="userDto">
+        UPDATE yd_user SET password = #{dto.password} WHERE id = #{dto.id}
+    </update>
+
+    <update id="changeEnable" parameterType="userDto">
+        UPDATE yd_user SET enable = #{dto.enable} WHERE id = #{dto.id}
+    </update>
+
+    <insert id="addUser" parameterType="userDto">
+        INSERT INTO yd_user (nickname, username, password, avatar)
+        VALUES (#{dto.nickname},#{dto.username},#{dto.password},#{dto.avatar})
+    </insert>
+
+    <select id="getUserRoleId" parameterType="integer" resultType="integer">
+        SELECT role_id FROM yd_user_role where user_id = #{userId}
+    </select>
+
+    <insert id="assignRoles" parameterType="assignRoleDto">
+        INSERT INTO yd_user_role (user_id, role_id)
+        VALUES
+        <foreach collection="roleIds" item="item" index="index" separator=",">
+            (#{userId},#{item})
+        </foreach>
+    </insert>
+
+    <select id="getMenuList" parameterType="integer" resultType="menu">
+        SELECT
+            d.*
+        FROM
+            yd_role_menu AS c
+                LEFT JOIN yd_menu AS d ON c.menu_id = d.id
+        WHERE
+            d.`enable` = '1'
+          AND d.effective = '1'
+          AND d.hidden = '0'
+          AND c.role_id IN (
+            SELECT
+                b.id
+            FROM
+                yd_user_role AS a
+                    LEFT JOIN yd_role AS b ON a.role_id = b.id
+            WHERE
+                a.user_id = #{userId}
+              AND b.effective = '1'
+              AND b.`enable` = '1'
+        )
+    </select>
+
+    <select id="checkUsername" parameterType="string" resultType="integer">
+        SELECT COUNT(1) FROM yd_user WHERE username = #{username} AND effective ='1'
+    </select>
+
+    <select id="getUserDetailedInfo" parameterType="integer" resultType="user">
+        SELECT * FROM yd_user WHERE id = #{id}
+    </select>
+
+    <update id="saveUserInfo" parameterType="user">
+        UPDATE yd_user SET nickname = #{user.nickname},mobile = #{user.mobile},gender = #{user.gender} WHERE id = #{user.id}
+    </update>
+
+    <select id="checkMobile" parameterType="string" resultType="integer">
+        SELECT COUNT(1) FROM yd_user WHERE effective = '1' AND mobile = #{mobile}
+    </select>
+
+    <update id="uploadAvatar" parameterType="user">
+        UPDATE yd_user SET avatar = #{user.avatar} WHERE id = #{user.id}
+    </update>
+
+    <select id="getPass" parameterType="userPassDto" resultType="string">
+        SELECT password FROM yd_user WHERE id = #{id}
+    </select>
+
+    <update id="updatePass" parameterType="userPassDto">
+        UPDATE yd_user SET password = #{user.newPass} WHERE id = #{user.id}
+    </update>
+
+    <update id="resetEmail" parameterType="userEmailDto">
+        UPDATE yd_user SET email = #{user.email} WHERE id = #{user.id}
+    </update>
 
 </mapper>

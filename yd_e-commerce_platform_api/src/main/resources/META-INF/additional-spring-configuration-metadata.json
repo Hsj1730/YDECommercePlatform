@@ -1,0 +1,9 @@
+{
+  "properties": [
+    {
+      "name": "hsjnb.default.defaultAvatar",
+      "type": "java.lang.String",
+      "description": "Description for hsjnb.default.defaultAvatar."
+    }
+  ]
+}

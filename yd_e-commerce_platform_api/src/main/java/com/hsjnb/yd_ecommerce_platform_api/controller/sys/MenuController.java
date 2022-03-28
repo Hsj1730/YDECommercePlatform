@@ -94,7 +94,7 @@ public class MenuController {
     @PostMapping(value = "deleteMenu",produces = Constant.CONTENT_TYPE)
     @ApiOperation(value = "删除菜单", httpMethod = Constant.HTTP_POST, response = Result.class)
     public Result deleteMenu(Integer id) {
-        return Result.success(menuService.deleteMenu(id));
+        return menuService.deleteMenu(id) ? Result.success(null) : Result.fail("请先删除该菜单的子菜单");
     }
 
     /**

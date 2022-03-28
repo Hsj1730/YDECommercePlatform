@@ -21,37 +21,50 @@
     </el-form>
     <el-table
       :data="tableData"
-      size="small"
       tooltip-effect="dark"
       style="width: 100%"
       border
       stripe
     >
-      <el-table-column prop="avatar" width="50" label="头像">
+      <el-table-column prop="avatar" width="80" align="center" label="头像">
         <template slot-scope="scope">
-          <el-avatar size="small" :src="scope.row.avatar"></el-avatar>
+          <el-avatar :src="scope.row.avatar"></el-avatar>
         </template>
       </el-table-column>
-      <el-table-column prop="username" label="用户名" />
-      <el-table-column prop="nickname" label="昵称" />
-      <el-table-column label="性别" prop="gender" align="center">
+      <el-table-column
+        prop="username"
+        label="用户名"
+        align="center"
+        width="100"
+      />
+      <el-table-column
+        prop="nickname"
+        label="昵称"
+        align="center"
+        width="100"
+      />
+      <el-table-column label="性别" prop="gender" align="center" width="60">
         <template slot-scope="scope">
           <span>{{
             scope.row.gender === "0"
               ? "未知"
-              : scope.raw.gender === "1"
+              : scope.row.gender === "1"
               ? "男"
               : "女"
           }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="mobile" label="手机号" />
-      <el-table-column prop="email" label="邮箱" />
-      <el-table-column prop="roleName" label="角色名称">
+      <el-table-column
+        prop="mobile"
+        label="手机号"
+        align="center"
+        width="100"
+      />
+      <el-table-column prop="email" label="邮箱" align="center" />
+      <el-table-column prop="roleName" label="角色名称" align="center">
         <template slot-scope="scope">
           <el-tag
             style="margin-left: 1%"
-            size="small"
             type="info"
             v-for="(item, index) in scope.row.roleName"
             :key="index"
@@ -59,22 +72,30 @@
           >
         </template>
       </el-table-column>
-      <el-table-column prop="effective" label="是否禁用">
+      <el-table-column prop="effective" align="center" width="80" label="状态">
         <template slot-scope="scope">
-          <el-tag size="small" v-if="scope.row.enable === '1'" type="success"
-            >启用</el-tag
-          >
-          <el-tag
-            size="small"
-            v-else-if="scope.row.enable === '0'"
-            type="danger"
+          <el-tag v-if="scope.row.enable === '1'" type="success">启用</el-tag>
+          <el-tag v-else-if="scope.row.enable === '0'" type="danger"
             >禁用</el-tag
           >
         </template>
       </el-table-column>
-      <el-table-column prop="createDate" width="180" label="创建时间">
+      <el-table-column
+        prop="createTime"
+        width="120"
+        align="center"
+        label="创建时间"
+      >
       </el-table-column>
-      <el-table-column prop="action" label="操作">
+      <el-table-column prop="action" align="center" width="250">
+        <template slot="header">
+          <div
+            @click="getUserList"
+            style="display: inline-block; cursor: pointer"
+          >
+            操作<i class="el-icon-refresh" style="margin-left: 10px" />
+          </div>
+        </template>
         <template slot-scope="scope">
           <el-button type="text" @click="fnOpenRoleDialog(scope.row.id)"
             >分配角色</el-button
@@ -85,13 +106,13 @@
           <el-button
             type="text"
             v-if="scope.row.enable === '0'"
-            @click="fnChangeEffective(scope.row.id, '1')"
+            @click="fnChangeEnable(scope.row.id, '1')"
             >启用</el-button
           >
           <el-button
             type="text"
             v-if="scope.row.enable === '1'"
-            @click="fnChangeEffective(scope.row.id, '0')"
+            @click="fnChangeEnable(scope.row.id, '0')"
             >禁用</el-button
           >
           <el-popconfirm
@@ -113,7 +134,7 @@
       :page-size="pageSize"
       layout="total, sizes, prev, pager, next, jumper"
       :total="total"
-      style="float: right; margin-top: 10px"
+      style="float: right; margin-top: 10px; padding-bottom: 10px"
     >
     </el-pagination>
     <!--添加用户-->
@@ -128,11 +149,15 @@
           label="用户名："
           prop="username"
           label-width="80px"
-          :rules="{ required: true, message: '请输入用户名', trigger: 'blur' }"
+          :rules="[
+            { required: true, message: '请输入用户名', trigger: 'blur' },
+            { validator: checkUsername },
+          ]"
         >
           <el-input
             v-model.trim="addUserForm.username"
             placeholder="请输入用户名（登录账号）"
+            clearable
           ></el-input>
         </el-form-item>
         <el-form-item
@@ -144,12 +169,15 @@
           <el-input
             v-model.trim="addUserForm.nickname"
             placeholder="请输入昵称"
+            clearable
           ></el-input>
         </el-form-item>
         <el-form-item label="密码：" prop="password" label-width="80px">
           <el-input
             v-model.trim="addUserForm.password"
             placeholder="默认密码为123456"
+            type="password"
+            clearable
           ></el-input>
         </el-form-item>
       </el-form>
@@ -164,12 +192,9 @@
     <!--分配角色-->
     <el-dialog title="分配角色" :visible.sync="roleDialogVisible" width="30%">
       <el-checkbox-group v-model="checkedRoles">
-        <el-checkbox
-          v-for="item in roles"
-          :label="item.roleId"
-          :key="item.roleId"
-          >{{ item.name }}</el-checkbox
-        >
+        <el-checkbox v-for="item in roles" :label="item.id" :key="item.id">{{
+          item.name
+        }}</el-checkbox>
       </el-checkbox-group>
       <span slot="footer" class="dialog-footer">
         <el-button @click="fnCloseRoleDialog">取 消</el-button>
@@ -180,7 +205,6 @@
 </template>
 
 <script>
-import compile from "../../utils/secret.js";
 export default {
   name: "user",
   data() {
@@ -224,15 +248,62 @@ export default {
         }
       });
     },
+    fnCloseRoleDialog() {
+      this.roleDialogVisible = false;
+      this.roleUserId = 0;
+    },
+    fnOpenAddUserDialog() {
+      this.userDialogVisible = true;
+    },
+    fnOpenRoleDialog(id) {
+      this.roleDialogVisible = true;
+      this.roleUserId = id;
+      this.$axios({
+        method: "post",
+        url: "/user/queryUserRole",
+        data: {
+          id: id,
+        },
+      }).then((res) => {
+        this.roles = res.data.data.roles;
+        this.checkedRoles = res.data.data.checked;
+      });
+    },
+    fnAddUser(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          let password = this.rsa.encrypt(this.addUserForm.password);
+          this.$axios({
+            method: "post",
+            url: "/user/addUser",
+            data: {
+              username: this.addUserForm.username,
+              nickname: this.addUserForm.nickname,
+              password: password,
+            },
+          }).then(() => {
+            this.$message.success("新增成功");
+            this.userDialogVisible = false;
+            this.getUserList();
+          });
+        } else {
+          return false;
+        }
+      });
+    },
+    fnCloseUserDialog(formName) {
+      this.$refs[formName].resetFields();
+      this.userDialogVisible = false;
+    },
     fnDeleteUser(id) {
-      if (id === this.$store.state.userId) {
+      if (id === this.$store.state.userInfo.id) {
         this.$message.warning("无法删除自己本身");
         return;
       }
       this.$axios({
         method: "post",
         url: "/user/deleteUser",
-        data: {
+        params: {
           id: id,
         },
       }).then((res) => {
@@ -240,6 +311,67 @@ export default {
           this.$message.success("删除成功");
           this.getUserList();
         }
+      });
+    },
+    fnResetPassword(id) {
+      this.$axios({
+        method: "post",
+        url: "/user/resetPassword",
+        data: {
+          id: id,
+        },
+      }).then((res) => {
+        this.$message.success(res.data.msg);
+      });
+    },
+    fnChangeEnable(id, enable) {
+      this.$axios({
+        method: "post",
+        url: "/user/changeEnable",
+        data: {
+          id: id,
+          enable: enable,
+        },
+      }).then((res) => {
+        this.$message.success(res.data.msg);
+        this.getUserList();
+      });
+    },
+    handleSizeChange(val) {
+      this.pageSize = val;
+      this.getUserList();
+    },
+    handleCurrentChange(val) {
+      this.current = val;
+      this.getUserList();
+    },
+    fnAssignRoles() {
+      this.$axios({
+        method: "post",
+        url: "/user/assignRoles",
+        data: {
+          userId: this.roleUserId,
+          roleIds: this.checkedRoles,
+        },
+      }).then((res) => {
+        this.$message.success(res.data.msg);
+        this.roleUserId = 0;
+        this.roleDialogVisible = false;
+        this.getUserList();
+      });
+    },
+    checkUsername(rule, value, callback) {
+      this.$axios({
+        method: "post",
+        url: "/user/checkUsername",
+        params: {
+          username: value,
+        },
+      }).then((res) => {
+        if (res.data.data !== 0) {
+          return callback(new Error("该用户名已存在"));
+        }
+        return callback();
       });
     },
   },

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
@@ -49,7 +50,8 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public Menu getMenuById(Integer id) {
-        return menuMapper.getMenuById(id);
+        Menu menu = menuMapper.getMenuById(id);
+        return menu;
     }
 
     @Override
@@ -64,6 +66,9 @@ public class MenuServiceImpl implements MenuService {
 
     @Override
     public boolean deleteMenu(Integer id) {
+        if (menuMapper.queryChildren(id) != 0) {
+            return false;
+        }
         menuMapper.deleteMenu(id);  // 删除菜单
         menuMapper.deleteRoleMenuByMenuId(id);  // 删除角色菜单
         return true;
@@ -72,9 +77,13 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public int addMenu(MenuDto dto) {
         if (StrUtil.isEmpty(dto.getIcon())) {
-            dto.setIcon("el-icon-menu");
+            dto.setIcon("list");
         }
         dto.setType(StrUtil.isEmpty(dto.getPath()) ? "1" : "2");
+        if (StrUtil.isEmpty(dto.getPath())) {
+            String path = UUID.randomUUID().toString().replaceAll("-", "");
+            dto.setPath(path);
+        }
         return menuMapper.addMenu(dto);
     }
 
@@ -83,7 +92,14 @@ public class MenuServiceImpl implements MenuService {
         if (StrUtil.isEmpty(dto.getIcon())) {
             dto.setIcon("el-icon-menu");
         }
+        if (dto.getParentId() == null) {
+            dto.setParentId(0);
+        }
         dto.setType(StrUtil.isEmpty(dto.getPath()) ? "1" : "2");
+        if (StrUtil.isEmpty(dto.getPath())) {
+            String path = UUID.randomUUID().toString().replaceAll("-", "");
+            dto.setPath(path);
+        }
         return menuMapper.editMenu(dto);
     }
 }

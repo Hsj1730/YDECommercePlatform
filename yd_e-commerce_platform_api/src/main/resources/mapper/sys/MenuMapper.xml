@@ -17,7 +17,7 @@
     </update>
 
     <update id="changeHidden" parameterType="menuDto">
-        UPDATE yd_menu SET enable = #{dto.hidden} WHERE id = #{dto.id}
+        UPDATE yd_menu SET hidden = #{dto.hidden} WHERE id = #{dto.id}
     </update>
 
     <update id="deleteMenu" parameterType="integer">
@@ -43,5 +43,9 @@
         WHERE
             id = #{dto.id}
     </update>
+
+    <select id="queryChildren" parameterType="integer" resultType="integer">
+        SELECT count(1) FROM yd_menu WHERE parent_id = #{id} AND effective = '1'
+    </select>
 
 </mapper>

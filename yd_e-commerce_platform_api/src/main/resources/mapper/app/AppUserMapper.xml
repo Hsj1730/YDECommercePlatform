@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hsjnb.yd_ecommerce_platform_api.mapper.app.AppUserMapper">
+
+    <select id="getUserInfoByAccount" parameterType="appUser" resultType="appUser">
+        select * from yd_app_user where user_num = #{user.userNum}
+    </select>
+
+    <insert id="register" parameterType="appUser">
+        insert into yd_app_user (user_num, user_keys, username, user_image)
+        values (#{user.userNum},#{user.userKeys},#{user.username},#{user.userImage})
+    </insert>
+
+</mapper>

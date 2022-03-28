@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -86,7 +87,7 @@ public class QiNiuYunUtil {
         Auth auth = Auth.create(accessKey, secretKey);
         DownloadUrl downloadUrl = new DownloadUrl(domain, useHttps, key);
         try {
-            return downloadUrl.buildURL(auth, expireInSeconds);
+            return downloadUrl.buildURL(auth, new Date().getTime() + expireInSeconds);
         } catch (QiniuException e) {
             e.printStackTrace();
             log.error("资源地址获取失败");

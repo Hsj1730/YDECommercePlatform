@@ -4,10 +4,6 @@ export default {
     const pattern = /^[^一-龥]+$/;
     return !pattern.test(username) ? "用户名不能存在中文字符" : "";
   },
-  validateNameChinese(username) {
-    const pattern = /^[^一-龥]+$/;
-    return !pattern.test(username) ? "菜单名称不能存在中文字符" : "";
-  },
   // 验证密码
   validatePass(pass, level) {
     let result = "";
@@ -61,5 +57,14 @@ export default {
     const pattern =
       /^(?=.*[A-Za-z])(?=.*d)(?=.*[._~!@#$^&*%?])[A-Za-zd._~!@#$^&*%?]{6,}$/;
     return !pattern.test(pass) ? "密码必须包含大小写字母、数字和特殊字符" : "";
+  },
+
+  validateMobile(mobile) {
+    const reg = /^(13[0-9]|14[5|7]|15[0-9]|18[0-9]|19[4|5])\d{8}$/;
+    return reg.test(mobile);
+  },
+  validEmail(email) {
+    const reg = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
+    return reg.test(email);
   },
 };

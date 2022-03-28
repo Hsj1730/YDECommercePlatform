@@ -20,7 +20,7 @@ import "./styles/index.scss";
 
 import "normalize.css/normalize.css"; // A modern alternative to CSS resets
 
-import "./icons"; // icon
+import "./assets/icons"; // icon
 
 Vue.prototype.rsa = rsa;
 

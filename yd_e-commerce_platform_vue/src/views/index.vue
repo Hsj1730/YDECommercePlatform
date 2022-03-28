@@ -1,7 +1,7 @@
-<template>
+<template :style="{ height: `${height}px` }">
   <div
     class="dashboard-editor-container"
-    style="padding: 20px; background: #f2f2f2; margin: 0 -15px"
+    style="padding: 20px 20px 210px 20px; background: #f2f2f2; margin: 0 -15px"
   >
     <el-card class="box-card">
       <div slot="header" class="clearfix">
@@ -39,39 +39,17 @@
         >
       </div>
     </el-card>
-    <el-card class="box-card" style="margin: 20px 0 20px 0">
-      <div slot="header">
-        <h3>项目介绍</h3>
-        <div
-          style="
-            font-size: 15px;
-            text-indent: 2em;
-            padding: 0;
-            margin-top: 20px;
-          "
-        >
-          基于Spring Boot+Spring Security+JWT+Vue前后端分离的电子商务管理系统
-          &emsp;(&nbsp;一口一口慢慢品尝哦~ &nbsp;)
-        </div>
-      </div>
-      <div class="text-right">
-        <el-button type="primary" @click.native="jumpUrl('code-github')"
-          >项目地址1</el-button
-        >
-        <el-button type="primary" @click.native="jumpUrl('code-gitee')"
-          >项目地址2</el-button
-        >
-        <el-button type="success" @click.native="jumpUrl('code-blog')"
-          >个人博客</el-button
-        >
-      </div>
-    </el-card>
   </div>
 </template>
 
 <script>
 export default {
   name: "index",
+  data() {
+    return {
+      height: document.documentElement.offsetHeight,
+    };
+  },
   methods: {
     jumpUrl(type) {
       switch (type) {
