@@ -11,8 +11,8 @@ import com.hsjnb.yd_ecommerce_platform_api.dto.UserPassDto;
 import com.hsjnb.yd_ecommerce_platform_api.entity.Menu;
 import com.hsjnb.yd_ecommerce_platform_api.entity.Role;
 import com.hsjnb.yd_ecommerce_platform_api.entity.User;
-import com.hsjnb.yd_ecommerce_platform_api.mapper.RoleMapper;
-import com.hsjnb.yd_ecommerce_platform_api.mapper.UserMapper;
+import com.hsjnb.yd_ecommerce_platform_api.mapper.sys.RoleMapper;
+import com.hsjnb.yd_ecommerce_platform_api.mapper.sys.UserMapper;
 import com.hsjnb.yd_ecommerce_platform_api.service.sys.UserService;
 import com.hsjnb.yd_ecommerce_platform_api.utils.PropertyUtil;
 import com.hsjnb.yd_ecommerce_platform_api.utils.QiNiuYunUtil;
@@ -62,8 +62,6 @@ public class UserServiceImpl implements UserService {
 
     private final QiNiuYunUtil qiNiuYunUtil;
 
-    private final TreeUtil treeUtil;
-
     @Value("${hsjnb.rsa.privateKey}")
     private String privateKey;
 
@@ -71,11 +69,10 @@ public class UserServiceImpl implements UserService {
     private String defaultAvatar;
 
     @Autowired
-    public UserServiceImpl(UserMapper userMapper, RoleMapper roleMapper, QiNiuYunUtil qiNiuYunUtil, TreeUtil treeUtil) {
+    public UserServiceImpl(UserMapper userMapper, RoleMapper roleMapper, QiNiuYunUtil qiNiuYunUtil) {
         this.userMapper = userMapper;
         this.roleMapper = roleMapper;
         this.qiNiuYunUtil = qiNiuYunUtil;
-        this.treeUtil = treeUtil;
     }
 
     @Override
@@ -154,7 +151,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<Menu> getMenuList(Integer userId) {
         List<Menu> menuList = userMapper.getMenuList(userId);
-        return treeUtil.buildTree(menuList);
+        return TreeUtil.generateTrees(menuList);
     }
 
     @Override

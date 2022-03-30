@@ -3,7 +3,7 @@ package com.hsjnb.yd_ecommerce_platform_api.service.sys.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.hsjnb.yd_ecommerce_platform_api.entity.Log;
-import com.hsjnb.yd_ecommerce_platform_api.mapper.LogMapper;
+import com.hsjnb.yd_ecommerce_platform_api.mapper.sys.LogMapper;
 import com.hsjnb.yd_ecommerce_platform_api.service.sys.LogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

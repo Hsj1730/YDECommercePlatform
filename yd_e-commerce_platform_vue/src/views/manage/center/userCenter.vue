@@ -19,6 +19,8 @@
                 :show-file-list="false"
                 :on-success="handleSuccess"
                 :on-error="handleError"
+                :before-upload="beforeUpload"
+                :on-exceed="handleExceed"
                 :headers="headers"
                 :action="this.$axios.defaults.baseURL + '/user/uploadAvatar'"
                 class="avatar-uploader"
@@ -258,6 +260,26 @@ export default {
     this.getUserInfo();
   },
   methods: {
+    handleExceed() {
+      this.$message({ type: "error", message: "最多支持1个附件上传" });
+    },
+    beforeUpload(file) {
+      // 判断文件类型
+      let fileName = file.name;
+      let reg = /^.+(.png|.jpg|.jpeg|.bmp|.gif)$/;
+      if (!reg.test(fileName)) {
+        this.$message.error("上传图片只能是 JPG、JPEG、PNG、GIF 格式!");
+        return false;
+      }
+      let fileSize = file.size;
+      const FIVE_M = this.settings.fileSize;
+      // 判断文件大小
+      if (fileSize > FIVE_M) {
+        this.$message.error("最大上传" + FIVE_M / 1024 / 1024 + "M");
+        return false;
+      }
+      return true;
+    },
     getUserLogList() {
       this.loading = true;
       this.$axios({
@@ -310,11 +332,7 @@ export default {
     // 监听上传失败
     handleError(e) {
       const msg = JSON.parse(e.message);
-      this.$notify({
-        title: msg.message,
-        type: "error",
-        duration: 2000,
-      });
+      this.$message.error(msg.message);
     },
     getUserInfo() {
       this.$axios({

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hsjnb.yd_ecommerce_platform_api.mapper.sys.GoodsCategoryMapper">
+
+    <select id="getGoodsCategoryList" resultType="goodsCategory">
+        select * from yd_goods_category where effective = '1' order by create_time
+    </select>
+
+    <insert id="addGoodsCategory" parameterType="goodsCategory">
+        insert into yd_goods_category (parent_id, cate_name, sort, pic, is_show)
+        values (#{goodsCategory.parentId},#{goodsCategory.cateName},#{goodsCategory.sort},#{goodsCategory.pic},#{goodsCategory.isShow})
+    </insert>
+
+    <select id="getGoodsCategoryById" parameterType="integer" resultType="goodsCategoryDto">
+        select id,parent_id,cate_name,sort,pic,is_show from yd_goods_category where id = #{id}
+    </select>
+
+    <update id="editGoodsCategory" parameterType="goodsCategoryDto">
+        update yd_goods_category set parent_id = #{dto.parentId},cate_name = #{dto.cateName},sort = #{dto.sort},pic = #{dto.pic},is_show = #{dto.isShow} where id = #{dto.id}
+    </update>
+
+    <select id="checkCategory" parameterType="integer" resultType="integer">
+        select parent_id from yd_goods_category where effective = '1' and id = #{parentId}
+    </select>
+
+    <select id="getGoodsCategoryChildren" parameterType="integer" resultType="integer">
+        select count(1) from yd_goods_category where parent_id = #{parentId} and effective = '1'
+    </select>
+
+    <select id="getGoods" parameterType="integer" resultType="integer">
+        select count(1) from yd_goods where cate_id = #{cateId} and effective = '1'
+    </select>
+
+    <select id="deleteGoodsCategory" parameterType="integer">
+        update yd_goods_category set effective = '0' where id = #{id}
+    </select>
+
+</mapper>

@@ -43,6 +43,9 @@ export default {
     email: {
       type: String,
       required: true,
+      default() {
+        return "";
+      },
     },
   },
   data() {

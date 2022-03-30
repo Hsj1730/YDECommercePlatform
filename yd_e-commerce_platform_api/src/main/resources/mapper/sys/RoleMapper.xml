@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.hsjnb.yd_ecommerce_platform_api.mapper.RoleMapper">
+<mapper namespace="com.hsjnb.yd_ecommerce_platform_api.mapper.sys.RoleMapper">
 
     <select id="queryRoleList" resultType="role">
         SELECT * FROM yd_role WHERE effective = '1'

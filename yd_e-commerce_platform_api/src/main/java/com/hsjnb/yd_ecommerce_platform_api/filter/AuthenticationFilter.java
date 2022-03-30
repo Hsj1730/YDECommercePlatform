@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hsjnb.yd_ecommerce_platform_api.common.lang.Constant;
 import com.hsjnb.yd_ecommerce_platform_api.common.lang.Result;
 import com.hsjnb.yd_ecommerce_platform_api.entity.User;
-import com.hsjnb.yd_ecommerce_platform_api.mapper.UserMapper;
+import com.hsjnb.yd_ecommerce_platform_api.mapper.sys.UserMapper;
 import com.hsjnb.yd_ecommerce_platform_api.utils.JwtUtil;
 import com.hsjnb.yd_ecommerce_platform_api.utils.SpringContextHolder;
 import io.jsonwebtoken.Claims;

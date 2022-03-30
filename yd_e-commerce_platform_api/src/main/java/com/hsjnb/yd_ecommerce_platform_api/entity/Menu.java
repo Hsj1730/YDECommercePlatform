@@ -6,6 +6,7 @@ import lombok.Data;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
@@ -25,7 +26,7 @@ import java.util.List;
  */
 
 @Data
-public class Menu implements Serializable {
+public class Menu implements TreeNode<Integer>,Serializable {
 
     private Integer id;
 
@@ -57,4 +58,24 @@ public class Menu implements Serializable {
 
     private List<Menu> children;
 
+    @Override
+    public Integer id() {
+        return this.id;
+    }
+
+    @Override
+    public Integer parentId() {
+        return this.parentId;
+    }
+
+    @Override
+    public boolean root() {
+        return Objects.equals(this.parentId,0);
+    }
+
+    @Override
+    @SuppressWarnings("all")
+    public void setChildren(List children) {
+        this.children = children;
+    }
 }

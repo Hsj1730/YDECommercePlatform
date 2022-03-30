@@ -21,8 +21,6 @@
       :data="tableData"
       tooltip-effect="dark"
       style="width: 100%"
-      border
-      stripe
     >
       <el-table-column
         prop="name"
@@ -177,8 +175,7 @@
 </template>
 
 <script>
-import axios from "../../axios/axios";
-import store from "../../store";
+import { getMenuList } from "../../utils/routerUtil";
 export default {
   name: "role",
   data() {
@@ -271,6 +268,7 @@ export default {
         if (res.data.code === 200) {
           this.$message.success(res.data.msg);
           this.getRoleList();
+          getMenuList();
         }
       });
     },
@@ -285,6 +283,7 @@ export default {
         if (res.data.code === 200) {
           this.$message.success("删除成功");
           this.getRoleList();
+          getMenuList();
         }
       });
     },
@@ -360,9 +359,7 @@ export default {
           this.$refs.menuTree.setCheckedKeys([]);
           this.menuDialogVisible = false;
           // 刷新侧边菜单
-          axios.post("user/getMenuList").then((res) => {
-            store.commit("setMenuList", res.data.data);
-          });
+          getMenuList()
         }
       });
     },

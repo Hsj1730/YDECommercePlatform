@@ -69,7 +69,7 @@ spring:
         # 访问路径
         url-pattern: /*
         # 排除不必要的url
-        exclusions: "*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*"
+        exclusions: "*.js,*.gif,*.jpg,*.bmp,*.jpeg,*.png,*.css,*.ico,/druid/*"
         # 监控最大session数，默认是1000
         session-stat-max-count: 1000
         # 是否启用session的统计功能

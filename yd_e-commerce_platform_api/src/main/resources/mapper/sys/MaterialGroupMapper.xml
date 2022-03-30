@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hsjnb.yd_ecommerce_platform_api.mapper.sys.MaterialGroupMapper">
+
+    <select id="getMaterialGroupList" resultType="materialGroup">
+        select * from yd_material_group where effective = '1' group by create_time
+    </select>
+
+    <insert id="addMaterialGroup" parameterType="string">
+        insert into yd_material_group (name) values (#{name})
+    </insert>
+
+    <update id="updateMaterialGroup" parameterType="materialGroupDto">
+        update yd_material_group set name = #{dto.name} where id = #{dto.id}
+    </update>
+
+    <update id="deleteMaterialGroup" parameterType="integer">
+        update yd_material_group set effective = '0' where id = #{id}
+    </update>
+
+</mapper>

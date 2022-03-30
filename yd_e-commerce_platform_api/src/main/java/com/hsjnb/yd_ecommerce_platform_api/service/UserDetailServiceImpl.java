@@ -1,7 +1,7 @@
 package com.hsjnb.yd_ecommerce_platform_api.service;
 
 import com.hsjnb.yd_ecommerce_platform_api.entity.User;
-import com.hsjnb.yd_ecommerce_platform_api.mapper.UserMapper;
+import com.hsjnb.yd_ecommerce_platform_api.mapper.sys.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;

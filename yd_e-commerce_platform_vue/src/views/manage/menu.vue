@@ -13,8 +13,6 @@
       tooltip-effect="dark"
       style="width: 100%"
       row-key="id"
-      border
-      stripe
       :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
     >
       <el-table-column prop="name" label="菜单名称" header-align="center" />
@@ -97,7 +95,7 @@
             >隐藏</el-button
           >
           <el-popconfirm
-            title="确定要删除吗？"
+            title="确定要删除该菜单吗？"
             style="margin-left: 10px"
             @confirm="fnDeleteMenu(scope.row.id)"
           >
@@ -109,13 +107,23 @@
 
     <!--添加菜单-->
     <el-dialog
-      title="菜单信息"
+      :title="title"
       :visible.sync="menuDialogVisible"
       @close="fnCloseMenuDialog('menuForm')"
       width="540px"
     >
       <el-form :model="menuForm" ref="menuForm" label-width="100px">
-        <el-form-item label="上级菜单" prop="parentId">
+        <el-form-item
+          label="上级菜单"
+          prop="parentId"
+          :rules="[
+            {
+              required: true,
+              message: '请选择上级菜单',
+              trigger: 'blur',
+            },
+          ]"
+        >
           <tree-select
             v-model.trim="menuForm.parentId"
             :options="treeMenu"
@@ -184,11 +192,7 @@
             placeholder="为目录时不填写"
           ></el-input>
         </el-form-item>
-        <el-form-item
-          label="排序号"
-          prop="sort"
-          :rules="{ required: true, message: '请输入排序号', trigger: 'blur' }"
-        >
+        <el-form-item label="排序号" prop="sort">
           <el-input-number
             v-model="menuForm.sort"
             :min="1"
@@ -215,7 +219,7 @@ import store from "../../store";
 import iconSelect from "../../components/IconSelect";
 import treeSelect from "@riophae/vue-treeselect";
 import "@riophae/vue-treeselect/dist/vue-treeselect.css";
-import axios from "../../axios/axios";
+import { getMenuList } from "../../utils/routerUtil";
 export default {
   components: {
     iconSelect,
@@ -225,9 +229,11 @@ export default {
     return {
       tableData: [],
       treeMenu: [],
+      treeMenu2: [],
       value: ["0"],
       menuDialogVisible: false,
       isEdit: false,
+      title: "",
       menuForm: {
         parentId: "0",
         name: "",
@@ -237,11 +243,16 @@ export default {
         component: "",
         sort: "",
       },
+      disabledId: 0,
     };
   },
   methods: {
     normalizer(node) {
-      if (node.children && !node.children.length) {
+      if (
+        node.children == null ||
+        node.children === "null" ||
+        node.children.length === 0
+      ) {
         delete node.children;
       }
       return {
@@ -274,10 +285,12 @@ export default {
     },
     fnOpenAddMenuDialog() {
       this.isEdit = false;
+      this.title = "新增菜单";
       this.menuDialogVisible = true;
       this.menuForm.parentId = "0";
     },
     fnToEditMenu(id) {
+      this.disabledId = id;
       this.$axios({
         method: "post",
         url: "/menu/getMenuById",
@@ -289,9 +302,25 @@ export default {
         if (this.menuForm.component === "" || this.menuForm.component == null) {
           this.menuForm.path = "";
         }
+        // 禁用当前id作为父id
+        this.treeMenu2 = this.treeMenu.concat();
+        this.treeMenu = this.treeMenu.map((item) => this.disableParentId(item));
+        this.title = "编辑菜单";
         this.isEdit = true;
         this.menuDialogVisible = true;
       });
+    },
+    disableParentId(data) {
+      const hasChild = data.children && data.children.length > 0;
+      const isParentId = data.id === this.disabledId;
+      return {
+        id: data.id,
+        name: data.name,
+        children: hasChild
+          ? data.children.map((i) => this.disableParentId(i))
+          : [],
+        isDisabled: isParentId,
+      };
     },
     fnChangeEnable(id, enable) {
       this.$axios({
@@ -305,6 +334,8 @@ export default {
         this.$message.success(res.data.msg);
         store.commit("setHasMenus", false);
         this.getMenuList();
+        // 刷新侧边菜单
+        getMenuList();
       });
     },
     fnChangeHidden(id, hidden) {
@@ -333,10 +364,6 @@ export default {
           this.$message.success("删除成功");
           store.commit("setHasMenus", false);
           this.getMenuList();
-          // 刷新侧边菜单
-          axios.post("user/getMenuList").then((res) => {
-            store.commit("setMenuList", res.data.data);
-          });
         }
       });
     },
@@ -344,6 +371,10 @@ export default {
       this.$refs[formName].resetFields();
       Object.keys(this.menuForm).forEach((key) => (this.menuForm[key] = ""));
       this.menuDialogVisible = false;
+      if (this.isEdit) {
+        this.treeMenu = [];
+        this.treeMenu = this.treeMenu2.concat();
+      }
     },
     fnAddMenu(formName) {
       this.$refs[formName].validate((valid) => {

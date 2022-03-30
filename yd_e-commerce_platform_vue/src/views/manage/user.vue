@@ -23,8 +23,6 @@
       :data="tableData"
       tooltip-effect="dark"
       style="width: 100%"
-      border
-      stripe
     >
       <el-table-column prop="avatar" width="80" align="center" label="头像">
         <template slot-scope="scope">
@@ -175,7 +173,7 @@
         <el-form-item label="密码：" prop="password" label-width="80px">
           <el-input
             v-model.trim="addUserForm.password"
-            placeholder="默认密码为123456"
+            placeholder="默认密码为：zzz111.."
             type="password"
             clearable
           ></el-input>
@@ -205,6 +203,7 @@
 </template>
 
 <script>
+  import { getMenuList } from "../../utils/routerUtil";
 export default {
   name: "user",
   data() {
@@ -358,6 +357,9 @@ export default {
         this.roleUserId = 0;
         this.roleDialogVisible = false;
         this.getUserList();
+        if (this.roleUserId === this.$store.state.userInfo.id) {
+          getMenuList()
+        }
       });
     },
     checkUsername(rule, value, callback) {

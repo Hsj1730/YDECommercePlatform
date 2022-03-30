@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hsjnb.yd_ecommerce_platform_api.mapper.sys.MaterialMapper">
+
+    <select id="getMaterialList" parameterType="integer" resultType="materialDto">
+        select id,group_id,name,url,type,effective from yd_material where effective = '1'
+        <if test="groupId != 0">
+            and group_id = #{groupId}
+        </if>
+        order by create_time
+    </select>
+
+    <insert id="addMaterial" parameterType="material">
+        insert into yd_material (group_id, name, url, type)
+        values (#{material.groupId},#{material.name},#{material.url},#{material.type})
+    </insert>
+
+    <update id="deleteMaterial" parameterType="materialDto">
+        update yd_material set effective = '0' where id = #{dto.id}
+    </update>
+
+    <update id="deleteMaterialByGroupId" parameterType="integer">
+        update yd_material set effective = '0' where group_id = #{groupId} and effective = '1'
+    </update>
+
+    <select id="getMaterialByKey" parameterType="string" resultType="materialDto">
+        select id,group_id,name,url,type,effective from yd_material where url = #{url} and effective = '1'
+    </select>
+
+</mapper>

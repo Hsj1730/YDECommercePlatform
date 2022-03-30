@@ -2,7 +2,7 @@ export default {
   /**
    * 是否是服务器
    */
-  isServer: true,
+  isServer: false,
 
   /**
    * 密码级别1,2,3,4,5
@@ -110,5 +110,10 @@ export default {
       },
     ],
     loginFooter: "个人博客：http://hsjnb.com",
+
+    /**
+     * 文件上传大小
+     */
+    fileSize: 10 * 1024 * 1024,
   },
 };

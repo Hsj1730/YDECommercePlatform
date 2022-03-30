@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.hsjnb.yd_ecommerce_platform_api.mapper.MenuMapper">
+<mapper namespace="com.hsjnb.yd_ecommerce_platform_api.mapper.sys.MenuMapper">
 
     <select id="getMenuList" resultType="menu">
         SELECT * FROM yd_menu WHERE effective = '1' ORDER BY sort

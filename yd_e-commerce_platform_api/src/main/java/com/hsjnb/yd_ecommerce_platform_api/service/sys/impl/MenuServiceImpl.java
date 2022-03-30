@@ -3,7 +3,7 @@ package com.hsjnb.yd_ecommerce_platform_api.service.sys.impl;
 import cn.hutool.core.util.StrUtil;
 import com.hsjnb.yd_ecommerce_platform_api.dto.MenuDto;
 import com.hsjnb.yd_ecommerce_platform_api.entity.Menu;
-import com.hsjnb.yd_ecommerce_platform_api.mapper.MenuMapper;
+import com.hsjnb.yd_ecommerce_platform_api.mapper.sys.MenuMapper;
 import com.hsjnb.yd_ecommerce_platform_api.service.sys.MenuService;
 import com.hsjnb.yd_ecommerce_platform_api.utils.TreeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,24 +34,20 @@ public class MenuServiceImpl implements MenuService {
 
     private final MenuMapper menuMapper;
 
-    private final TreeUtil treeUtil;
-
     @Autowired
-    public MenuServiceImpl(MenuMapper menuMapper, TreeUtil treeUtil) {
+    public MenuServiceImpl(MenuMapper menuMapper) {
         this.menuMapper = menuMapper;
-        this.treeUtil = treeUtil;
     }
 
     @Override
     public List<Menu> getMenuList() {
         List<Menu> menuList = menuMapper.getMenuList();
-        return treeUtil.buildTree(menuList);
+        return TreeUtil.generateTrees(menuList);
     }
 
     @Override
     public Menu getMenuById(Integer id) {
-        Menu menu = menuMapper.getMenuById(id);
-        return menu;
+        return menuMapper.getMenuById(id);
     }
 
     @Override

@@ -25,6 +25,7 @@ spring:
 mybatis:
   mapper-locations:
     - classpath:mapper/*/*.xml
+    - classpath:mapper/*.xml
   type-aliases-package: com.hsjnb.yd_ecommerce_platform_api.entity,com.hsjnb.yd_ecommerce_platform_api.dto
   configuration:
     map-underscore-to-camel-case: true

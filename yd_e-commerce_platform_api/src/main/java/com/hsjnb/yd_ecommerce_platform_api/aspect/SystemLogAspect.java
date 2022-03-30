@@ -3,7 +3,7 @@ package com.hsjnb.yd_ecommerce_platform_api.aspect;
 import com.hsjnb.yd_ecommerce_platform_api.common.lang.Result;
 import com.hsjnb.yd_ecommerce_platform_api.entity.Log;
 import com.hsjnb.yd_ecommerce_platform_api.entity.User;
-import com.hsjnb.yd_ecommerce_platform_api.mapper.LogMapper;
+import com.hsjnb.yd_ecommerce_platform_api.mapper.sys.LogMapper;
 import com.hsjnb.yd_ecommerce_platform_api.utils.DateTimeUtil;
 import com.hsjnb.yd_ecommerce_platform_api.utils.IpUtil;
 import io.swagger.annotations.ApiOperation;

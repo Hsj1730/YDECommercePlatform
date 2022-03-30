@@ -38,4 +38,7 @@ module.exports = {
       })
       .end();
   },
+
+  publicPath: "/",
+  outputDir: "yd_e-commerce_platform_vue",
 };

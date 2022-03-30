@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hsjnb.yd_ecommerce_platform_api.mapper.ScheduleTaskMapper">
+
+    <select id="queryFailImage" resultType="string">
+        select distinct img from (
+            select a.pic as img from yd_goods_category as a where a.effective = '0'
+            union
+            select b.url as img from yd_material as b where b.effective = '0'
+            ) as aa
+    </select>
+
+</mapper>

@@ -6,8 +6,8 @@ import com.hsjnb.yd_ecommerce_platform_api.dto.RoleDto;
 import com.hsjnb.yd_ecommerce_platform_api.dto.RoleMenuDto;
 import com.hsjnb.yd_ecommerce_platform_api.entity.Menu;
 import com.hsjnb.yd_ecommerce_platform_api.entity.Role;
-import com.hsjnb.yd_ecommerce_platform_api.mapper.MenuMapper;
-import com.hsjnb.yd_ecommerce_platform_api.mapper.RoleMapper;
+import com.hsjnb.yd_ecommerce_platform_api.mapper.sys.MenuMapper;
+import com.hsjnb.yd_ecommerce_platform_api.mapper.sys.RoleMapper;
 import com.hsjnb.yd_ecommerce_platform_api.service.sys.RoleService;
 import com.hsjnb.yd_ecommerce_platform_api.utils.TreeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,13 +41,10 @@ public class RoleServiceImpl implements RoleService {
 
     private final MenuMapper menuMapper;
 
-    private final TreeUtil treeUtil;
-
     @Autowired
-    public RoleServiceImpl(RoleMapper roleMapper, MenuMapper menuMapper, TreeUtil treeUtil) {
+    public RoleServiceImpl(RoleMapper roleMapper, MenuMapper menuMapper) {
         this.roleMapper = roleMapper;
         this.menuMapper = menuMapper;
-        this.treeUtil = treeUtil;
     }
 
     @Override
@@ -59,7 +56,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public Map<String, Object> getMenuTree(Integer id) {
         List<Menu> menuList = menuMapper.getMenuList();
-        List<Menu> menus = treeUtil.buildTree(menuList);
+        List<Menu> menus = TreeUtil.generateTrees(menuList);
         List<Integer> menuIds = roleMapper.getHaveMenu(id);
         Map<String,Object> result = new HashMap<>();
         result.put("menuTree",menus);
