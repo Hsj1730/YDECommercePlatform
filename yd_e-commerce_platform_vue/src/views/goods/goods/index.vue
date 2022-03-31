@@ -1,10 +1,10 @@
 <template>
   <el-tabs v-model="activeName" style="margin-top: -15px" @tab-click="tabClick">
     <el-tab-pane label="出售中产品" name="first">
-      <on-sale ref="onSale" />
+      <on-sale ref="onSale" v-if="isFirst" />
     </el-tab-pane>
     <el-tab-pane label="待上架产品" name="second">
-      <un-on-sale ref="unOnSale" />
+      <un-on-sale ref="unOnSale" v-if="isSecond" />
     </el-tab-pane>
   </el-tabs>
 </template>
@@ -19,14 +19,18 @@ export default {
   data() {
     return {
       activeName: "first",
+      isFirst: true,
+      isSecond: false,
     };
   },
   methods: {
     tabClick() {
       if (this.activeName === "first") {
-        this.$refs.onSale.init();
+        this.isFirst = true;
+        this.isSecond = false;
       } else if (this.activeName === "second") {
-        this.$refs.unOnSale.init();
+        this.isFirst = false;
+        this.isSecond = true;
       }
     },
   },

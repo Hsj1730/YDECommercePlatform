@@ -98,11 +98,14 @@ public class SystemLogAspect {
         sysLog.setVersion(version);
         sysLog.setOs(os);
         // 获取用户信息
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        sysLog.setUserId(user.getId());
-        sysLog.setStatus(result.getCode());
-        sysLog.setExecuteTime(totalTime);
-        logMapper.insertLog(sysLog);
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (!principal.toString().equals("anonymousUser")) {
+            User user = (User) principal;
+            sysLog.setUserId(user.getId());
+            sysLog.setStatus(result.getCode());
+            sysLog.setExecuteTime(totalTime);
+            logMapper.insertLog(sysLog);
+        }
         return result;
     }
 

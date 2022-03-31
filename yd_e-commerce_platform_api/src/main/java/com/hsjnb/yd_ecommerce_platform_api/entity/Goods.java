@@ -29,6 +29,8 @@ public class Goods implements Serializable {
 
     //商品id
     private Integer id;
+    // 商品条码
+    private String barCode;
     //商品图片
     private String image;
     //轮播图
@@ -39,6 +41,8 @@ public class Goods implements Serializable {
     private String storeInfo;
     //关键字
     private String keyword;
+    //单位名
+    private String unitName;
     //分类id
     private Integer cateId;
     //商品价格

@@ -7,16 +7,41 @@
     <select id="getGoodsList" parameterType="string" resultType="goods">
         select a.*,b.cate_name from yd_goods a left join yd_goods_category b on b.id = a.cate_id
         where a.effective = '1' and a.is_show = #{isShow} and b.effective = '1'
-        <if test="type = 'storeName'">
-            and a.store_name like concat('%', #{type}, '%')
+        <if test="type == 'storeName'">
+            and a.store_name like concat('%', #{value}, '%')
         </if>
-        <if test="type = 'cateName'">
-            and b.cate_name like concat('%', #{type}, '%')
+        <if test="type == 'cateName'">
+            and b.cate_name like concat('%', #{value}, '%')
         </if>
     </select>
 
     <update id="setGoodsIsShow">
         update yd_goods set is_show = #{status} where id = #{id}
+    </update>
+
+    <select id="getGoodsInfo" parameterType="integer" resultType="goodsDto">
+        select id, image, slider_image, store_name, store_info, unit_name, keyword, bar_code, cate_id, price, cost,
+               postage, sort, sales, stock, is_show, is_hot, is_benefit, is_best, is_new, is_good, description
+        from yd_goods where id = #{id}
+    </select>
+
+    <select id="addGoods" parameterType="goodsDto">
+        insert into yd_goods (image, slider_image, store_name, store_info, unit_name, keyword, bar_code, cate_id, price,
+                              cost, postage, sort, sales, stock, is_show, is_hot, is_benefit, is_best, is_new,
+                              is_good, description)
+        values (#{dto.image},#{dto.sliderImage},#{dto.storeName},#{dto.storeInfo},#{dto.unitName},#{dto.keyword},#{dto.barCode},
+                #{dto.cateId},#{dto.price},#{dto.cost},#{dto.postage},#{dto.sort},#{dto.sales},#{dto.stock},#{dto.isShow},#{dto.isHot},
+                #{dto.isBenefit},#{dto.isBest},#{dto.isNew},#{dto.isGood},#{dto.description})
+    </select>
+
+    <update id="editGoods" parameterType="goodsDto">
+        update yd_goods set image = #{dto.image},slider_image = #{dto.sliderImage},store_name = #{dto.storeName},
+                            store_info = #{dto.storeInfo},unit_name = #{dto.unitName},keyword = #{dto.keyword},
+                            bar_code = #{dto.barCode},cate_id = #{dto.cateId},price = #{dto.price},cost = #{dto.cost},
+                            postage = #{dto.postage},sort = #{dto.sort},sales = #{dto.sales},stock = #{dto.stock},
+                            is_show = #{dto.isShow},is_hot = #{dto.isHot},is_benefit = #{dto.isBenefit},is_best = #{dto.isBest},
+                            is_new = #{dto.isNew},is_good = #{dto.isGood},description = #{dto.description}
+        where id = #{dto.id}
     </update>
 
 </mapper>

@@ -1,7 +1,9 @@
 package com.hsjnb.yd_ecommerce_platform_api.controller.sys;
 
+import com.hsjnb.yd_ecommerce_platform_api.annotation.AnonymousAccess;
 import com.hsjnb.yd_ecommerce_platform_api.common.lang.Constant;
 import com.hsjnb.yd_ecommerce_platform_api.common.lang.Result;
+import com.hsjnb.yd_ecommerce_platform_api.dto.GoodsDto;
 import com.hsjnb.yd_ecommerce_platform_api.service.sys.GoodsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -58,8 +60,31 @@ public class GoodsController {
      */
     @PostMapping(value = "setGoodsIsShow/{id}", produces = Constant.CONTENT_TYPE)
     @ApiOperation(value = "设置商品的上架/下架", httpMethod = Constant.HTTP_POST, response = Result.class)
-    public Result setGoodsIsShow(@PathVariable Integer id,@RequestBody String status) {
+    public Result setGoodsIsShow(@PathVariable Integer id,String status) {
         goodsService.setGoodsIsShow(id,status);
         return Result.success(null);
     }
+
+    /**
+     * 获取商品信息
+     * @param id id
+     * @return Result
+     */
+    @PostMapping(value = "getGoodsInfo/{id}", produces = Constant.CONTENT_TYPE)
+    @ApiOperation(value = "获取商品信息", httpMethod = Constant.HTTP_POST, response = Result.class)
+    public Result getGoodsInfo(@PathVariable Integer id) {
+        return Result.success(goodsService.getGoodsInfo(id));
+    }
+
+    /**
+     * 保存商品信息
+     * @param dto dto
+     * @return Result
+     */
+    @PostMapping(value = "saveGoodsInfo", produces = Constant.CONTENT_TYPE)
+    @ApiOperation(value = "保存商品信息", httpMethod = Constant.HTTP_POST, response = Result.class)
+    public Result saveGoodsInfo(@RequestBody GoodsDto dto) {
+        return Result.success(goodsService.saveGoodsInfo(dto));
+    }
+
 }

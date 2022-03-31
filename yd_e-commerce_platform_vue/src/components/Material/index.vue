@@ -141,7 +141,7 @@
                   >
                     <span style="margin-right: 10px; font-size: 14px">
                       可选照片数：<span style="color: red">{{
-                        num - urls.length
+                        num - value.length - urls.length
                       }}</span>
                       张</span
                     >

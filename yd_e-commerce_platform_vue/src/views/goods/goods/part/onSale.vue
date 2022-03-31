@@ -73,11 +73,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="storeName" align="center" label="商品名称" />
-      <el-table-column
-        prop="storeCategory.cateName"
-        align="center"
-        label="分类名称"
-      />
+      <el-table-column prop="cateName" align="center" label="分类名称" />
       <el-table-column
         prop="price"
         align="center"
@@ -111,7 +107,7 @@
       </el-table-column>
       <el-table-column align="center">
         <template slot="header">
-          <div style="display: inline-block; cursor: pointer" @click="init">
+          <div style="display: inline-block; cursor: pointer" @click="toQuery">
             操作<i class="el-icon-refresh" style="margin-left: 10px" />
           </div>
         </template>
@@ -123,7 +119,13 @@
             @click="attr(scope.row)"
             >规格属性</el-button
           >
-          <el-dropdown size="mini" split-button type="primary" trigger="click">
+          <el-dropdown
+            size="mini"
+            style="margin-left: 10px"
+            split-button
+            type="primary"
+            trigger="click"
+          >
             操作
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item>
@@ -131,7 +133,7 @@
                   size="mini"
                   type="primary"
                   icon="el-icon-edit"
-                  @click="edit(scope.row)"
+                  @click="edit(scope.row.id)"
                   >编辑</el-button
                 >
               </el-dropdown-item>
@@ -193,12 +195,15 @@
       style="float: right; margin-top: 10px; padding-bottom: 10px"
     >
     </el-pagination>
+    <goods-info ref="goodsInfoForm" :is-edit="isEdit" />
   </div>
 </template>
 
 <script>
+import goodsInfo from "./goodsInfo";
 export default {
   name: "onSale",
+  components: { goodsInfo },
   data() {
     return {
       query: {
@@ -211,6 +216,7 @@ export default {
       ],
       loading: false,
       delLoading: false,
+      isEdit: false,
       tableData: [],
       page: {
         current: 1,
@@ -219,11 +225,26 @@ export default {
       },
     };
   },
-  mounted() {
+  created() {
     this.init();
   },
   methods: {
-    add() {},
+    add() {
+      this.isEdit = false;
+      this.$refs.goodsInfoForm.dialog = true;
+      this.$refs.goodsInfoForm.getCateTree();
+    },
+    edit(id) {
+      this.isEdit = true;
+      this.$refs.goodsInfoForm.dialog = true;
+      this.$refs.goodsInfoForm.getCateTree();
+      this.$axios({
+        method: "post",
+        url: "/goods/getGoodsInfo/" + id,
+      }).then((res) => {
+        this.$refs.goodsInfoForm.form = res.data.data;
+      });
+    },
     onSale(id, status) {
       this.$confirm(
         `确定进行[ ${status === "1" ? "下架" : "上架"} ]操作?`,
@@ -236,9 +257,9 @@ export default {
       ).then(() => {
         this.$axios({
           method: "post",
-          url: "/goods/setGoodsIsShow/{id}",
-          data: {
-            isShow: status === "1" ? "0" : "1",
+          url: "/goods/setGoodsIsShow/" + id,
+          params: {
+            status: status === "1" ? "0" : "1",
           },
         }).then(() => {
           this.$message({
@@ -246,13 +267,28 @@ export default {
             type: "success",
             duration: 1000,
             onClose: () => {
-              this.init();
+              this.toQuery();
             },
           });
         });
       });
     },
     init() {
+      this.page = {
+        current: 1,
+        pageSize: 10,
+        total: 0,
+      };
+      this.toQuery();
+    },
+    reset() {
+      this.query = {
+        value: "",
+        type: "storeName",
+      };
+      this.init();
+    },
+    toQuery() {
       this.loading = true;
       this.$axios({
         method: "post",
@@ -271,21 +307,13 @@ export default {
         this.page.pageSize = res.data.data.pageSize;
       });
     },
-    reset() {
-      this.query.value = "";
-      this.query.type = "storeName";
-      this.init();
-    },
-    toQuery() {
-      this.init();
-    },
     handleSizeChange(val) {
       this.page.pageSize = val;
-      this.getUserLogList();
+      this.toQuery();
     },
     handleCurrentChange(val) {
       this.page.current = val;
-      this.getUserLogList();
+      this.toQuery();
     },
   },
 };

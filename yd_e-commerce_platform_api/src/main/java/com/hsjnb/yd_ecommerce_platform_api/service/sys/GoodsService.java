@@ -1,6 +1,8 @@
 package com.hsjnb.yd_ecommerce_platform_api.service.sys;
 
 import com.github.pagehelper.PageInfo;
+import com.hsjnb.yd_ecommerce_platform_api.common.lang.Result;
+import com.hsjnb.yd_ecommerce_platform_api.dto.GoodsDto;
 import com.hsjnb.yd_ecommerce_platform_api.entity.Goods;
 
 import java.util.Map;
@@ -27,5 +29,9 @@ public interface GoodsService {
     PageInfo<Goods> getGoodsList(Map<String,Object> param);
 
     void setGoodsIsShow(Integer id,String status);
+
+    GoodsDto getGoodsInfo(Integer id);
+
+    Result saveGoodsInfo(GoodsDto dto);
 
 }
