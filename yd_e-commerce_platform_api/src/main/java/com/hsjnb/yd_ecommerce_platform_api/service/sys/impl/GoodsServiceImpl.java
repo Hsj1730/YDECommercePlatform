@@ -104,7 +104,7 @@ public class GoodsServiceImpl implements GoodsService {
     public Result saveGoodsInfo(GoodsDto dto) {
         // 判断分类是否为二级分类
         if (goodsCategoryMapper.checkCategory(dto.getCateId()) == 0) {
-            return Result.fail("商品的分类只能为二级分类");
+            return Result.fail("商品分类只能为二级分类");
         }
         if (dto.getId() != null) { // 修改
             goodsMapper.editGoods(dto);
