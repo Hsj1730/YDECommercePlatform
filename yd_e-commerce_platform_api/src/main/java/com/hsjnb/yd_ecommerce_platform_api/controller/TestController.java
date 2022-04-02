@@ -1,7 +1,7 @@
 package com.hsjnb.yd_ecommerce_platform_api.controller;
 
 import com.hsjnb.yd_ecommerce_platform_api.annotation.AnonymousAccess;
-import com.hsjnb.yd_ecommerce_platform_api.common.lang.Result;
+import com.hsjnb.yd_ecommerce_platform_api.common.Result;
 import com.hsjnb.yd_ecommerce_platform_api.utils.QiNiuYunUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

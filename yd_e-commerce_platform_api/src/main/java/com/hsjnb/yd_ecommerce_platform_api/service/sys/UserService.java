@@ -1,7 +1,7 @@
 package com.hsjnb.yd_ecommerce_platform_api.service.sys;
 
 import com.github.pagehelper.PageInfo;
-import com.hsjnb.yd_ecommerce_platform_api.common.lang.Result;
+import com.hsjnb.yd_ecommerce_platform_api.common.Result;
 import com.hsjnb.yd_ecommerce_platform_api.dto.AssignRoleDto;
 import com.hsjnb.yd_ecommerce_platform_api.dto.UserDto;
 import com.hsjnb.yd_ecommerce_platform_api.dto.UserEmailDto;

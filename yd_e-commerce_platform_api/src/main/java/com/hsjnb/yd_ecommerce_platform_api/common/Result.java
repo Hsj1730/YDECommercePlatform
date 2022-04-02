@@ -1,4 +1,8 @@
-package com.hsjnb.yd_ecommerce_platform_api.common.lang;
+package com.hsjnb.yd_ecommerce_platform_api.common;
+
+import lombok.Data;
+
+import java.io.Serializable;
 
 /**
  * █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
@@ -13,24 +17,39 @@ package com.hsjnb.yd_ecommerce_platform_api.common.lang;
  *
  * @author : Hsj1730
  * @version : 1.0
- * @date : Created in 2022/03/14 17:03
- * @description : 常量池
+ * @date : Created in 2022/03/16 20:13
+ * @description :
  */
 
-public class Constant {
+@Data
+public class Result implements Serializable {
 
-    public static final String CONTENT_TYPE = "application/json;charset=utf-8";
+    private int code;
+    private String msg;
+    private Object data;
 
-    public static final String BASE64_IMAGE_HEADER = "data:image/jpeg;base64,";
+    public static Result success(Object data){
+        return success(200, "操作成功", data);
+    }
 
-    public static final String IMG_SUFFIX = "jpg";
+    public static Result success(int code, String msg, Object data){
+        Result result = new Result();
+        result.setCode(code);
+        result.setMsg(msg);
+        result.setData(data);
+        return result;
+    }
 
-    public static final String HTTP_POST = "POST";
+    public static Result fail(String msg){
+        return fail(400,msg,null);
+    }
 
-    public static final String KEY = "key";
-
-    public static final String CAPTCHA_IMG = "captchaImg";
-
-    public static final String DEFAULT_PASS = "defaultPass";
+    public static Result fail(int code, String msg, Object data){
+        Result result = new Result();
+        result.setCode(code);
+        result.setMsg(msg);
+        result.setData(data);
+        return result;
+    }
 
 }

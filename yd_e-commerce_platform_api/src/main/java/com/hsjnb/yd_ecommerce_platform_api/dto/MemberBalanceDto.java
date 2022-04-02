@@ -1,10 +1,9 @@
-package com.hsjnb.yd_ecommerce_platform_api.controller.app;
+package com.hsjnb.yd_ecommerce_platform_api.dto;
 
-import com.hsjnb.yd_ecommerce_platform_api.service.app.AppUserService;
-import io.swagger.annotations.Api;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.Data;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
 
 /**
  * █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
@@ -19,22 +18,19 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * @author : Hsj1730
  * @version : 1.0
- * @date : Created in 2022/03/27 14:31
+ * @date : Created in 2022/04/02 10:44
  * @description :
  */
 
-@Api(tags = "App - 用户接口")
-@RestController
-@RequestMapping(value = "app/user")
-public class AppUserController {
+@Data
+public class MemberBalanceDto implements Serializable {
 
-    private final AppUserService appUserService;
+    private Integer userId;
 
-    @Autowired
-    public AppUserController(AppUserService appUserService) {
-        this.appUserService = appUserService;
-    }
+    private String username;
 
+    private String phone;
 
+    private BigDecimal nowMoney;
 
 }

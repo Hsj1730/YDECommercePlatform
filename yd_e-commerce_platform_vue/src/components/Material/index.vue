@@ -75,6 +75,8 @@
       append-to-body
       :visible.sync="listDialogVisible"
       width="70%"
+      top="5vh"
+      style="padding-bottom: 5vh"
     >
       <el-container>
         <el-aside width="unset">

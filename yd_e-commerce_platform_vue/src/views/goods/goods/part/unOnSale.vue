@@ -63,7 +63,18 @@
         </template>
       </el-table-column>
       <el-table-column prop="storeName" align="center" label="商品名称" />
-      <el-table-column prop="cateName" align="center" label="分类名称" />
+      <el-table-column
+        prop="barCode"
+        align="center"
+        width="100"
+        label="商品编码"
+      />
+      <el-table-column
+        prop="cateName"
+        align="center"
+        width="100"
+        label="分类名称"
+      />
       <el-table-column
         prop="price"
         align="center"
@@ -165,6 +176,7 @@ export default {
       queryTypeOptions: [
         { key: "storeName", display_name: "商品名称" },
         { key: "cateName", display_name: "分类名称" },
+        { key: "barCode", display_name: "商品编码" },
       ],
       loading: false,
       delLoading: false,

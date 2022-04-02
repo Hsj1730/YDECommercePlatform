@@ -1,8 +1,8 @@
 package com.hsjnb.yd_ecommerce_platform_api.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hsjnb.yd_ecommerce_platform_api.common.lang.Constant;
-import com.hsjnb.yd_ecommerce_platform_api.common.lang.Result;
+import com.hsjnb.yd_ecommerce_platform_api.common.Constant;
+import com.hsjnb.yd_ecommerce_platform_api.common.Result;
 import com.hsjnb.yd_ecommerce_platform_api.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -10,7 +10,6 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;

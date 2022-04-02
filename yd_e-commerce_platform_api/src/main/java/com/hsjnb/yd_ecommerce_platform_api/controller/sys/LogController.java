@@ -1,7 +1,7 @@
 package com.hsjnb.yd_ecommerce_platform_api.controller.sys;
 
-import com.hsjnb.yd_ecommerce_platform_api.common.lang.Constant;
-import com.hsjnb.yd_ecommerce_platform_api.common.lang.Result;
+import com.hsjnb.yd_ecommerce_platform_api.common.Constant;
+import com.hsjnb.yd_ecommerce_platform_api.common.Result;
 import com.hsjnb.yd_ecommerce_platform_api.service.sys.LogService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

@@ -26,8 +26,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface AppUserMapper {
 
-    AppUser getUserInfoByAccount(@Param("user") AppUser user);
+    AppUser getUserInfoByAccount(@Param("username") String username);
 
     void register(@Param("user") AppUser user);
+
+    Integer queryUserPhone(@Param("phone") String phone);
 
 }

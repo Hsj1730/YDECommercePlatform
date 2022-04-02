@@ -32,90 +32,50 @@
         @click="toQuery"
         >搜索</el-button
       >
-      <div style="display: inline-block; margin: 0 0 0 10px">
-        <el-button
-          class="filter-item"
-          size="mini"
-          type="primary"
-          icon="el-icon-plus"
-          @click="add"
-          >新增</el-button
-        >
-        <el-button
-          type="danger"
-          class="filter-item"
-          size="mini"
-          icon="el-icon-refresh"
-          @click="reset"
-          >重置</el-button
-        >
-      </div>
+      <el-button
+        type="danger"
+        class="filter-item"
+        size="mini"
+        icon="el-icon-refresh"
+        @click="reset"
+        >重置</el-button
+      >
     </div>
-    <!--表格渲染-->
     <el-table
       v-loading="loading"
       :data="tableData"
       size="small"
       style="width: 100%"
     >
-      <el-table-column prop="id" align="center" width="80" label="商品id" />
+      <el-table-column prop="userId" align="center" width="60" label="用户id" />
+      <el-table-column prop="username" align="center" label="用户名" />
       <el-table-column
         ref="table"
         align="center"
         width="150"
-        prop="image"
-        label="商品图片"
+        prop="userImage"
+        label="用户头像"
       >
         <template slot-scope="scope">
-          <a :href="scope.row.image" style="color: #42b983" target="_blank"
-            ><img :src="scope.row.image" alt="点击打开" class="el-avatar"
-          /></a>
+          <a :href="scope.row.userImage" style="color: #42b983" target="_blank"
+            ><el-avatar :src="scope.row.userImage"></el-avatar
+          ></a>
         </template>
       </el-table-column>
-      <el-table-column prop="storeName" align="center" label="商品名称" />
-      <el-table-column
-        prop="barCode"
-        align="center"
-        width="100"
-        label="商品编码"
-      />
-      <el-table-column
-        prop="cateName"
-        align="center"
-        width="100"
-        label="分类名称"
-      />
-      <el-table-column
-        prop="price"
-        align="center"
-        width="100"
-        label="商品价格"
-        sortable
-      />
-      <el-table-column
-        prop="sales"
-        align="center"
-        width="100"
-        label="销量"
-        sortable
-      />
-      <el-table-column
-        prop="stock"
-        align="center"
-        width="100"
-        label="库存"
-        sortable
-      />
-      <el-table-column label="状态" width="100" align="center">
+      <el-table-column prop="phone" align="center" label="手机号码" />
+      <el-table-column prop="nowMoney" align="center" label="用户余额" />
+      <el-table-column prop="enable" label="状态" width="80" align="center">
         <template slot-scope="scope">
-          <div @click="onSale(scope.row.id, scope.row.isShow)">
-            <el-tag v-if="scope.row.isShow === '1'" style="cursor: pointer"
-              >已上架</el-tag
+          <div @click="onEnable(scope.row.userId, scope.row.enable)">
+            <el-tag v-if="scope.row.enable === '1'" style="cursor: pointer"
+              >正常</el-tag
             >
-            <el-tag v-else style="cursor: pointer" type="info">已下架</el-tag>
+            <el-tag v-else style="cursor: pointer" type="'info'">禁用</el-tag>
           </div>
         </template>
       </el-table-column>
+      <el-table-column prop="payCount" align="center" label="购买次数" />
+      <el-table-column prop="createTime" align="center" label="创建日期" />
       <el-table-column align="center">
         <template slot="header">
           <div style="display: inline-block; cursor: pointer" @click="toQuery">
@@ -127,9 +87,9 @@
             slot="reference"
             type="danger"
             size="mini"
-            @click="attr(scope.row.id)"
-            >规格属性</el-button
-          >
+            icon="el-icon-edit"
+            @click="edit(scope.row.id)"
+          />
           <el-dropdown
             size="mini"
             style="margin-left: 10px"
@@ -143,9 +103,8 @@
                 <el-button
                   size="mini"
                   type="primary"
-                  icon="el-icon-edit"
-                  @click="edit(scope.row.id)"
-                  >编辑</el-button
+                  @click="moneyModify(scope.row.userId)"
+                  >修改余额</el-button
                 >
               </el-dropdown-item>
               <el-dropdown-item>
@@ -175,21 +134,6 @@
                   >
                 </el-popover>
               </el-dropdown-item>
-              <el-dropdown-item>
-                <el-button size="mini" type="success" @click="editC(scope.row)"
-                  >开启拼团</el-button
-                >
-              </el-dropdown-item>
-              <el-dropdown-item>
-                <el-button size="mini" type="primary" @click="editD(scope.row)"
-                  >开启秒杀</el-button
-                >
-              </el-dropdown-item>
-              <el-dropdown-item>
-                <el-button size="mini" type="warning" @click="editE(scope.row)"
-                  >开启砍价</el-button
-                >
-              </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </template>
@@ -205,25 +149,24 @@
       :total="page.total"
       style="float: right; margin-top: 10px; padding-bottom: 10px"
     />
-    <goods-info ref="goodsInfoForm" :is-edit="isEdit" />
+    <money-modify ref="moneyModify" />
   </div>
 </template>
 
 <script>
-import goodsInfo from "./goodsInfo";
+import moneyModify from "./part/moneyModify";
 export default {
-  name: "onSale",
-  components: { goodsInfo },
+  name: "member",
+  components: { moneyModify },
   data() {
     return {
       query: {
         value: "",
-        type: "storeName",
+        type: "username",
       },
       queryTypeOptions: [
-        { key: "storeName", display_name: "商品名称" },
-        { key: "cateName", display_name: "分类名称" },
-        { key: "barCode", display_name: "商品编码" },
+        { key: "username", display_name: "用户名" },
+        { key: "phone", display_name: "手机号" },
       ],
       loading: false,
       delLoading: false,
@@ -240,25 +183,9 @@ export default {
     this.init();
   },
   methods: {
-    add() {
-      this.isEdit = false;
-      this.$refs.goodsInfoForm.dialog = true;
-      this.$refs.goodsInfoForm.getCateTree();
-    },
-    edit(id) {
-      this.isEdit = true;
-      this.$refs.goodsInfoForm.dialog = true;
-      this.$refs.goodsInfoForm.getCateTree();
-      this.$axios({
-        method: "post",
-        url: "/goods/getGoodsInfo/" + id,
-      }).then((res) => {
-        this.$refs.goodsInfoForm.form = res.data.data;
-      });
-    },
-    onSale(id, status) {
+    onEnable(userId, enable) {
       this.$confirm(
-        `确定进行[ ${status === "1" ? "下架" : "上架"} ]操作?`,
+        `确定进行[ ${enable === "1" ? "禁用" : "启用"} ]操作?`,
         "提示",
         {
           confirmButtonText: "确定",
@@ -268,9 +195,9 @@ export default {
       ).then(() => {
         this.$axios({
           method: "post",
-          url: "/goods/setGoodsIsShow/" + id,
+          url: "/member/setMemberStatus/" + userId,
           params: {
-            status: status === "1" ? "0" : "1",
+            enable: enable === "1" ? "0" : "1",
           },
         }).then(() => {
           this.$message({
@@ -284,6 +211,10 @@ export default {
         });
       });
     },
+    moneyModify(id) {
+      this.$refs.moneyModify.queryBalance(id);
+      this.$refs.moneyModify.dialog = true;
+    },
     init() {
       this.page = {
         current: 1,
@@ -295,7 +226,7 @@ export default {
     reset() {
       this.query = {
         value: "",
-        type: "storeName",
+        type: "username",
       };
       this.init();
     },
@@ -303,12 +234,11 @@ export default {
       this.loading = true;
       this.$axios({
         method: "post",
-        url: "/goods/getGoodsList",
+        url: "/member/getMemberList",
         data: {
           query: this.query,
           pageNum: this.page.current,
           pageSize: this.page.pageSize,
-          isShow: "1",
         },
       }).then((res) => {
         this.loading = false;

@@ -1,7 +1,7 @@
 package com.hsjnb.yd_ecommerce_platform_api.service.sys;
 
 import com.github.pagehelper.PageInfo;
-import com.hsjnb.yd_ecommerce_platform_api.common.lang.Result;
+import com.hsjnb.yd_ecommerce_platform_api.common.Result;
 import com.hsjnb.yd_ecommerce_platform_api.dto.GoodsDto;
 import com.hsjnb.yd_ecommerce_platform_api.entity.Goods;
 

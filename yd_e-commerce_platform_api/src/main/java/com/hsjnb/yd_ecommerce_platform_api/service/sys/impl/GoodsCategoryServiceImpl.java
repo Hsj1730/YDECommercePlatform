@@ -1,6 +1,6 @@
 package com.hsjnb.yd_ecommerce_platform_api.service.sys.impl;
 
-import com.hsjnb.yd_ecommerce_platform_api.common.lang.Result;
+import com.hsjnb.yd_ecommerce_platform_api.common.Result;
 import com.hsjnb.yd_ecommerce_platform_api.dto.GoodsCategoryDto;
 import com.hsjnb.yd_ecommerce_platform_api.dto.MaterialDto;
 import com.hsjnb.yd_ecommerce_platform_api.entity.GoodsCategory;

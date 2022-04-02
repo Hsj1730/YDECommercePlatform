@@ -37,7 +37,11 @@
         <el-input v-model.trim="form.unitName" clearable style="width: 250px" />
       </el-form-item>
       <el-form-item label="商品条码" prop="barCode">
-        <el-input v-model.trim="form.barCode" clearable style="width: 250px" />
+        <el-input
+          v-model.trim="form.barCode"
+          :disabled="true"
+          style="width: 250px"
+        />
       </el-form-item>
       <el-form-item label="商品图片" prop="image">
         <material-list
@@ -100,6 +104,7 @@
           :min="0"
           :max="99999999.99"
           :precision="2"
+          :step="10.0"
           controls-position="right"
         />
       </el-form-item>
@@ -150,7 +155,7 @@
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer" style="margin-right: 50px">
-      <el-button @click="cancel">取消</el-button>
+      <el-button type="text" @click="cancel">取消</el-button>
       <el-button :loading="loading" type="primary" @click="doSubmit"
         >确认</el-button
       >
@@ -262,18 +267,14 @@ export default {
             method: "post",
             url: "/goods/saveGoodsInfo",
             data: this.form,
-          })
-            .then((res) => {
-              if (res.data.code === 200) {
-                this.$message.success("保存成功");
-                this.resetForm();
-                this.$parent.init();
-              }
-              this.loading = false;
-            })
-            .catch(() => {
-              this.loading = false;
-            });
+          }).then((res) => {
+            if (res.data.code === 200) {
+              this.$message.success("保存成功");
+              this.resetForm();
+              this.$parent.init();
+            }
+            this.loading = false;
+          });
         } else {
           return false;
         }

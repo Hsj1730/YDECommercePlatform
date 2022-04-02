@@ -1,10 +1,11 @@
-package com.hsjnb.yd_ecommerce_platform_api.controller.app;
+package com.hsjnb.yd_ecommerce_platform_api.service.sys;
 
-import com.hsjnb.yd_ecommerce_platform_api.service.app.AppUserService;
-import io.swagger.annotations.Api;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.github.pagehelper.PageInfo;
+import com.hsjnb.yd_ecommerce_platform_api.common.Result;
+import com.hsjnb.yd_ecommerce_platform_api.dto.MemberBalanceDto;
+import com.hsjnb.yd_ecommerce_platform_api.dto.MemberDto;
+
+import java.util.Map;
 
 /**
  * █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
@@ -19,22 +20,18 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * @author : Hsj1730
  * @version : 1.0
- * @date : Created in 2022/03/27 14:31
+ * @date : Created in 2022/04/01 10:48
  * @description :
  */
 
-@Api(tags = "App - 用户接口")
-@RestController
-@RequestMapping(value = "app/user")
-public class AppUserController {
+public interface MemberService {
 
-    private final AppUserService appUserService;
+    PageInfo<MemberDto> getMemberList(Map<String,Object> param);
 
-    @Autowired
-    public AppUserController(AppUserService appUserService) {
-        this.appUserService = appUserService;
-    }
+    MemberBalanceDto getMemberBalance(Integer id);
 
+    Result modifyMemberBalance(Integer id, Map<String,Object> param);
 
+    void setMemberStatus(Integer userId,String enable);
 
 }

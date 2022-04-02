@@ -13,6 +13,10 @@
         <if test="type == 'cateName'">
             and b.cate_name like concat('%', #{value}, '%')
         </if>
+        <if test="type == 'barCode'">
+            and a.bar_code like concat('%', #{value}, '%')
+        </if>
+        order by id
     </select>
 
     <update id="setGoodsIsShow">

@@ -1,9 +1,7 @@
 package com.hsjnb.yd_ecommerce_platform_api.config;
 
 import com.hsjnb.yd_ecommerce_platform_api.annotation.AnonymousAccess;
-import com.hsjnb.yd_ecommerce_platform_api.filter.AuthenticationFilter;
-import com.hsjnb.yd_ecommerce_platform_api.filter.LoginFilter;
-import com.hsjnb.yd_ecommerce_platform_api.filter.LogoutHandler;
+import com.hsjnb.yd_ecommerce_platform_api.filter.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -57,12 +55,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     // 白名单
     public static final String[] URL_WHITELIST = {
-            "/login"
+            "/login",
+            "/user/login"
     };
 
     @Bean
     LoginFilter loginFilter() throws Exception {
-        return new LoginFilter("/login", authenticationManager());
+        return new LoginFilter("/**/login", authenticationManager());
     }
 
     @Override
@@ -106,8 +105,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .logout()
+                .logoutUrl("/**/logout")
                 .logoutSuccessHandler(logoutHandler)
-
                 .and()
                 .addFilterBefore(loginFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilter(new AuthenticationFilter(authenticationManager()));

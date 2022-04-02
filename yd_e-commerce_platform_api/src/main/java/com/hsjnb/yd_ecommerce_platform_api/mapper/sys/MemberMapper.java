@@ -1,8 +1,13 @@
-package com.hsjnb.yd_ecommerce_platform_api.common.lang;
+package com.hsjnb.yd_ecommerce_platform_api.mapper.sys;
 
-import lombok.Data;
+import com.hsjnb.yd_ecommerce_platform_api.dto.MemberBalanceDto;
+import com.hsjnb.yd_ecommerce_platform_api.dto.MemberDto;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
-import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
@@ -17,39 +22,22 @@ import java.io.Serializable;
  *
  * @author : Hsj1730
  * @version : 1.0
- * @date : Created in 2022/03/16 20:13
+ * @date : Created in 2022/04/01 11:07
  * @description :
  */
 
-@Data
-public class Result implements Serializable {
+@Mapper
+@Repository
+public interface MemberMapper {
 
-    private int code;
-    private String msg;
-    private Object data;
+    List<MemberDto> getMemberList(@Param("value") String value, @Param("type") String type);
 
-    public static Result success(Object data){
-        return success(200, "操作成功", data);
-    }
+    MemberBalanceDto getMemberBalance(@Param("userId") Integer id);
 
-    public static Result success(int code, String msg, Object data){
-        Result result = new Result();
-        result.setCode(code);
-        result.setMsg(msg);
-        result.setData(data);
-        return result;
-    }
+    BigDecimal queryMemberBalance(@Param("userId") Integer id);
 
-    public static Result fail(String msg){
-        return fail(400,msg,null);
-    }
+    void modifyMemberBalance(@Param("userId") Integer id,@Param("newMemberBalance") BigDecimal newMemberBalance);
 
-    public static Result fail(int code, String msg, Object data){
-        Result result = new Result();
-        result.setCode(code);
-        result.setMsg(msg);
-        result.setData(data);
-        return result;
-    }
+    void setMemberStatus(@Param("userId") Integer userId,@Param("enable") String enable);
 
 }

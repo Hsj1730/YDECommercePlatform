@@ -4,13 +4,17 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hsjnb.yd_ecommerce_platform_api.mapper.app.AppUserMapper">
 
-    <select id="getUserInfoByAccount" parameterType="appUser" resultType="appUser">
-        select * from yd_app_user where user_num = #{user.userNum}
+    <select id="getUserInfoByAccount" parameterType="string" resultType="appUser">
+        select user_id, username, password, enable from yd_app_user where username = #{username} and effective = '1'
     </select>
 
     <insert id="register" parameterType="appUser">
-        insert into yd_app_user (user_num, user_keys, username, user_image)
-        values (#{user.userNum},#{user.userKeys},#{user.username},#{user.userImage})
+        insert into yd_app_user (username, password, phone, user_image)
+        values (#{user.username},#{user.password},#{user.phone},#{user.userImage})
     </insert>
+
+    <select id="queryUserPhone" parameterType="string" resultType="integer">
+        select count(1) from yd_app_user where phone = #{phone} and effective = '1'
+    </select>
 
 </mapper>

@@ -24,8 +24,6 @@ import java.io.Serializable;
 @Data
 public class LoginDto implements Serializable {
 
-    private static final long serialVersionUID = -7884281948732655986L;
-
     private String username;
 
     private String password;

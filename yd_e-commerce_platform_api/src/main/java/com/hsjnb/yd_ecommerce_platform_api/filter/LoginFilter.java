@@ -1,8 +1,9 @@
 package com.hsjnb.yd_ecommerce_platform_api.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hsjnb.yd_ecommerce_platform_api.common.lang.Constant;
-import com.hsjnb.yd_ecommerce_platform_api.common.lang.Result;
+import com.hsjnb.yd_ecommerce_platform_api.common.Constant;
+import com.hsjnb.yd_ecommerce_platform_api.common.Result;
+import com.hsjnb.yd_ecommerce_platform_api.dto.AppLoginDto;
 import com.hsjnb.yd_ecommerce_platform_api.dto.LoginDto;
 import com.hsjnb.yd_ecommerce_platform_api.utils.JwtUtil;
 import com.hsjnb.yd_ecommerce_platform_api.utils.RedisUtil;
@@ -57,8 +58,9 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException, IOException {
         // 验证码判断
         String url = request.getRequestURI();
-        LoginDto loginDto = new ObjectMapper().readValue(request.getInputStream(), LoginDto.class);// 拿到登录信息
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = null;
         if ("/login".equals(url) && request.getMethod().equals("POST")) {
+            LoginDto loginDto = new ObjectMapper().readValue(request.getInputStream(), LoginDto.class);// 拿到登录信息
             Result result = validateCode(loginDto.getKey(), loginDto.getCaptcha());
             if (!ObjectUtils.isEmpty(result)) {
                 response.setContentType(Constant.CONTENT_TYPE);
@@ -68,9 +70,14 @@ public class LoginFilter extends AbstractAuthenticationProcessingFilter {
                 writer.close();
                 return null;
             }
+            usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
+
+        } else if ("/app/login".equals(url) && request.getMethod().equals("POST")) {
+            AppLoginDto appLoginDto = new ObjectMapper().readValue(request.getInputStream(), AppLoginDto.class);// 拿到登录信息
+            usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(appLoginDto.getUsername(), appLoginDto.getPassword());
         }
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(loginDto.getUsername(), loginDto.getPassword());
         return getAuthenticationManager().authenticate(usernamePasswordAuthenticationToken);
+
     }
 
     /**

@@ -1,10 +1,7 @@
-package com.hsjnb.yd_ecommerce_platform_api.controller.app;
+package com.hsjnb.yd_ecommerce_platform_api.utils;
 
-import com.hsjnb.yd_ecommerce_platform_api.service.app.AppUserService;
-import io.swagger.annotations.Api;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 
 /**
  * █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
@@ -19,22 +16,33 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * @author : Hsj1730
  * @version : 1.0
- * @date : Created in 2022/03/27 14:31
+ * @date : Created in 2022/04/02 14:50
  * @description :
  */
 
-@Api(tags = "App - 用户接口")
-@RestController
-@RequestMapping(value = "app/user")
-public class AppUserController {
+public class MathUtil {
 
-    private final AppUserService appUserService;
-
-    @Autowired
-    public AppUserController(AppUserService appUserService) {
-        this.appUserService = appUserService;
+    /**
+     * Object转BigDecimal
+     * @param value value
+     * @return BigDecimal
+     */
+    public static BigDecimal getBigDecimal(Object value) {
+        BigDecimal ret = null;
+        if( value != null ) {
+            if( value instanceof BigDecimal ) {
+                ret = (BigDecimal) value;
+            } else if( value instanceof String ) {
+                ret = new BigDecimal( (String) value );
+            } else if( value instanceof BigInteger) {
+                ret = new BigDecimal( (BigInteger) value );
+            } else if( value instanceof Number ) {
+                ret = BigDecimal.valueOf(((Number) value).doubleValue());
+            } else {
+                throw new ClassCastException("Not possible to coerce ["+value+"] from class "+value.getClass()+" into a BigDecimal.");
+            }
+        }
+        return ret;
     }
-
-
 
 }

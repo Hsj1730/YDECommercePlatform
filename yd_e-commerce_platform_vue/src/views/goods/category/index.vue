@@ -120,28 +120,46 @@
           align="center"
           sortable
         />
-        <el-table-column label="操作" align="center" fixed="right">
+        <el-table-column align="center">
           <template slot="header">
             <div
-              @click="getGoodsCategoryList"
               style="display: inline-block; cursor: pointer"
+              @click="getGoodsCategoryList"
             >
               操作<i class="el-icon-refresh" style="margin-left: 10px" />
             </div>
           </template>
           <template slot-scope="scope">
             <el-button
-              type="text"
+              size="mini"
+              type="primary"
+              icon="el-icon-edit"
               @click="fnOpenEditCategoryDialog(scope.row.id)"
-              >编辑</el-button
-            >
-            <el-popconfirm
-              title="确定要删除该商品分类吗？"
-              style="margin-left: 10px"
-              @confirm="fnDeleteCategory(scope.row.id)"
-            >
-              <el-button slot="reference" type="text">删除</el-button>
-            </el-popconfirm>
+              style="margin-right: 10px"
+            />
+            <el-popover :ref="scope.row.id" placement="top" width="180">
+              <p>确定要删除该商品分类吗？</p>
+              <div style="text-align: right; margin: 0">
+                <el-button
+                  size="mini"
+                  type="text"
+                  @click="$refs[scope.row.id].doClose()"
+                  >取消</el-button
+                >
+                <el-button
+                  type="primary"
+                  size="mini"
+                  @click="fnDeleteCategory(scope.row.id)"
+                  >确定</el-button
+                >
+              </div>
+              <el-button
+                slot="reference"
+                type="danger"
+                icon="el-icon-delete"
+                size="mini"
+              />
+            </el-popover>
           </template>
         </el-table-column>
       </el-table>

@@ -2,9 +2,11 @@ package com.hsjnb.yd_ecommerce_platform_api.filter;
 
 import cn.hutool.core.util.StrUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hsjnb.yd_ecommerce_platform_api.common.lang.Constant;
-import com.hsjnb.yd_ecommerce_platform_api.common.lang.Result;
+import com.hsjnb.yd_ecommerce_platform_api.common.Constant;
+import com.hsjnb.yd_ecommerce_platform_api.common.Result;
+import com.hsjnb.yd_ecommerce_platform_api.entity.AppUser;
 import com.hsjnb.yd_ecommerce_platform_api.entity.User;
+import com.hsjnb.yd_ecommerce_platform_api.mapper.app.AppUserMapper;
 import com.hsjnb.yd_ecommerce_platform_api.mapper.sys.UserMapper;
 import com.hsjnb.yd_ecommerce_platform_api.utils.JwtUtil;
 import com.hsjnb.yd_ecommerce_platform_api.utils.SpringContextHolder;
@@ -51,6 +53,9 @@ public class AuthenticationFilter extends BasicAuthenticationFilter {
     @Resource
     private UserMapper userMapper;
 
+    @Resource
+    private AppUserMapper appUserMapper;
+
     public AuthenticationFilter(AuthenticationManager authenticationManager) {
         super(authenticationManager);
     }
@@ -63,6 +68,10 @@ public class AuthenticationFilter extends BasicAuthenticationFilter {
 
         if (userMapper == null) {
             userMapper = SpringContextHolder.getBean(UserMapper.class);
+        }
+
+        if (appUserMapper == null) {
+            appUserMapper = SpringContextHolder.getBean(AppUserMapper.class);
         }
 
         // 得到token
@@ -96,15 +105,22 @@ public class AuthenticationFilter extends BasicAuthenticationFilter {
         StringBuffer authority = new StringBuffer();
         // 拿到用户名
         String username = claim.getSubject();
-        // 获取用户信息
-        User userByUsername = userMapper.getUserByUsername(username);
-        // 获取权限信息
-        for (Map map : (List<Map>) claim.get(jwtUtil.getHeader())) {
-            authority.append(map.get("authority")).append(",");
+        String url = request.getRequestURI();
+        UsernamePasswordAuthenticationToken authenticationToken;
+        if (url.startsWith("/app/")) {
+            AppUser appUser = appUserMapper.getUserInfoByAccount(username);
+            authenticationToken = new UsernamePasswordAuthenticationToken(appUser, null, null);
+        } else {
+            // 获取用户信息
+            User userByUsername = userMapper.getUserByUsername(username);
+            // 获取权限信息
+            for (Map map : (List<Map>) claim.get(jwtUtil.getHeader())) {
+                authority.append(map.get("authority")).append(",");
+            }
+            List<GrantedAuthority> grantedAuthorities = AuthorityUtils.commaSeparatedStringToAuthorityList(String.valueOf(authority));
+            // 将用户信息写入到 Authentication 中， 方便获取
+            authenticationToken = new UsernamePasswordAuthenticationToken(userByUsername, null, grantedAuthorities);
         }
-        List<GrantedAuthority> grantedAuthorities = AuthorityUtils.commaSeparatedStringToAuthorityList(String.valueOf(authority));
-        // 将用户信息写入到 Authentication 中， 方便获取
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userByUsername, null, grantedAuthorities);
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         chain.doFilter(request,response);
     }

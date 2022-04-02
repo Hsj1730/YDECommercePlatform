@@ -1,6 +1,6 @@
 package com.hsjnb.yd_ecommerce_platform_api.service.app;
 
-import com.hsjnb.yd_ecommerce_platform_api.common.lang.Result;
+import com.hsjnb.yd_ecommerce_platform_api.common.Result;
 import com.hsjnb.yd_ecommerce_platform_api.entity.AppUser;
 
 /**
@@ -21,8 +21,6 @@ import com.hsjnb.yd_ecommerce_platform_api.entity.AppUser;
  */
 
 public interface AppUserService {
-
-    Result login(AppUser user);
 
     Result register(AppUser user);
 }

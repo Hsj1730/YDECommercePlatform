@@ -2,8 +2,8 @@ package com.hsjnb.yd_ecommerce_platform_api.controller;
 
 import com.google.code.kaptcha.Producer;
 import com.hsjnb.yd_ecommerce_platform_api.annotation.AnonymousAccess;
-import com.hsjnb.yd_ecommerce_platform_api.common.lang.Constant;
-import com.hsjnb.yd_ecommerce_platform_api.common.lang.Result;
+import com.hsjnb.yd_ecommerce_platform_api.common.Constant;
+import com.hsjnb.yd_ecommerce_platform_api.common.Result;
 import com.hsjnb.yd_ecommerce_platform_api.utils.RedisUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

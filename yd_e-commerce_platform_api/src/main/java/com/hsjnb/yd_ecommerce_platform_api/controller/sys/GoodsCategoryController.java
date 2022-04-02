@@ -1,7 +1,7 @@
 package com.hsjnb.yd_ecommerce_platform_api.controller.sys;
 
-import com.hsjnb.yd_ecommerce_platform_api.common.lang.Constant;
-import com.hsjnb.yd_ecommerce_platform_api.common.lang.Result;
+import com.hsjnb.yd_ecommerce_platform_api.common.Constant;
+import com.hsjnb.yd_ecommerce_platform_api.common.Result;
 import com.hsjnb.yd_ecommerce_platform_api.dto.GoodsCategoryDto;
 import com.hsjnb.yd_ecommerce_platform_api.entity.GoodsCategory;
 import com.hsjnb.yd_ecommerce_platform_api.service.sys.GoodsCategoryService;

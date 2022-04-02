@@ -2,7 +2,7 @@ package com.hsjnb.yd_ecommerce_platform_api.service.sys.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.hsjnb.yd_ecommerce_platform_api.common.lang.Result;
+import com.hsjnb.yd_ecommerce_platform_api.common.Result;
 import com.hsjnb.yd_ecommerce_platform_api.dto.MaterialDto;
 import com.hsjnb.yd_ecommerce_platform_api.entity.Material;
 import com.hsjnb.yd_ecommerce_platform_api.mapper.sys.MaterialMapper;

@@ -5,15 +5,15 @@
 <mapper namespace="com.hsjnb.yd_ecommerce_platform_api.mapper.sys.UserMapper">
 
     <select id="getLoginUserInfo" parameterType="integer" resultType="user">
-        select id, avatar, nickname from yd_user where id = #{id}
+        select id, avatar, nickname from yd_user where id = #{id} and effective = '1'
     </select>
 
     <select id="getUserByUsername" parameterType="string" resultType="user">
-        select id, username, password, enable from yd_user where username = #{username}
+        select id, username, password, enable from yd_user where username = #{username} and effective = '1'
     </select>
 
     <select id="getUserRoleCode" parameterType="integer" resultType="string">
-        SELECT code FROM yd_role WHERE id IN (SELECT role_id FROM yd_user_role WHERE  user_id = #{id})
+        SELECT code FROM yd_role WHERE id IN (SELECT role_id FROM yd_user_role WHERE  user_id = #{id}) and effective = '1'
     </select>
 
     <select id="getUserList" parameterType="string" resultType="user">

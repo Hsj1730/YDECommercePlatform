@@ -1,8 +1,7 @@
 package com.hsjnb.yd_ecommerce_platform_api.controller.sys;
 
-import com.hsjnb.yd_ecommerce_platform_api.annotation.AnonymousAccess;
-import com.hsjnb.yd_ecommerce_platform_api.common.lang.Constant;
-import com.hsjnb.yd_ecommerce_platform_api.common.lang.Result;
+import com.hsjnb.yd_ecommerce_platform_api.common.Constant;
+import com.hsjnb.yd_ecommerce_platform_api.common.Result;
 import com.hsjnb.yd_ecommerce_platform_api.dto.GoodsDto;
 import com.hsjnb.yd_ecommerce_platform_api.service.sys.GoodsService;
 import io.swagger.annotations.Api;
@@ -84,7 +83,7 @@ public class GoodsController {
     @PostMapping(value = "saveGoodsInfo", produces = Constant.CONTENT_TYPE)
     @ApiOperation(value = "保存商品信息", httpMethod = Constant.HTTP_POST, response = Result.class)
     public Result saveGoodsInfo(@RequestBody GoodsDto dto) {
-        return Result.success(goodsService.saveGoodsInfo(dto));
+        return goodsService.saveGoodsInfo(dto);
     }
 
 }
