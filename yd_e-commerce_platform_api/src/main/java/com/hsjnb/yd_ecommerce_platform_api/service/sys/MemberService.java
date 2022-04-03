@@ -34,4 +34,12 @@ public interface MemberService {
 
     void setMemberStatus(Integer userId,String enable);
 
+    MemberDto getMemberInfo(Integer userId);
+
+    Result saveMemberInfo(MemberDto dto);
+
+    Result deleteMember(Integer userId);
+
+    Result checkMobile(Integer userId,String phone);
+
 }

@@ -86,6 +86,7 @@
               AND b.effective = '1'
               AND b.`enable` = '1'
         )
+        ORDER BY d.sort
     </select>
 
     <select id="checkUsername" parameterType="string" resultType="integer">

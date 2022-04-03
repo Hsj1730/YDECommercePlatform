@@ -1,13 +1,12 @@
-package com.hsjnb.yd_ecommerce_platform_api.dto;
+package com.hsjnb.yd_ecommerce_platform_api.mapper.sys;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.hsjnb.yd_ecommerce_platform_api.dto.ExpressDto;
+import com.hsjnb.yd_ecommerce_platform_api.entity.Express;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.Date;
+import java.util.List;
 
 /**
  * █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
@@ -22,47 +21,26 @@ import java.util.Date;
  *
  * @author : Hsj1730
  * @version : 1.0
- * @date : Created in 2022/04/01 22:34
+ * @date : Created in 2022/04/03 19:18
  * @description :
  */
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class MemberDto implements Serializable {
+@Mapper
+@Repository
+public interface ExpressMapper {
 
-    private Integer userId;
+    List<Express> getExpressList();
 
-    private String username;
+    void addExpress(@Param("dto") ExpressDto dto);
 
-    private String password;
+    void updateExpress(@Param("dto") ExpressDto dto);
 
-    private String phone;
+    void deleteExpress(@Param("id") Integer id);
 
-    private String userImage;
+    void setExpressEnable(@Param("id") Integer id,@Param("enable") String enable);
 
-    private MaterialDto[] userImageArr;
+    ExpressDto getExpressInfo(@Param("id") Integer id);
 
-    private BigDecimal nowMoney;
-
-    private Integer payCount;
-
-    private String realName;
-
-    private String cardId;
-
-    private String mark;
-
-    private String address;
-
-    private String enable;
-
-    private String effective;
-
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date createTime;
-
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date updateTime;
+    Integer checkCode(@Param("id") Integer id,@Param("code") String code);
 
 }

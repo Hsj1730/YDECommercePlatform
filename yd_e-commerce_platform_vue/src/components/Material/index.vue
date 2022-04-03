@@ -394,16 +394,20 @@ export default {
       this.$axios({
         method: "post",
         url: "/materialGroup/getMaterialGroupList",
-      }).then((res) => {
-        this.materialGroupLoading = false;
-        const materialGroupList = res.data.data;
-        materialGroupList.unshift({
-          id: 0,
-          name: "全部分组",
+      })
+        .then((res) => {
+          this.materialGroupLoading = false;
+          const materialGroupList = res.data.data;
+          materialGroupList.unshift({
+            id: 0,
+            name: "全部分组",
+          });
+          this.materialGroupList = materialGroupList;
+          this.tabClick({ index: 0 });
+        })
+        .catch(() => {
+          this.materialGroupLoading = false;
         });
-        this.materialGroupList = materialGroupList;
-        this.tabClick({ index: 0 });
-      });
     },
     tabClick(tab) {
       this.urls = [];
@@ -431,14 +435,18 @@ export default {
           pageNum: this.page.current,
           pageSize: this.page.pageSize,
         },
-      }).then((res) => {
-        const tableData = res.data.data.list;
-        this.page.total = res.data.data.total;
-        this.page.current = res.data.data.pageNum;
-        this.page.pageSize = res.data.data.pageSize;
-        this.tableData = tableData;
-        this.tableLoading = false;
-      });
+      })
+        .then((res) => {
+          const tableData = res.data.data.list;
+          this.page.total = res.data.data.total;
+          this.page.current = res.data.data.pageNum;
+          this.page.pageSize = res.data.data.pageSize;
+          this.tableData = tableData;
+          this.tableLoading = false;
+        })
+        .catch(() => {
+          this.tableLoading = false;
+        });
     },
     materialGroupAdd() {
       const that = this;

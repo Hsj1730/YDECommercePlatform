@@ -6,9 +6,10 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.hsjnb.yd_ecommerce_platform_api.common.Constant;
 import com.hsjnb.yd_ecommerce_platform_api.common.Result;
+import com.hsjnb.yd_ecommerce_platform_api.dto.MaterialDto;
 import com.hsjnb.yd_ecommerce_platform_api.dto.MemberBalanceDto;
 import com.hsjnb.yd_ecommerce_platform_api.dto.MemberDto;
-import com.hsjnb.yd_ecommerce_platform_api.exception.BadRequestException;
+import com.hsjnb.yd_ecommerce_platform_api.mapper.sys.MaterialMapper;
 import com.hsjnb.yd_ecommerce_platform_api.mapper.sys.MemberMapper;
 import com.hsjnb.yd_ecommerce_platform_api.service.sys.MemberService;
 import com.hsjnb.yd_ecommerce_platform_api.utils.MathUtil;
@@ -17,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
 
@@ -45,10 +45,13 @@ public class MemberServiceImpl implements MemberService {
 
     private final QiNiuYunUtil qiNiuYunUtil;
 
+    private final MaterialMapper materialMapper;
+
     @Autowired
-    public MemberServiceImpl(MemberMapper memberMapper,QiNiuYunUtil qiNiuYunUtil) {
+    public MemberServiceImpl(MemberMapper memberMapper,QiNiuYunUtil qiNiuYunUtil,MaterialMapper materialMapper) {
         this.memberMapper = memberMapper;
         this.qiNiuYunUtil = qiNiuYunUtil;
+        this.materialMapper = materialMapper;
     }
 
     @Override
@@ -77,6 +80,37 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void setMemberStatus(Integer userId, String enable) {
         memberMapper.setMemberStatus(userId,enable);
+    }
+
+    @Override
+    public MemberDto getMemberInfo(Integer userId) {
+        MemberDto memberInfo = memberMapper.getMemberInfo(userId);
+        MaterialDto userImageByKey;
+        userImageByKey = materialMapper.getMaterialByKey(memberInfo.getUserImage());
+        if (userImageByKey == null) {
+            userImageByKey = new MaterialDto(0,null,"默认头像.jpg",memberInfo.getUserImage(),"","1","1");
+        }
+        userImageByKey.setRealUrl(qiNiuYunUtil.getDownloadUrl(userImageByKey.getUrl()));
+        MaterialDto[] userImageArr = {userImageByKey};
+        memberInfo.setUserImageArr(userImageArr);
+        return memberInfo;
+    }
+
+    @Override
+    public Result saveMemberInfo(MemberDto dto) {
+        memberMapper.saveMemberInfo(dto);
+        return Result.success(null);
+    }
+
+    @Override
+    public Result deleteMember(Integer userId) {
+        memberMapper.deleteMember(userId);
+        return Result.success(null);
+    }
+
+    @Override
+    public Result checkMobile(Integer userId, String phone) {
+        return Result.success(memberMapper.checkMobile(userId, phone));
     }
 
     public synchronized Result memberBalanceProcess(Integer id,String type,BigDecimal modifyMoney) {

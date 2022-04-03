@@ -1,13 +1,11 @@
-package com.hsjnb.yd_ecommerce_platform_api.dto;
+package com.hsjnb.yd_ecommerce_platform_api.service.sys;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.github.pagehelper.PageInfo;
+import com.hsjnb.yd_ecommerce_platform_api.common.Result;
+import com.hsjnb.yd_ecommerce_platform_api.dto.ExpressDto;
+import com.hsjnb.yd_ecommerce_platform_api.entity.Express;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.Date;
+import java.util.Map;
 
 /**
  * █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
@@ -22,47 +20,22 @@ import java.util.Date;
  *
  * @author : Hsj1730
  * @version : 1.0
- * @date : Created in 2022/04/01 22:34
+ * @date : Created in 2022/04/03 19:19
  * @description :
  */
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class MemberDto implements Serializable {
+public interface ExpressService {
 
-    private Integer userId;
+    PageInfo<Express> getExpressList(Map<String,Object> param);
 
-    private String username;
+    Result saveExpressInfo(ExpressDto dto);
 
-    private String password;
+    Result deleteExpress(Integer id);
 
-    private String phone;
+    Result setExpressEnable(Integer id,String enable);
 
-    private String userImage;
+    Result getExpressInfo(Integer id);
 
-    private MaterialDto[] userImageArr;
-
-    private BigDecimal nowMoney;
-
-    private Integer payCount;
-
-    private String realName;
-
-    private String cardId;
-
-    private String mark;
-
-    private String address;
-
-    private String enable;
-
-    private String effective;
-
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date createTime;
-
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date updateTime;
+    Integer checkCode(Integer id,String code);
 
 }

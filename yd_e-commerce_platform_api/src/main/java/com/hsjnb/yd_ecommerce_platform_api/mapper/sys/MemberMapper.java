@@ -40,4 +40,12 @@ public interface MemberMapper {
 
     void setMemberStatus(@Param("userId") Integer userId,@Param("enable") String enable);
 
+    MemberDto getMemberInfo(@Param("userId") Integer userId);
+
+    void saveMemberInfo(@Param("dto") MemberDto dto);
+
+    void deleteMember(@Param("userId") Integer userId);
+
+    Integer checkMobile(@Param("userId") Integer userId,@Param("phone") String phone);
+
 }

@@ -60,11 +60,25 @@ export default {
   },
 
   validateMobile(mobile) {
-    const reg = /^(13[0-9]|14[5|7]|15[0-9]|18[0-9]|19[4|5])\d{8}$/;
-    return reg.test(mobile);
+    const reg =
+      /^((13[0-9])|(14[579])|(15[0-35-9])|(166)|(17[35-8])|(18[0-9])|(19[8,9]))\d{8}$/;
+    const regHK = /^([5689])\d{7}$/;
+    return reg.test(mobile) || regHK.test(mobile);
   },
   validEmail(email) {
     const reg = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
     return reg.test(email);
+  },
+  validChinese(str) {
+    const reg = /^[\u4e00-\u9fa5]*$/;
+    return reg.test(str);
+  },
+  validCardId(str) {
+    // 一代
+    const reg1 = /^[1-9]\d{7}(?:0\d|10|11|12)(?:0[1-9]|[1-2][\d]|30|31)\d{3}$/;
+    // 二代
+    const reg2 =
+      /^[1-9]\d{5}(?:18|19|20)\d{2}(?:0[1-9]|10|11|12)(?:0[1-9]|[1-2]\d|30|31)\d{3}[\dXx]$/;
+    return reg1.test(str) || reg2.test(str);
   },
 };

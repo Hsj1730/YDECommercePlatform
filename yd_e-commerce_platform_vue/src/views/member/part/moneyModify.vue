@@ -85,17 +85,21 @@ export default {
           type: this.form.type,
           modifyMoney: this.form.modifyMoney,
         },
-      }).then((res) => {
-        this.loading = false;
-        if (res.data.code === 200) {
-          this.$message.success("余额修改成功");
-          this.dialog = false;
-          this.resetForm();
-          this.$parent.init();
-        } else {
-          this.queryBalance(this.form.userId);
-        }
-      });
+      })
+        .then((res) => {
+          this.loading = false;
+          if (res.data.code === 200) {
+            this.$message.success("余额修改成功");
+            this.dialog = false;
+            this.resetForm();
+            this.$parent.init();
+          } else {
+            this.queryBalance(this.form.userId);
+          }
+        })
+        .catch(() => {
+          this.loading = false;
+        });
     },
     cancel() {
       this.dialog = false;
@@ -117,18 +121,22 @@ export default {
       this.$axios({
         method: "post",
         url: "/member/getMemberBalance/" + id,
-      }).then((res) => {
-        const data = res.data.data;
-        this.form = {
-          userId: data.userId,
-          username: data.username,
-          phone: data.phone,
-          type: this.form.type,
-          nowMoney: data.nowMoney,
-          modifyMoney: this.form.modifyMoney,
-        };
-        this.loading = false;
-      });
+      })
+        .then((res) => {
+          const data = res.data.data;
+          this.form = {
+            userId: data.userId,
+            username: data.username,
+            phone: data.phone,
+            type: this.form.type,
+            nowMoney: data.nowMoney,
+            modifyMoney: this.form.modifyMoney,
+          };
+          this.loading = false;
+        })
+        .catch(() => {
+          this.loading = false;
+        });
     },
   },
 };

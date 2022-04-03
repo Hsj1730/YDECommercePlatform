@@ -239,7 +239,6 @@ export default {
   },
   methods: {
     doSubmit() {
-      this.loading = true;
       this.$refs["form"].validate((valid) => {
         if (valid) {
           if (this.form.imageArr.length === 0) {
@@ -263,18 +262,23 @@ export default {
               this.form.sliderImage.length - 1
             );
           }
+          this.loading = true;
           this.$axios({
             method: "post",
             url: "/goods/saveGoodsInfo",
             data: this.form,
-          }).then((res) => {
-            if (res.data.code === 200) {
-              this.$message.success("保存成功");
-              this.resetForm();
-              this.$parent.init();
-            }
-            this.loading = false;
-          });
+          })
+            .then((res) => {
+              if (res.data.code === 200) {
+                this.$message.success("保存成功");
+                this.resetForm();
+                this.$parent.init();
+              }
+              this.loading = false;
+            })
+            .catch(() => {
+              this.loading = false;
+            });
         } else {
           return false;
         }

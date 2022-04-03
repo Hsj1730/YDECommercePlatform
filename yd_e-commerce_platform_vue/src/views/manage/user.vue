@@ -6,24 +6,24 @@
           v-model="searchForm.nickname"
           placeholder="请输入昵称进行搜索"
           clearable
+          size="mini"
         >
         </el-input>
       </el-form-item>
       <el-form-item>
-        <el-button icon="el-icon-search" @click="getUserList">搜索</el-button>
+        <el-button icon="el-icon-search" size="mini" @click="getUserList"
+          >搜索</el-button
+        >
         <el-button
           type="primary"
           icon="el-icon-plus"
+          size="mini"
           @click="fnOpenAddUserDialog"
           >新增用户</el-button
         >
       </el-form-item>
     </el-form>
-    <el-table
-      :data="tableData"
-      tooltip-effect="dark"
-      style="width: 100%"
-    >
+    <el-table :data="tableData" tooltip-effect="dark" style="width: 100%">
       <el-table-column prop="avatar" width="80" align="center" label="头像">
         <template slot-scope="scope">
           <el-avatar :src="scope.row.avatar"></el-avatar>
@@ -203,7 +203,7 @@
 </template>
 
 <script>
-  import { getMenuList } from "../../utils/routerUtil";
+import { getMenuList } from "../../utils/routerUtil";
 export default {
   name: "user",
   data() {
@@ -358,7 +358,7 @@ export default {
         this.roleDialogVisible = false;
         this.getUserList();
         if (this.roleUserId === this.$store.state.userInfo.id) {
-          getMenuList()
+          getMenuList();
         }
       });
     },

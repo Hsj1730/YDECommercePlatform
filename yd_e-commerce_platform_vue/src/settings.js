@@ -66,7 +66,7 @@ export default {
     {
       id: "3",
       describe: "Blog",
-      url: "http://hsjnb.com/",
+      url: "http://hsjnb.com:8081/",
     },
   ],
 
@@ -109,7 +109,7 @@ export default {
         describe: "Element-UI",
       },
     ],
-    loginFooter: "个人博客：http://hsjnb.com",
+    loginFooter: "个人博客：http://hsjnb.com:8081",
 
     /**
      * 文件上传大小

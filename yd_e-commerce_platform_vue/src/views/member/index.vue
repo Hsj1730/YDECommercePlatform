@@ -88,7 +88,7 @@
             type="danger"
             size="mini"
             icon="el-icon-edit"
-            @click="edit(scope.row.id)"
+            @click="edit(scope.row.userId)"
           />
           <el-dropdown
             size="mini"
@@ -108,20 +108,20 @@
                 >
               </el-dropdown-item>
               <el-dropdown-item>
-                <el-popover :ref="scope.row.id" placement="top" width="180">
+                <el-popover :ref="scope.row.userId" placement="top" width="180">
                   <p>确定删除本条数据吗？</p>
                   <div style="text-align: right; margin: 0">
                     <el-button
                       size="mini"
                       type="text"
-                      @click="$refs[scope.row.id].doClose()"
+                      @click="$refs[scope.row.userId].doClose()"
                       >取消</el-button
                     >
                     <el-button
                       :loading="delLoading"
                       type="primary"
                       size="mini"
-                      @click="subDelete(scope.row.id)"
+                      @click="subDelete(scope.row.userId)"
                       >确定</el-button
                     >
                   </div>
@@ -150,14 +150,16 @@
       style="float: right; margin-top: 10px; padding-bottom: 10px"
     />
     <money-modify ref="moneyModify" />
+    <member-info ref="memberInfo" />
   </div>
 </template>
 
 <script>
 import moneyModify from "./part/moneyModify";
+import memberInfo from "./part/memberInfo";
 export default {
   name: "member",
-  components: { moneyModify },
+  components: { moneyModify, memberInfo },
   data() {
     return {
       query: {
@@ -183,6 +185,32 @@ export default {
     this.init();
   },
   methods: {
+    subDelete(userId) {
+      this.delLoading = true;
+      this.$axios({
+        method: "post",
+        url: "/member/deleteMember/" + userId,
+      })
+        .then((res) => {
+          if (res.data.code === 200) {
+            this.$message.success("删除成功");
+            this.delLoading = false;
+            this.toQuery();
+          }
+        })
+        .catch(() => {
+          this.delLoading = false;
+        });
+    },
+    edit(userId) {
+      this.$refs.memberInfo.dialog = true;
+      this.$axios({
+        method: "post",
+        url: "/member/getMemberInfo/" + userId,
+      }).then((res) => {
+        this.$refs.memberInfo.form = res.data.data;
+      });
+    },
     onEnable(userId, enable) {
       this.$confirm(
         `确定进行[ ${enable === "1" ? "禁用" : "启用"} ]操作?`,
@@ -240,13 +268,17 @@ export default {
           pageNum: this.page.current,
           pageSize: this.page.pageSize,
         },
-      }).then((res) => {
-        this.loading = false;
-        this.tableData = res.data.data.list;
-        this.page.total = res.data.data.total;
-        this.page.current = res.data.data.pageNum;
-        this.page.pageSize = res.data.data.pageSize;
-      });
+      })
+        .then((res) => {
+          this.loading = false;
+          this.tableData = res.data.data.list;
+          this.page.total = res.data.data.total;
+          this.page.current = res.data.data.pageNum;
+          this.page.pageSize = res.data.data.pageSize;
+        })
+        .catch(() => {
+          this.loading = false;
+        });
     },
     handleSizeChange(val) {
       this.page.pageSize = val;

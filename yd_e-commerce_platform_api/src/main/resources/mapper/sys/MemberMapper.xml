@@ -31,4 +31,25 @@
         update yd_app_user set enable = #{enable} where user_id = #{userId}
     </update>
 
+    <select id="getMemberInfo" parameterType="integer" resultType="memberDto">
+        select * from yd_app_user where user_id = #{userId} and effective = '1'
+    </select>
+
+    <update id="saveMemberInfo" parameterType="memberDto">
+        update yd_app_user set user_image = #{dto.userImage},real_name = #{dto.realName},mark = #{dto.mark},
+                               phone = #{dto.phone},card_id = #{dto.cardId},address = #{dto.address}
+        where user_id = #{dto.userId}
+    </update>
+
+    <update id="deleteMember" parameterType="integer">
+        update yd_app_user set effective = '0' where user_id = #{userId}
+    </update>
+
+    <select id="checkMobile" resultType="integer">
+        select count(1) from yd_app_user where phone = #{phone} and effective = '1'
+        <if test="userId != 0">
+            and user_id != #{userId}
+        </if>
+    </select>
+
 </mapper>

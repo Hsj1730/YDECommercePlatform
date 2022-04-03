@@ -3,6 +3,7 @@
     <el-button
       type="primary"
       icon="el-icon-plus"
+      size="mini"
       @click="fnOpenAddMenuDialog"
       style="margin-bottom: 10px"
       >新增菜单</el-button

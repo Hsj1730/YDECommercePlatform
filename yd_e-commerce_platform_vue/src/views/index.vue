@@ -60,7 +60,7 @@ export default {
           window.open("https://gitee.com/hsj1730/YDECommercePlatform");
           break;
         case "code-blog":
-          window.open("http://hsjnb.com");
+          window.open("http://hsjnb.com:8081");
           break;
         case "demo":
           window.open("https://gitee.com/zhengqingya/java-workspace");

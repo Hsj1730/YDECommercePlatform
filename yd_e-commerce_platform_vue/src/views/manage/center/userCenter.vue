@@ -122,7 +122,7 @@
                     v-model.trim="form.mobile"
                     oninput="value=value.replace(/[^\d]/g,'')"
                     style="width: 35%"
-                    maxLength="12"
+                    maxLength="11"
                     clearable
                   />
                   <span style="color: #c0c0c0; margin-left: 10px"
@@ -290,11 +290,15 @@ export default {
           pageNum: this.current,
           pageSize: this.pageSize,
         },
-      }).then((res) => {
-        this.loading = false;
-        this.logData = res.data.data.list;
-        this.total = res.data.data.total;
-      });
+      })
+        .then((res) => {
+          this.loading = false;
+          this.logData = res.data.data.list;
+          this.total = res.data.data.total;
+        })
+        .catch(() => {
+          this.loading = false;
+        });
     },
     handleSizeChange(val) {
       this.pageSize = val;
@@ -351,7 +355,7 @@ export default {
     },
     checkMobile(rule, value, callback) {
       if (!this.dataValidate.validateMobile(value)) {
-        return callback(new Error("请输入正确的11位手机号码"));
+        return callback(new Error("请输入正确的手机号码"));
       }
       if (value !== this.user.mobile) {
         this.$axios({

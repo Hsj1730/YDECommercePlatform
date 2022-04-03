@@ -182,14 +182,14 @@ a {
   text-decoration: none;
 }
 
-.side-menu {
-  width: 213px;
-  position: fixed;
-}
+/*.side-menu {*/
+/*  width: 213px;*/
+/*  position: fixed;*/
+/*}*/
 
-.el-menu-vertical-demo {
-  height: 100vh;
-  font-size: 24px;
-  font-weight: bolder;
-}
+/*.el-menu-vertical-demo {*/
+/*  height: 100vh;*/
+/*  font-size: 24px;*/
+/*  font-weight: bolder;*/
+/*}*/
 </style>

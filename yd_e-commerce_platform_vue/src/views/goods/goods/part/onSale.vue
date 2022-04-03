@@ -310,13 +310,17 @@ export default {
           pageSize: this.page.pageSize,
           isShow: "1",
         },
-      }).then((res) => {
-        this.loading = false;
-        this.tableData = res.data.data.list;
-        this.page.total = res.data.data.total;
-        this.page.current = res.data.data.pageNum;
-        this.page.pageSize = res.data.data.pageSize;
-      });
+      })
+        .then((res) => {
+          this.loading = false;
+          this.tableData = res.data.data.list;
+          this.page.total = res.data.data.total;
+          this.page.current = res.data.data.pageNum;
+          this.page.pageSize = res.data.data.pageSize;
+        })
+        .catch(() => {
+          this.loading = false;
+        });
     },
     handleSizeChange(val) {
       this.page.pageSize = val;

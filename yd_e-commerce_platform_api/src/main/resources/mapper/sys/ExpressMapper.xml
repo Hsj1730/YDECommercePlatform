@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hsjnb.yd_ecommerce_platform_api.mapper.sys.ExpressMapper">
+
+    <select id="getExpressList" resultType="express">
+        select * from yd_express where effective = '1' order by id
+    </select>
+
+    <insert id="addExpress" parameterType="expressDto">
+        insert into yd_express (code, name, sort, enable) values(#{dto.code},#{dto.name},#{dto.sort},#{dto.enable})
+    </insert>
+
+    <update id="updateExpress" parameterType="expressDto">
+        update yd_express set code = #{dto.code},name = #{dto.name},sort = #{dto.sort},enable = #{dto.enable} where id = #{dto.id}
+    </update>
+
+    <update id="deleteExpress" parameterType="integer">
+        update yd_express set effective = '0' where id = #{id}
+    </update>
+
+    <update id="setExpressEnable">
+        update yd_express set enable = #{enable} where id = #{id}
+    </update>
+
+    <select id="getExpressInfo" parameterType="integer" resultType="expressDto">
+        select id,code,name,sort,enable,effective from yd_express where id = #{id} and effective = '1'
+    </select>
+
+    <select id="checkCode" resultType="integer">
+        select count(1) from yd_express where code = #{code} and effective = '1'
+        <if test="id != 0">
+            and id != #{id}
+        </if>
+    </select>
+
+</mapper>

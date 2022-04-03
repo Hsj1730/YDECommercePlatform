@@ -6,22 +6,25 @@
           v-model="searchForm.name"
           placeholder="请输入角色名称进行搜索"
           clearable
+          size="mini"
         >
         </el-input>
       </el-form-item>
       <el-form-item>
-        <el-button icon="el-icon-search" @click="getRoleList">搜索</el-button>
-        <el-button type="primary" icon="el-icon-plus" @click="fnOpenRoleDialog"
+        <el-button icon="el-icon-search" size="mini" @click="getRoleList"
+          >搜索</el-button
+        >
+        <el-button
+          type="primary"
+          size="mini"
+          icon="el-icon-plus"
+          @click="fnOpenRoleDialog"
           >新增角色</el-button
         >
       </el-form-item>
     </el-form>
 
-    <el-table
-      :data="tableData"
-      tooltip-effect="dark"
-      style="width: 100%"
-    >
+    <el-table :data="tableData" tooltip-effect="dark" style="width: 100%">
       <el-table-column
         prop="name"
         align="center"
@@ -359,7 +362,7 @@ export default {
           this.$refs.menuTree.setCheckedKeys([]);
           this.menuDialogVisible = false;
           // 刷新侧边菜单
-          getMenuList()
+          getMenuList();
         }
       });
     },

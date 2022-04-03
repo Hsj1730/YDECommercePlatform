@@ -1,16 +1,9 @@
 package com.hsjnb.yd_ecommerce_platform_api.utils;
 
 import cn.hutool.core.date.format.FastDateFormat;
-import org.apache.commons.lang3.StringUtils;
 
 import java.text.DecimalFormat;
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -71,23 +64,23 @@ public abstract class BarCodeGenerator {
         return threadLocal.get().toString();
     }
 
-    public static void main(String[] args) throws ExecutionException, InterruptedException {
-        Set<String> set = new HashSet<>();
-        FutureTask<String> task;
-        long startTime = System.currentTimeMillis();
-        for (int i = 0; i < 1000; i++) {
-            Callable<String> callable = () -> {
-                 System.out.println("当前线程:>>>>> ".concat(Thread.currentThread().getName()));
-                 //return getC(StringUtils.replace(UUID.randomUUID().toString(), "-", ""));
-                return getD(StringUtils.replace(UUID.randomUUID().toString(), "-", ""));
-            };
-            task = new FutureTask<>(callable);
-            new Thread(task).start();
-            System.out.println(task.get());
-            set.add(task.get());
-        }
-        System.out.println("总共耗时:" + ((System.currentTimeMillis() - startTime)) + "ms");
-        System.out.println("*************** " + set.size());
-    }
+    //public static void main(String[] args) throws ExecutionException, InterruptedException {
+    //    Set<String> set = new HashSet<>();
+    //    FutureTask<String> task;
+    //    long startTime = System.currentTimeMillis();
+    //    for (int i = 0; i < 1000; i++) {
+    //        Callable<String> callable = () -> {
+    //             System.out.println("当前线程:>>>>> ".concat(Thread.currentThread().getName()));
+    //             //return getC(StringUtils.replace(UUID.randomUUID().toString(), "-", ""));
+    //            return getD(StringUtils.replace(UUID.randomUUID().toString(), "-", ""));
+    //        };
+    //        task = new FutureTask<>(callable);
+    //        new Thread(task).start();
+    //        System.out.println(task.get());
+    //        set.add(task.get());
+    //    }
+    //    System.out.println("总共耗时:" + ((System.currentTimeMillis() - startTime)) + "ms");
+    //    System.out.println("*************** " + set.size());
+    //}
 
 }

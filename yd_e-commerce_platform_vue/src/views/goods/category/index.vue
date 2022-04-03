@@ -3,6 +3,7 @@
     <div class="head-container">
       <el-button
         type="primary"
+        size="mini"
         icon="el-icon-plus"
         @click="fnOpenAddCategoryDialog"
         style="margin-bottom: 10px"
