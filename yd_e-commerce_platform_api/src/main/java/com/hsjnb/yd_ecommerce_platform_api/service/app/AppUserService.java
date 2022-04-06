@@ -23,4 +23,7 @@ import com.hsjnb.yd_ecommerce_platform_api.entity.AppUser;
 public interface AppUserService {
 
     Result register(AppUser user);
+
+    AppUser getLoginUserInfo(Integer userId);
+
 }

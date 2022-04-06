@@ -80,10 +80,18 @@ public class AppUserServiceImpl implements AppUserService {
             user.setPassword(new BCryptPasswordEncoder().encode(password));
             user.setUserImage(defaultAvatar);
             appUserMapper.register(user);
-            return Result.success("注册成功");
+            return Result.success(200,"注册成功",null);
         } catch (NoSuchAlgorithmException | IOException | IllegalBlockSizeException | BadPaddingException | NoSuchPaddingException | InvalidKeySpecException | InvalidKeyException e) {
             e.printStackTrace();
             return Result.fail("程序出现异常");
         }
+    }
+
+    @Override
+    public AppUser getLoginUserInfo(Integer userId) {
+        AppUser loginUserInfo = appUserMapper.getLoginUserInfo(userId);
+        loginUserInfo.setPassword("");
+        loginUserInfo.setUserImage(qiNiuYunUtil.getDownloadUrl(loginUserInfo.getUserImage()));
+        return loginUserInfo;
     }
 }

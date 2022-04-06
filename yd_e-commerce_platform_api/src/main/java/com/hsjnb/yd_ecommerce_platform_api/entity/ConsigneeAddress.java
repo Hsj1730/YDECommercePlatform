@@ -1,9 +1,12 @@
-package com.hsjnb.yd_ecommerce_platform_api.mapper.app;
+package com.hsjnb.yd_ecommerce_platform_api.entity;
 
-import com.hsjnb.yd_ecommerce_platform_api.entity.AppUser;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
@@ -18,20 +21,39 @@ import org.springframework.stereotype.Repository;
  *
  * @author : Hsj1730
  * @version : 1.0
- * @date : Created in 2022/03/27 14:50
+ * @date : Created in 2022/04/04 16:14
  * @description :
  */
 
-@Mapper
-@Repository
-public interface AppUserMapper {
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class ConsigneeAddress implements Serializable {
 
-    AppUser getUserInfoByAccount(@Param("username") String username);
+    private Integer id;
 
-    void register(@Param("user") AppUser user);
+    private Integer userId;
 
-    Integer queryUserPhone(@Param("phone") String phone);
+    private String realName;
 
-    AppUser getLoginUserInfo(@Param("userId") Integer userId);
+    private String phone;
+
+    private String province;
+
+    private String city;
+
+    private String district;
+
+    private String detail;
+
+    private String isDefault;
+
+    private String effective;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date createTime;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date updateTime;
 
 }

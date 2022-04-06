@@ -1,9 +1,10 @@
-package com.hsjnb.yd_ecommerce_platform_api.mapper.app;
+package com.hsjnb.yd_ecommerce_platform_api.service.app;
 
-import com.hsjnb.yd_ecommerce_platform_api.entity.AppUser;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
+import com.hsjnb.yd_ecommerce_platform_api.common.Result;
+import com.hsjnb.yd_ecommerce_platform_api.dto.ConsigneeAddressDto;
+import com.hsjnb.yd_ecommerce_platform_api.entity.ConsigneeAddress;
+
+import java.util.List;
 
 /**
  * █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
@@ -18,20 +19,22 @@ import org.springframework.stereotype.Repository;
  *
  * @author : Hsj1730
  * @version : 1.0
- * @date : Created in 2022/03/27 14:50
+ * @date : Created in 2022/04/04 16:08
  * @description :
  */
 
-@Mapper
-@Repository
-public interface AppUserMapper {
+public interface ConsigneeAddressService {
 
-    AppUser getUserInfoByAccount(@Param("username") String username);
+    Result add(ConsigneeAddressDto dto);
 
-    void register(@Param("user") AppUser user);
+    List<ConsigneeAddress> getConsigneeAddressList(Integer userId);
 
-    Integer queryUserPhone(@Param("phone") String phone);
+    ConsigneeAddressDto getConsigneeAddress(Integer id);
 
-    AppUser getLoginUserInfo(@Param("userId") Integer userId);
+    void setDefault(Integer userId,Integer id);
+
+    void delete(Integer id);
+
+    Result edit(ConsigneeAddressDto dto);
 
 }

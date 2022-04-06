@@ -17,4 +17,8 @@
         select count(1) from yd_app_user where phone = #{phone} and effective = '1'
     </select>
 
+    <select id="getLoginUserInfo" parameterType="integer" resultType="appUser">
+        select * from yd_app_user where effective = '1' and user_id = #{userId}
+    </select>
+
 </mapper>

@@ -56,7 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     // 白名单
     public static final String[] URL_WHITELIST = {
             "/login",
-            "/user/login"
+            "/app/login"
     };
 
     @Bean

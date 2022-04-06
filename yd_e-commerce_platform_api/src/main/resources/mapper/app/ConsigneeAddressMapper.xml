@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hsjnb.yd_ecommerce_platform_api.mapper.app.ConsigneeAddressMapper">
+
+    <update id="clearDefault" parameterType="integer">
+        update yd_consignee_address set is_default = '0' where user_id = #{userId} and effective ='1'
+    </update>
+
+    <insert id="add" parameterType="consigneeAddressDto">
+        insert into yd_consignee_address (user_id, real_name, phone, province, city, district, detail, is_default)
+        values (#{dto.userId},#{dto.realName},#{dto.phone},#{dto.province},#{dto.city},#{dto.district},#{dto.detail},#{dto.isDefault})
+    </insert>
+
+    <select id="getConsigneeAddressList" parameterType="integer" resultType="consigneeAddress">
+        select * from yd_consignee_address where effective = '1' and user_id = #{userId} order by is_default,id
+    </select>
+
+    <update id="setDefault" parameterType="integer">
+        update yd_consignee_address set is_default = '1' where id = #{id} and effective ='1'
+    </update>
+
+    <update id="delete" parameterType="integer">
+        update yd_consignee_address set effective = '0' where id = #{id}
+    </update>
+
+    <select id="getConsigneeAddress" parameterType="integer" resultType="consigneeAddressDto">
+        select id,user_id,real_name,phone,city,district,detail,is_default from yd_consignee_address where id = #{id}
+    </select>
+
+    <update id="edit" parameterType="consigneeAddressDto">
+        update yd_consignee_address set real_name = #{dto.realName},phone = #{dto.phone},city = #{dto.city},district = #{dto.district},
+                                        detail = #{dto.detail},is_default = #{dto.isDefault}
+        where id = #{dto.id}
+    </update>
+
+</mapper>
