@@ -9521,10 +9521,10 @@ vuex@^3.4.0:
   resolved "https://registry.npmmirror.com/vuex/-/vuex-3.6.2.tgz#236bc086a870c3ae79946f107f16de59d5895e71"
   integrity sha512-ETW44IqCgBpVomy520DT5jf8n0zoCac+sxWnn+hMe/CzaSejb/eVw2YToiXYX+Ex/AuHHia28vWTq4goAexFbw==
 
-wangeditor@^4.7.12:
-  version "4.7.12"
-  resolved "https://registry.npmmirror.com/wangeditor/-/wangeditor-4.7.12.tgz#96fb73822a937588d82c3a84249549ae99cecf3e"
-  integrity sha512-5KOIpQ0+idKvDTkjZOp7RHYXA97FyJ9mjwy+zQUdMUCqZItlEXzvVOYtOlHkJr/HcbwgIz/7f/trGFggZK5X4g==
+wangeditor@^4.7.13:
+  version "4.7.13"
+  resolved "https://registry.npmmirror.com/wangeditor/-/wangeditor-4.7.13.tgz#f0e237b39d1aa4fd139089aa3ed7e1ecc01da0d9"
+  integrity sha512-kT0jQgTgPoe3tiYiHWbS3QV5yfklcvCXF28irqgU/rOCHKP5Bnv5z/h+ACQAdUhznsfYShpWWzzhs6PLFoPBHQ==
   dependencies:
     "@babel/runtime" "^7.11.2"
     "@babel/runtime-corejs3" "^7.11.2"

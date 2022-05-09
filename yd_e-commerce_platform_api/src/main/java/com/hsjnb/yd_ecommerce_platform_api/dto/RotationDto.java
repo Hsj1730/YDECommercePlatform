@@ -1,11 +1,12 @@
-package com.hsjnb.yd_ecommerce_platform_api.mapper.app;
+package com.hsjnb.yd_ecommerce_platform_api.dto;
 
-import com.hsjnb.yd_ecommerce_platform_api.dto.AppUserPassDto;
-import com.hsjnb.yd_ecommerce_platform_api.dto.UserPassDto;
-import com.hsjnb.yd_ecommerce_platform_api.entity.AppUser;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
@@ -20,32 +21,27 @@ import org.springframework.stereotype.Repository;
  *
  * @author : Hsj1730
  * @version : 1.0
- * @date : Created in 2022/03/27 14:50
+ * @date : Created in 2022/05/09 21:18
  * @description :
  */
 
-@Mapper
-@Repository
-public interface AppUserMapper {
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class RotationDto implements Serializable {
 
-    AppUser getUserInfoByAccount(@Param("username") String username);
+    private Integer id;
 
-    void register(@Param("user") AppUser user);
+    private String title;
 
-    Integer queryUserPhone(@Param("phone") String phone);
+    private String image;
 
-    AppUser getLoginUserInfo(@Param("userId") Integer userId);
+    private MaterialDto[] imageArr;
 
-    void uploadAvatar(@Param("user") AppUser user);
+    private String url;
 
-    String getPass(@Param("userId") Integer userId);
+    private String enable;
 
-    void updatePass(@Param("user") AppUserPassDto appUserPassDto);
-
-    void saveUserInfo(@Param("user") AppUser appUser);
-
-    AppUser getUserByUserAndPhone(@Param("user") AppUser appUser);
-
-    void forgotPass(@Param("user") AppUser appUser);
+    private Integer sort;
 
 }

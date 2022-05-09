@@ -1,15 +1,14 @@
-package com.hsjnb.yd_ecommerce_platform_api.controller;
+package com.hsjnb.yd_ecommerce_platform_api.controller.app;
 
 import com.hsjnb.yd_ecommerce_platform_api.annotation.AnonymousAccess;
 import com.hsjnb.yd_ecommerce_platform_api.common.Constant;
 import com.hsjnb.yd_ecommerce_platform_api.common.Result;
-import com.hsjnb.yd_ecommerce_platform_api.entity.AppUser;
-import com.hsjnb.yd_ecommerce_platform_api.service.app.AppUserService;
+import com.hsjnb.yd_ecommerce_platform_api.service.app.ShopGoodsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,44 +25,53 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * @author : Hsj1730
  * @version : 1.0
- * @date : Created in 2022/04/01 22:09
+ * @date : Created in 2022/05/09 23:32
  * @description :
  */
 
-@Api(tags = "App - 登录接口")
+@Api(tags = "App - 商品模块")
 @RestController
-@RequestMapping(value = "app")
-public class AppLoginController {
+@RequestMapping(value = "app/goods")
+public class ShopGoodsController {
 
-    private final AppUserService appUserService;
+    private final ShopGoodsService shopGoodsService;
 
     @Autowired
-    public AppLoginController(AppUserService appUserService) {
-        this.appUserService = appUserService;
+    public ShopGoodsController(ShopGoodsService shopGoodsService) {
+        this.shopGoodsService = shopGoodsService;
     }
 
     /**
-     * 用户注册
-     * @param appUser appUser
+     * 查询商品分类列表
      * @return Result
      */
     @AnonymousAccess
-    @PostMapping(value = "register",produces = Constant.CONTENT_TYPE)
-    @ApiOperation(value = "客户注册",httpMethod = Constant.HTTP_POST,response = Result.class)
-    public Result register(@RequestBody AppUser appUser) {
-        return appUserService.register(appUser);
+    @PostMapping(value = "getGoodsCategoryList", produces = Constant.CONTENT_TYPE)
+    @ApiOperation(value = "获取商品分类列表", httpMethod = Constant.HTTP_POST, response = Result.class)
+    public Result getGoodsCategoryList() {
+        return Result.success(shopGoodsService.getGoodsCategoryList());
     }
 
     /**
-     * 用户注册验证用户名
-     * @param appUser appUser
+     * 获取分类商品列表
      * @return Result
      */
     @AnonymousAccess
-    @PostMapping(value = "registerValidateUsername",produces = Constant.CONTENT_TYPE)
-    @ApiOperation(value = "用户注册验证用户名",httpMethod = Constant.HTTP_POST,response = Result.class)
-    public Result registerValidateUsername(@RequestBody AppUser appUser) {
-        return appUserService.registerValidateUsername(appUser);
+    @PostMapping(value = "getGoodsListByCategory/{id}", produces = Constant.CONTENT_TYPE)
+    @ApiOperation(value = "获取分类商品列表", httpMethod = Constant.HTTP_POST, response = Result.class)
+    public Result getGoodsListByCategory(@PathVariable Integer id) {
+        return Result.success(shopGoodsService.getGoodsListByCategory(id));
+    }
+
+    /**
+     * 获取商品列表
+     * @return Result
+     */
+    @AnonymousAccess
+    @PostMapping(value = "getGoodsList", produces = Constant.CONTENT_TYPE)
+    @ApiOperation(value = "获取商品列表", httpMethod = Constant.HTTP_POST, response = Result.class)
+    public Result getGoodsList(String search) {
+        return Result.success(shopGoodsService.getGoodsList(search));
     }
 
 }

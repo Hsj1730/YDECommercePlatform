@@ -83,13 +83,6 @@ export default {
         callback();
       }
     };
-    // const validatePhone = (rule, value, callback) => {
-    //   if (this.dataValidate.validateMobile(value)) {
-    //     callback();
-    //   } else {
-    //     callback(new Error("请输入正确的手机号"));
-    //   }
-    // };
     const validateCardId = (rule, value, callback) => {
       if (value !== "") {
         if (this.dataValidate.validCardId(value)) {

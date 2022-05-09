@@ -1,11 +1,12 @@
 package com.hsjnb.yd_ecommerce_platform_api.mapper.app;
 
-import com.hsjnb.yd_ecommerce_platform_api.dto.AppUserPassDto;
-import com.hsjnb.yd_ecommerce_platform_api.dto.UserPassDto;
-import com.hsjnb.yd_ecommerce_platform_api.entity.AppUser;
+import com.hsjnb.yd_ecommerce_platform_api.dto.ShopGoodsDto;
+import com.hsjnb.yd_ecommerce_platform_api.entity.GoodsCategory;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
@@ -20,32 +21,18 @@ import org.springframework.stereotype.Repository;
  *
  * @author : Hsj1730
  * @version : 1.0
- * @date : Created in 2022/03/27 14:50
+ * @date : Created in 2022/05/09 23:35
  * @description :
  */
 
 @Mapper
 @Repository
-public interface AppUserMapper {
+public interface ShopGoodsMapper {
 
-    AppUser getUserInfoByAccount(@Param("username") String username);
+    List<GoodsCategory> getGoodsCategoryList();
 
-    void register(@Param("user") AppUser user);
+    List<ShopGoodsDto> getGoodsListByCategory(@Param("id") Integer id);
 
-    Integer queryUserPhone(@Param("phone") String phone);
-
-    AppUser getLoginUserInfo(@Param("userId") Integer userId);
-
-    void uploadAvatar(@Param("user") AppUser user);
-
-    String getPass(@Param("userId") Integer userId);
-
-    void updatePass(@Param("user") AppUserPassDto appUserPassDto);
-
-    void saveUserInfo(@Param("user") AppUser appUser);
-
-    AppUser getUserByUserAndPhone(@Param("user") AppUser appUser);
-
-    void forgotPass(@Param("user") AppUser appUser);
+    List<ShopGoodsDto> getGoodsList(@Param("search") String search);
 
 }

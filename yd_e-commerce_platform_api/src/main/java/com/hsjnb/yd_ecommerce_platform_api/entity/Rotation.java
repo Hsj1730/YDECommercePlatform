@@ -1,11 +1,12 @@
-package com.hsjnb.yd_ecommerce_platform_api.mapper.app;
+package com.hsjnb.yd_ecommerce_platform_api.entity;
 
-import com.hsjnb.yd_ecommerce_platform_api.dto.AppUserPassDto;
-import com.hsjnb.yd_ecommerce_platform_api.dto.UserPassDto;
-import com.hsjnb.yd_ecommerce_platform_api.entity.AppUser;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
@@ -20,32 +21,33 @@ import org.springframework.stereotype.Repository;
  *
  * @author : Hsj1730
  * @version : 1.0
- * @date : Created in 2022/03/27 14:50
+ * @date : Created in 2022/05/09 21:16
  * @description :
  */
 
-@Mapper
-@Repository
-public interface AppUserMapper {
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class Rotation implements Serializable {
 
-    AppUser getUserInfoByAccount(@Param("username") String username);
+    private Integer id;
 
-    void register(@Param("user") AppUser user);
+    private String title;
 
-    Integer queryUserPhone(@Param("phone") String phone);
+    private String image;
 
-    AppUser getLoginUserInfo(@Param("userId") Integer userId);
+    private String url;
 
-    void uploadAvatar(@Param("user") AppUser user);
+    private String enable;
 
-    String getPass(@Param("userId") Integer userId);
+    private Integer sort;
 
-    void updatePass(@Param("user") AppUserPassDto appUserPassDto);
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date createTime;
 
-    void saveUserInfo(@Param("user") AppUser appUser);
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date updateTime;
 
-    AppUser getUserByUserAndPhone(@Param("user") AppUser appUser);
-
-    void forgotPass(@Param("user") AppUser appUser);
+    private String effective;
 
 }

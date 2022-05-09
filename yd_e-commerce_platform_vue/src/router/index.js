@@ -59,7 +59,9 @@ router.beforeEach((to, from, next) => {
   if (to.path === "/login") {
     next();
   } else if (!token) {
-    Element.Message.error("请先登录");
+    if (to.path !== "/index" || to.path !== "/") {
+      Element.Message.error("请先登录");
+    }
     next({ path: "/login" });
   } else if (token && !hasMenus) {
     // 判断是否已经有查出菜单列表

@@ -2,7 +2,7 @@ export default {
   /**
    * 是否是服务器
    */
-  isServer: false,
+  isServer: true,
 
   /**
    * 密码级别1,2,3,4,5
@@ -66,7 +66,7 @@ export default {
     {
       id: "3",
       describe: "Blog",
-      url: "http://hsjnb.com:8081/",
+      url: "http://hsjnb.com:8090/",
     },
   ],
 
@@ -109,7 +109,7 @@ export default {
         describe: "Element-UI",
       },
     ],
-    loginFooter: "个人博客：http://hsjnb.com:8081",
+    loginFooter: "个人博客：http://hsjnb.com:8090",
 
     /**
      * 文件上传大小

@@ -26,12 +26,12 @@
     </update>
 
     <select id="getConsigneeAddress" parameterType="integer" resultType="consigneeAddressDto">
-        select id,user_id,real_name,phone,city,district,detail,is_default from yd_consignee_address where id = #{id}
+        select id,user_id,real_name,phone,province,city,district,detail,is_default from yd_consignee_address where id = #{id}
     </select>
 
     <update id="edit" parameterType="consigneeAddressDto">
         update yd_consignee_address set real_name = #{dto.realName},phone = #{dto.phone},city = #{dto.city},district = #{dto.district},
-                                        detail = #{dto.detail},is_default = #{dto.isDefault}
+                                        detail = #{dto.detail},is_default = #{dto.isDefault},province = #dto.province#
         where id = #{dto.id}
     </update>
 

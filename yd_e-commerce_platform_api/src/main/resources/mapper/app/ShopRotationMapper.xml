@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hsjnb.yd_ecommerce_platform_api.mapper.app.ShopRotationMapper">
+
+    <select id="getRotation" resultType="rotation">
+        select * from yd_rotation where effective = '1' and enable = '1' order by rand() limit 5
+    </select>
+
+</mapper>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hsjnb.yd_ecommerce_platform_api.mapper.app.ShopGoodsMapper">
+
+    <select id="getGoodsCategoryList" resultType="goodsCategory">
+        select * from yd_goods_category where effective = '1' and is_show = '1' order by create_time
+    </select>
+
+    <select id="getGoodsListByCategory" parameterType="integer" resultType="shopGoodsDto">
+        select id, image, store_name, store_info, unit_name, keyword,
+               cate_id, price, cost, postage, sort,
+               sales, stock, is_show, is_hot, is_benefit, is_best, is_new, is_good
+               from yd_goods where is_show = '1' and effective = '1' and cate_id = #{id}
+    </select>
+
+    <select id="getGoodsList" parameterType="string" resultType="shopGoodsDto">
+        select id, image, store_name, store_info, unit_name, keyword,
+               cate_id, price, cost, postage, sort,
+               sales, stock, is_show, is_hot, is_benefit, is_best, is_new, is_good
+        from yd_goods where is_show = '1' and effective = '1'
+        <if test="search != null and search != ''">
+            and (
+                store_name like concat('%',#{search},'%')
+                or keyword like concat('%',#{search},'%')
+            )
+        </if>
+        <if test="search == '' or search == null">
+            and (
+                is_show = '1'
+                or is_hot = '1'
+                or is_benefit = '1'
+                or is_best = '1'
+                or is_new = '1'
+                or is_good = '1'
+            )
+        </if>
+        order by
+            sales desc
+    </select>
+
+</mapper>

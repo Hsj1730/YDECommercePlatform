@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hsjnb.yd_ecommerce_platform_api.mapper.sys.RotationMapper">
+
+    <select id="getRotationList" resultType="rotation">
+        select * from yd_rotation where effective = '1' order by id
+    </select>
+
+    <update id="deleteRotation" parameterType="integer">
+        update yd_rotation set effective = '0' where id = #{id}
+    </update>
+
+    <update id="setRotationEnable">
+        update yd_rotation set enable = #{enable} where id = #{id}
+    </update>
+
+    <update id="updateRotation" parameterType="rotationDto">
+        update yd_rotation set title = #{dto.title},image = #{dto.image},url = #{dto.url},enable = #{dto.enable},sort = #{dto.sort} where id = #{dto.id}
+    </update>
+
+    <insert id="addRotation" parameterType="rotationDto">
+        insert into yd_rotation (title, image, url, enable, sort) values (#{dto.title},#{dto.image},#{dto.url},#{dto.enable},#{dto.sort})
+    </insert>
+
+    <select id="getRotationInfo" parameterType="integer" resultType="rotationDto">
+        select id, title, image, url, enable, sort from yd_rotation where effective = '1' and id = #{id}
+    </select>
+
+</mapper>

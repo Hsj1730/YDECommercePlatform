@@ -16,8 +16,23 @@
       size="small"
       style="width: 100%"
     >
-      <el-table-column prop="code" align="center" label="快递公司编号" />
-      <el-table-column prop="name" align="center" label="快递公司名称" />
+      <el-table-column prop="id" align="center" label="轮播图ID" />
+      <el-table-column prop="title" align="center" label="轮播图标题" />
+      <el-table-column prop="url" align="center" label="轮播图路由" />
+      <el-table-column
+        ref="table"
+        align="center"
+        width="150"
+        prop="image"
+        label="轮播图图片"
+      >
+        <template slot-scope="scope">
+          <a :href="scope.row.image" style="color: #42b983" target="_blank"
+            ><img :src="scope.row.image" alt="点击打开" class="el-avatar"
+          /></a>
+        </template>
+      </el-table-column>
+      <el-table-column prop="sort" align="center" label="排序" />
       <el-table-column prop="enable" align="center" label="状态">
         <template slot-scope="scope">
           <div @click="onEnable(scope.row.id, scope.row.enable)">
@@ -28,7 +43,6 @@
           </div>
         </template>
       </el-table-column>
-      <el-table-column prop="sort" align="center" label="排序" />
       <el-table-column prop="createTime" align="center" label="创建时间" />
       <el-table-column align="center">
         <template slot="header">
@@ -45,7 +59,7 @@
             style="margin-right: 10px"
           />
           <el-popover :ref="scope.row.id" placement="top" width="180">
-            <p>确定要删除该商品分类吗？</p>
+            <p>确定要删除该商城轮播图吗？</p>
             <div style="text-align: right; margin: 0">
               <el-button
                 size="mini"
@@ -80,17 +94,17 @@
       :total="page.total"
       style="float: right; margin-top: 10px; padding-bottom: 10px"
     />
-    <express-info ref="expressInfo" :is-edit="isEdit" />
+    <rotation-info ref="rotationInfo" :is-edit="isEdit" />
   </div>
 </template>
 
 <script>
-import expressInfo from "./part/expressInfo";
+import rotationInfo from "./part/rotationInfo";
 export default {
+  name: "index",
   components: {
-    expressInfo,
+    rotationInfo,
   },
-  name: "express",
   data() {
     return {
       loading: false,
@@ -108,60 +122,6 @@ export default {
     this.init();
   },
   methods: {
-    edit(id) {
-      this.$axios({
-        method: "post",
-        url: "/express/getExpressInfo/" + id,
-      }).then((res) => {
-        this.isEdit = true;
-        this.$refs.expressInfo.dialog = true;
-        this.$refs.expressInfo.form = res.data.data;
-      });
-    },
-    onEnable(id, enable) {
-      this.$confirm(
-        `确定进行[ ${enable === "1" ? "禁用" : "启用"} ]操作?`,
-        "提示",
-        {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning",
-        }
-      ).then(() => {
-        this.$axios({
-          method: "post",
-          url:
-            "/express/setExpressEnable/" +
-            id +
-            "/" +
-            (enable === "1" ? "0" : "1"),
-        }).then(() => {
-          this.$message({
-            message: "操作成功",
-            type: "success",
-            duration: 1000,
-            onClose: () => {
-              this.toQuery();
-            },
-          });
-        });
-      });
-    },
-    toDelete(id) {
-      this.$axios({
-        method: "post",
-        url: "/express/deleteExpress/" + id,
-      }).then((res) => {
-        if (res.data.code === 200) {
-          this.$message.success("删除成功");
-          this.toQuery();
-        }
-      });
-    },
-    add() {
-      this.isEdit = false;
-      this.$refs.expressInfo.dialog = true;
-    },
     init() {
       this.page = {
         current: 1,
@@ -174,7 +134,7 @@ export default {
       this.loading = true;
       this.$axios({
         method: "post",
-        url: "/express/getExpressList",
+        url: "/rotation/getRotationList",
         data: {
           pageNum: this.page.current,
           pageSize: this.page.pageSize,
@@ -198,6 +158,60 @@ export default {
     handleCurrentChange(val) {
       this.page.current = val;
       this.toQuery();
+    },
+    toDelete(id) {
+      this.$axios({
+        method: "post",
+        url: "/rotation/deleteRotation/" + id,
+      }).then((res) => {
+        if (res.data.code === 200) {
+          this.$message.success("删除成功");
+          this.toQuery();
+        }
+      });
+    },
+    add() {
+      this.isEdit = false;
+      this.$refs.rotationInfo.dialog = true;
+    },
+    edit(id) {
+      this.$axios({
+        method: "post",
+        url: "/rotation/getRotationInfo/" + id,
+      }).then((res) => {
+        this.isEdit = true;
+        this.$refs.rotationInfo.dialog = true;
+        this.$refs.rotationInfo.form = res.data.data;
+      });
+    },
+    onEnable(id, enable) {
+      this.$confirm(
+        `确定进行[ ${enable === "1" ? "禁用" : "启用"} ]操作?`,
+        "提示",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        }
+      ).then(() => {
+        this.$axios({
+          method: "post",
+          url:
+            "/rotation/setRotationEnable/" +
+            id +
+            "/" +
+            (enable === "1" ? "0" : "1"),
+        }).then(() => {
+          this.$message({
+            message: "操作成功",
+            type: "success",
+            duration: 1000,
+            onClose: () => {
+              this.toQuery();
+            },
+          });
+        });
+      });
     },
   },
 };

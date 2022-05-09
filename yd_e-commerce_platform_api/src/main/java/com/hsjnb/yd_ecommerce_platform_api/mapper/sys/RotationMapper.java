@@ -1,11 +1,12 @@
-package com.hsjnb.yd_ecommerce_platform_api.mapper.app;
+package com.hsjnb.yd_ecommerce_platform_api.mapper.sys;
 
-import com.hsjnb.yd_ecommerce_platform_api.dto.AppUserPassDto;
-import com.hsjnb.yd_ecommerce_platform_api.dto.UserPassDto;
-import com.hsjnb.yd_ecommerce_platform_api.entity.AppUser;
+import com.hsjnb.yd_ecommerce_platform_api.dto.RotationDto;
+import com.hsjnb.yd_ecommerce_platform_api.entity.Rotation;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
@@ -20,32 +21,24 @@ import org.springframework.stereotype.Repository;
  *
  * @author : Hsj1730
  * @version : 1.0
- * @date : Created in 2022/03/27 14:50
+ * @date : Created in 2022/05/09 21:12
  * @description :
  */
 
 @Mapper
 @Repository
-public interface AppUserMapper {
+public interface RotationMapper {
 
-    AppUser getUserInfoByAccount(@Param("username") String username);
+    List<Rotation> getRotationList();
 
-    void register(@Param("user") AppUser user);
+    void deleteRotation(@Param("id") Integer id);
 
-    Integer queryUserPhone(@Param("phone") String phone);
+    void setRotationEnable(@Param("id") Integer id,@Param("enable") String enable);
 
-    AppUser getLoginUserInfo(@Param("userId") Integer userId);
+    void updateRotation(@Param("dto") RotationDto dto);
 
-    void uploadAvatar(@Param("user") AppUser user);
+    void addRotation(@Param("dto") RotationDto dto);
 
-    String getPass(@Param("userId") Integer userId);
-
-    void updatePass(@Param("user") AppUserPassDto appUserPassDto);
-
-    void saveUserInfo(@Param("user") AppUser appUser);
-
-    AppUser getUserByUserAndPhone(@Param("user") AppUser appUser);
-
-    void forgotPass(@Param("user") AppUser appUser);
+    RotationDto getRotationInfo(@Param("id") Integer id);
 
 }

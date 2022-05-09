@@ -21,4 +21,28 @@
         select * from yd_app_user where effective = '1' and user_id = #{userId}
     </select>
 
+    <update id="uploadAvatar" parameterType="appUser">
+        update yd_app_user set user_image = #{user.userImage} where user_id = #{user.userId}
+    </update>
+
+    <select id="getPass" parameterType="integer" resultType="string">
+        select password from yd_app_user where user_id = #{userId}
+    </select>
+
+    <update id="updatePass" parameterType="appUserPassDto">
+        update yd_app_user set password = #{user.newPass} where user_id = #{user.userId}
+    </update>
+
+    <update id="saveUserInfo" parameterType="appUser">
+        update yd_app_user set phone = #{user.phone},real_name = #{user.realName},card_id = #{user.cardId},address = #{user.address} where user_id = #{user.userId}
+    </update>
+
+    <select id="getUserByUserAndPhone" parameterType="appUser" resultType="appUser">
+        select * from yd_app_user where effective = '1' and username = #{user.username} and phone = #{user.phone}
+    </select>
+
+    <update id="forgotPass" parameterType="appUser">
+        update yd_app_user set password = #{user.password} where username = #{user.username} and phone = #{user.phone}
+    </update>
+
 </mapper>

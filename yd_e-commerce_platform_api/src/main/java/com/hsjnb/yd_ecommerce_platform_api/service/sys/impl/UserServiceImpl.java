@@ -201,7 +201,7 @@ public class UserServiceImpl implements UserService {
             }
             userPassDto.setNewPass(new BCryptPasswordEncoder().encode(newPass));
             userMapper.updatePass(userPassDto);
-            return Result.success("密码修改成功");
+            return Result.success(200,"密码修改成功",null);
         } catch (NoSuchAlgorithmException | InvalidKeySpecException | NoSuchPaddingException | InvalidKeyException | BadPaddingException | IllegalBlockSizeException | IOException e) {
             e.printStackTrace();
             return Result.fail("密码修改失败");
