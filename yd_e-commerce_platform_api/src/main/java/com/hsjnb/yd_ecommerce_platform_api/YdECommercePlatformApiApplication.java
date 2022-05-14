@@ -30,6 +30,7 @@ public class YdECommercePlatformApiApplication {
                         "             \\|_________|\n" +
                         "\n亿点电子商务平台服务端启动成功 " +
                         "\n前端访问地址：" + PropertyUtil.getProperty("frontendUrl") +
+                        "\n后端接口地址：" + PropertyUtil.getProperty("backendUrl") +
                         "\nGitHub项目地址：" + PropertyUtil.getProperty("githubUrl") +
                         "\nGitee项目地址：" + PropertyUtil.getProperty("giteeUrl") + "\n"
         );

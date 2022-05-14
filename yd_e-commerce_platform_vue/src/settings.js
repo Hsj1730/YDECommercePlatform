@@ -2,7 +2,7 @@ export default {
   /**
    * 是否是服务器
    */
-  isServer: true,
+  isServer: false,
 
   /**
    * 密码级别1,2,3,4,5

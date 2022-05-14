@@ -48,4 +48,59 @@
         where id = #{dto.id}
     </update>
 
+    <update id="deleteGoods" parameterType="integer">
+        update yd_goods set effective = '0' where id = #{id}
+    </update>
+
+    <select id="getGoodsAttrResult" parameterType="integer" resultType="string">
+        select result from yd_goods_attr_result where goods_id = #{goodsId}
+    </select>
+
+    <update id="updateGoodsByAttr" parameterType="goods">
+        update yd_goods set stock = #{goods.stock} ,price = #{goods.price} where id = #{goods.id}
+    </update>
+
+    <delete id="deleteGoodsAttr" parameterType="integer">
+        delete from yd_goods_attr where goods_id = #{goodsId}
+    </delete>
+
+    <delete id="deleteGoodsAttrValue" parameterType="integer">
+        delete from yd_goods_attr_value where goods_id = #{goodsId}
+    </delete>
+
+    <delete id="deleteGoodsAttrResult" parameterType="integer">
+        delete from yd_goods_attr_result where goods_id = #{goodsId}
+    </delete>
+
+    <insert id="saveGoodsAttr" parameterType="goodsAttr">
+        insert into
+            yd_goods_attr (goods_id, attr_name, attr_values)
+        values
+            <foreach collection="attrGroup" item="item" separator=",">
+                (#{item.goodsId},
+                #{item.attrName},
+                #{item.attrValues})
+            </foreach>
+    </insert>
+
+    <insert id="saveGoodsAttrValue" parameterType="goodsAttrValue">
+        insert into
+            yd_goods_attr_value (goods_id,sku,stock,price,image,`unique`,cost,bar_code)
+        values
+            <foreach collection="valueGroup" item="item" separator=",">
+                (#{item.goodsId},
+                #{item.sku},
+                #{item.stock},
+                #{item.price},
+                #{item.image},
+                #{item.unique},
+                #{item.cost},
+                #{item.barCode})
+            </foreach>
+    </insert>
+
+    <insert id="saveGoodsAttrResult" parameterType="goodsAttrResult">
+        insert into yd_goods_attr_result(goods_id, result) values (#{goodsAttrResult.goodsId},#{goodsAttrResult.result})
+    </insert>
+
 </mapper>

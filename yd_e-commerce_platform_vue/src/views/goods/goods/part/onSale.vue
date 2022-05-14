@@ -175,21 +175,21 @@
                   >
                 </el-popover>
               </el-dropdown-item>
-              <el-dropdown-item>
-                <el-button size="mini" type="success" @click="editC(scope.row)"
-                  >开启拼团</el-button
-                >
-              </el-dropdown-item>
-              <el-dropdown-item>
-                <el-button size="mini" type="primary" @click="editD(scope.row)"
-                  >开启秒杀</el-button
-                >
-              </el-dropdown-item>
-              <el-dropdown-item>
-                <el-button size="mini" type="warning" @click="editE(scope.row)"
-                  >开启砍价</el-button
-                >
-              </el-dropdown-item>
+              <!--              <el-dropdown-item>-->
+              <!--                <el-button size="mini" type="success" @click="editC(scope.row)"-->
+              <!--                  >开启拼团</el-button-->
+              <!--                >-->
+              <!--              </el-dropdown-item>-->
+              <!--              <el-dropdown-item>-->
+              <!--                <el-button size="mini" type="primary" @click="editD(scope.row)"-->
+              <!--                  >开启秒杀</el-button-->
+              <!--                >-->
+              <!--              </el-dropdown-item>-->
+              <!--              <el-dropdown-item>-->
+              <!--                <el-button size="mini" type="warning" @click="editE(scope.row)"-->
+              <!--                  >开启砍价</el-button-->
+              <!--                >-->
+              <!--              </el-dropdown-item>-->
             </el-dropdown-menu>
           </el-dropdown>
         </template>
@@ -206,14 +206,16 @@
       style="float: right; margin-top: 10px; padding-bottom: 10px"
     />
     <goods-info ref="goodsInfoForm" :is-edit="isEdit" />
+    <attr ref="attr" :is-attr="isAttr" />
   </div>
 </template>
 
 <script>
 import goodsInfo from "./goodsInfo";
+import attr from "./attr";
 export default {
   name: "onSale",
-  components: { goodsInfo },
+  components: { goodsInfo, attr },
   data() {
     return {
       query: {
@@ -228,6 +230,7 @@ export default {
       loading: false,
       delLoading: false,
       isEdit: false,
+      isAttr: false,
       tableData: [],
       page: {
         current: 1,
@@ -240,6 +243,12 @@ export default {
     this.init();
   },
   methods: {
+    attr(id) {
+      this.isAttr = false;
+      this.$refs.attr.dialog = true;
+      this.$refs.attr.id = id;
+      this.$refs.attr.getAttrs();
+    },
     add() {
       this.isEdit = false;
       this.$refs.goodsInfoForm.dialog = true;
@@ -255,6 +264,23 @@ export default {
       }).then((res) => {
         this.$refs.goodsInfoForm.form = res.data.data;
       });
+    },
+    subDelete(id) {
+      this.delLoading = true;
+      this.$axios({
+        method: "post",
+        url: "/goods/deleteGoods/" + id,
+      })
+        .then((res) => {
+          if (res.data.code === 200) {
+            this.delLoading = false;
+            this.$message.success("删除成功");
+            this.toQuery();
+          }
+        })
+        .catch(() => {
+          this.delLoading = false;
+        });
     },
     onSale(id, status) {
       this.$confirm(

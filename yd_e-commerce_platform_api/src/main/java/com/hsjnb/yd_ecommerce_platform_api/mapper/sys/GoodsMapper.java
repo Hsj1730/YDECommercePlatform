@@ -2,6 +2,9 @@ package com.hsjnb.yd_ecommerce_platform_api.mapper.sys;
 
 import com.hsjnb.yd_ecommerce_platform_api.dto.GoodsDto;
 import com.hsjnb.yd_ecommerce_platform_api.entity.Goods;
+import com.hsjnb.yd_ecommerce_platform_api.entity.GoodsAttr;
+import com.hsjnb.yd_ecommerce_platform_api.entity.GoodsAttrResult;
+import com.hsjnb.yd_ecommerce_platform_api.entity.GoodsAttrValue;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -38,5 +41,23 @@ public interface GoodsMapper {
     void addGoods(@Param("dto") GoodsDto dto);
 
     void editGoods(@Param("dto") GoodsDto dto);
+
+    void deleteGoods(@Param("id") Integer id);
+
+    String getGoodsAttrResult(@Param("goodsId") Integer id);
+
+    void updateGoodsByAttr(@Param("goods") Goods goods);
+
+    void deleteGoodsAttr(@Param("goodsId") Integer id);
+
+    void deleteGoodsAttrValue(@Param("goodsId") Integer id);
+
+    void deleteGoodsAttrResult(@Param("goodsId") Integer id);
+
+    void saveGoodsAttr(@Param("attrGroup") List<GoodsAttr> attrGroup);
+
+    void saveGoodsAttrValue(@Param("valueGroup") List<GoodsAttrValue> valueGroup);
+
+    void saveGoodsAttrResult(@Param("goodsAttrResult") GoodsAttrResult goodsAttrResult);
 
 }

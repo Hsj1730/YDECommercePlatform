@@ -1,11 +1,11 @@
-package com.hsjnb.yd_ecommerce_platform_api.service.sys;
+package com.hsjnb.yd_ecommerce_platform_api.dto;
 
-import com.github.pagehelper.PageInfo;
-import com.hsjnb.yd_ecommerce_platform_api.common.Result;
-import com.hsjnb.yd_ecommerce_platform_api.dto.GoodsDto;
-import com.hsjnb.yd_ecommerce_platform_api.entity.Goods;
-import org.springframework.web.multipart.MultipartFile;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,30 +21,17 @@ import java.util.Map;
  *
  * @author : Hsj1730
  * @version : 1.0
- * @date : Created in 2022/03/30 21:32
+ * @date : Created in 2022/05/11 22:46
  * @description :
  */
 
-public interface GoodsService {
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class DetailDto implements Serializable {
 
-    PageInfo<Goods> getGoodsList(Map<String,Object> param);
+    private List<String> data;
 
-    void setGoodsIsShow(Integer id,String status);
-
-    GoodsDto getGoodsInfo(Integer id);
-
-    Result saveGoodsInfo(GoodsDto dto);
-
-    Result deleteGoods(Integer id);
-
-    String getGoodsAttrResult(Integer id);
-
-    Result isFormatAttr(Integer id,String jsonStr);
-
-    Result uploadAttrPic(MultipartFile multipartFile);
-
-    Result setAttr(Integer id,String jsonStr);
-
-    Result clearGoodsAttr(Integer id,boolean isActive);
+    private List<Map<String, Map<String, String>>> res;
 
 }

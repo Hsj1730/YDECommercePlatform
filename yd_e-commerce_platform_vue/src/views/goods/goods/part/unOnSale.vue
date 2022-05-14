@@ -231,6 +231,23 @@ export default {
           this.loading = false;
         });
     },
+    subDelete(id) {
+      this.delLoading = true;
+      this.$axios({
+        method: "post",
+        url: "/goods/deleteGoods/" + id,
+      })
+        .then((res) => {
+          if (res.data.code === 200) {
+            this.delLoading = false;
+            this.$message.success("删除成功");
+            this.toQuery();
+          }
+        })
+        .catch(() => {
+          this.delLoading = false;
+        });
+    },
     handleSizeChange(val) {
       this.page.pageSize = val;
       this.toQuery();
