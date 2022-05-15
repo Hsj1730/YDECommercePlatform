@@ -1,17 +1,13 @@
-package com.hsjnb.yd_ecommerce_platform_api.mapper.app;
+package com.hsjnb.yd_ecommerce_platform_api.dto;
 
-import com.hsjnb.yd_ecommerce_platform_api.dto.GoodsAttrValueDto;
-import com.hsjnb.yd_ecommerce_platform_api.dto.GoodsDetailDto;
-import com.hsjnb.yd_ecommerce_platform_api.dto.SearchTipDto;
-import com.hsjnb.yd_ecommerce_platform_api.dto.ShopGoodsDto;
-import com.hsjnb.yd_ecommerce_platform_api.entity.GoodsCategory;
-import org.apache.ibatis.annotations.MapKey;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.util.List;
-import java.util.Map;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
@@ -26,24 +22,54 @@ import java.util.Map;
  *
  * @author : Hsj1730
  * @version : 1.0
- * @date : Created in 2022/05/09 23:35
+ * @date : Created in 2022/05/15 17:36
  * @description :
  */
 
-@Mapper
-@Repository
-public interface ShopGoodsMapper {
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class GoodsOrderResultDto implements Serializable {
 
-    List<GoodsCategory> getGoodsCategoryList();
+    private String image;
 
-    List<ShopGoodsDto> getGoodsListByCategory(@Param("id") Integer id);
+    private Integer goodsId;
 
-    List<ShopGoodsDto> getGoodsList(@Param("search") String search);
+    private String link;
 
-   GoodsDetailDto getGoodsDetail(@Param("id") Integer id);
+    private Integer id;
 
-    List<GoodsAttrValueDto> getGoodsAttrValue(@Param("goodsId") Integer id);
+    private String orderId;
 
-    List<SearchTipDto> getGoodsListTip(@Param("search") String search);
+    private Integer userId;
+
+    private Integer cardId;
+
+    private Integer totalNum;
+
+    private BigDecimal totalPrice;
+
+    private BigDecimal totalPostage;
+
+    private BigDecimal payPrice;
+
+    private BigDecimal payPostage;
+
+    private String payStatus;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date payTime;
+
+    private String payType;
+
+    private String status;
+
+    private String effective;
+
+    private String isEvaluate;
+
+    private String storeName;
+
+    private String sku;
 
 }

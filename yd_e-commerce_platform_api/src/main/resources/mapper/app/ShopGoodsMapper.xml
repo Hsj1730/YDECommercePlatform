@@ -40,4 +40,20 @@
             sales desc
     </select>
 
+    <select id="getGoodsDetail" parameterType="integer" resultType="goodsDetailDto">
+        select id, image, slider_image, store_name, store_info, unit_name, keyword, bar_code,
+               cate_id, price, cost, postage, sort, sales, stock, is_show, is_hot, is_benefit,
+               is_best, is_new, is_good, description
+        from yd_goods where id = #{id}
+    </select>
+
+    <select id="getGoodsAttrValue" parameterType="integer" resultType="goodsAttrValueDto">
+        select id, goods_id, sku, stock, sales, price, image, `unique`, cost, bar_code from yd_goods_attr_value where goods_id = #{goodsId} order by id
+    </select>
+
+    <select id="getGoodsListTip" parameterType="string" resultType="searchTipDto">
+        select id as goodsId,keyword from yd_goods where effective = '1' and (store_name like concat('%',#{search},'%')
+            or keyword like concat('%',#{search},'%'))
+    </select>
+
 </mapper>

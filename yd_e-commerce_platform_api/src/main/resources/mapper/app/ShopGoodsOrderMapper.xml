@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hsjnb.yd_ecommerce_platform_api.mapper.app.ShopGoodsOrderMapper">
+
+    <select id="getGoodsStock" parameterType="goodsOrderAddDto" resultType="goodsAttrValue">
+        select * from yd_goods_attr_value where goods_id = #{dto.goodsId} and `unique` = #{dto.unique}
+    </select>
+
+    <select id="getStoreName" parameterType="goodsOrderAddDto" resultType="string">
+        select store_name from yd_goods where id = #{dto.goodsId}
+    </select>
+
+    <select id="getUser" parameterType="integer" resultType="appUser">
+        select *
+        from yd_app_user where user_id = #{id};
+    </select>
+
+    <insert id="addGoodsCart" parameterType="goodsOrderAddDto" useGeneratedKeys="true" keyProperty="cartId">
+        insert into
+            yd_goods_cart (user_id, goods_id, goods_attr_unique, num, is_play, is_new)
+        values (#{dto.userId},#{dto.goodsId},#{dto.unique},#{dto.totalNum},'1',#{dto.isNew})
+    </insert>
+
+    <update id="updateUserPlay" parameterType="appUser">
+        update yd_app_user set pay_count = #{user.payCount},now_money = #{user.nowMoney} where user_id = #{user.userId}
+    </update>
+
+    <select id="getAddress" parameterType="goodsOrderAddDto" resultType="consigneeAddress">
+        select * from yd_consignee_address where id = #{dto.addressId}
+    </select>
+
+    <insert id="addOrder" parameterType="goodsOrderAddDto">
+        insert into yd_goods_order (
+            order_id,
+            user_id,
+            real_name,
+            phone,
+            address,
+            card_id,
+            total_num,
+            total_price,
+            total_postage,
+            pay_price,
+            pay_postage,
+            pay_status,
+            pay_time,
+            pay_type,
+            status
+        ) values (
+            #{dto.orderId},
+            #{dto.userId},
+            #{dto.realName},
+            #{dto.phone},
+            #{dto.address},
+            #{dto.cartId},
+            #{dto.totalNum},
+            #{dto.totalPrice},
+            #{dto.totalPostage},
+            #{dto.payPrice},
+            #{dto.payPostage},
+            #{dto.status},
+            SYSDATE(),
+            #{dto.playType},
+            #{dto.status}
+        )
+    </insert>
+
+    <update id="updateGoods" parameterType="goodsOrderAddDto">
+        update yd_goods set stock = stock - #{dto.totalNum},sales = sales + #{dto.totalNum} where id = #{dto.goodsId}
+    </update>
+
+    <update id="updateGoodsAttrValue" parameterType="goodsOrderAddDto">
+        update yd_goods_attr_value set stock = stock - #{dto.totalNum},sales = sales + #{dto.totalNum} where goods_id = #{dto.goodsId} and `unique` = #{dto.unique}
+    </update>
+
+    <update id="updateIsPlay" parameterType="goodsOrderAddDto">
+        update yd_goods_cart set is_play = '1' where id = #{dto.cartId}
+    </update>
+
+    <select id="getGoodsPrice" parameterType="goodsOrderAddDto" resultType="goodsOrderAddDto">
+        select
+            *
+        from (
+            select
+                a.price as total_price,
+                b.postage as total_postage
+            from
+                yd_goods_attr_value a
+                left join yd_goods b on a.goods_id = b.id
+            where
+                a.`unique` = #{dto.unique}
+                and a.goods_id = #{dto.goodsId}
+        ) aa
+    </select>
+
+    <select id="getGoodsOrderList" parameterType="goodsOrderSearchDto" resultType="goodsOrderResultDto">
+        select
+            a.id, a.order_id, a.user_id, a.card_id,
+        a.total_num, a.total_price, a.total_postage, a.pay_price, a.pay_postage,
+        a.pay_status, a.pay_time, a.pay_type, a.status,a.effective, a.is_evaluate,
+        c.store_name,d.sku,d.image,b.goods_id
+        from
+            yd_goods_order a
+            left join yd_goods_cart b on a.card_id = b.id
+            left join yd_goods c on b.goods_id = c.id
+            left join yd_goods_attr_value d on b.goods_attr_unique = d.`unique`
+        where
+            a.user_id = #{dto.userId}
+            and a.effective = '1'
+            <if test="dto.searchType != ''">
+                and a.status = #{dto.searchType}
+            </if>
+            <if test="dto.isEvaluate != ''">
+                and a.status = '3'
+                and a.is_evaluate = #{dto.isEvaluate}
+            </if>
+    </select>
+
+    <update id="updateStatus">
+        update yd_goods_order set status = #{status} where id  = #{id}
+    </update>
+
+    <select id="getGoodsOrder" parameterType="integer" resultType="goodsOrder">
+        select * from yd_goods_order where id = #{id}
+    </select>
+
+    <update id="updateAttr" parameterType="goodsOrder">
+        update yd_goods_attr_value set stock = stock + #{dto.totalNum},sales = sales - #{dto.totalNum} where `unique` = (
+            select goods_attr_unique from yd_goods_cart where id = #{dto.cardId}
+            )
+    </update>
+
+    <update id="updateGoods2" parameterType="goodsOrder">
+        update yd_goods set stock = stock + #{dto.totalNum},sales = sales - #{dto.totalNum} where id = (
+            select goods_id from yd_goods_cart where id = #{dto.cardId}
+            )
+    </update>
+
+    <update id="delete" parameterType="integer">
+        update yd_goods_order set effective = '0' where id = #{id}
+    </update>
+
+    <update id="evaluate" parameterType="goodsOrderEvaluateDto">
+        update yd_goods_order set is_evaluate = '1',evaluate = #{dto.evaluate} where id = #{dto.id}
+    </update>
+
+    <select id="getGoodsOrderDetail" parameterType="integer" resultType="goodsOrderResultDetailDto">
+        SELECT DISTINCT
+            a.id,
+            a.order_id,
+            a.user_id,
+            a.real_name,
+            a.phone,
+            a.address,
+            a.card_id,
+            a.total_num,
+            a.total_price,
+            a.total_postage,
+            a.pay_price,
+            a.pay_postage,
+            a.pay_status,
+            a.pay_time,
+            a.pay_type,
+            a.`status`,
+            a.effective,
+            a.create_time,
+            a.update_time,
+            a.is_evaluate,
+            a.evaluate,
+            a.delivery_sn,
+            a.delivery_name,
+            a.delivery_type,
+            a.delivery_id,
+            c.keyword,
+            c.store_name,
+            c.store_info,
+            d.sku,
+            d.image,
+            b.goods_id
+        FROM
+            yd_goods_order AS a
+                LEFT JOIN yd_goods_cart AS b ON a.card_id = b.id
+                LEFT JOIN yd_goods AS c ON b.goods_id = c.id
+                LEFT JOIN yd_goods_attr_value AS d ON b.goods_attr_unique = d.`unique`
+        WHERE
+            a.id = '1'
+    </select>
+
+</mapper>

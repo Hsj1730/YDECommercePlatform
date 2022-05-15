@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hsjnb.yd_ecommerce_platform_api.mapper.app.GoodsCartMapper">
+
+    <select id="getGoodsCartList" parameterType="integer" resultType="goodsCartDto">
+        SELECT
+            a.id,
+            a.user_id,
+            a.goods_id,
+            a.goods_attr_unique,
+            a.num,
+            a.is_play,
+            a.is_new,
+            b.sku,
+            b.image,
+            c.store_name,
+            b.price,
+            c.postage
+        FROM
+            yd_goods_cart AS a
+                LEFT JOIN
+            yd_goods_attr_value AS b
+            ON
+                a.goods_attr_unique = b.`unique`
+                LEFT JOIN
+            yd_goods AS c
+            ON
+                a.goods_id = c.id
+        WHERE
+            a.is_play = '0' AND
+            a.is_new = '0' AND
+            a.effective = '1' AND
+            a.user_id = #{userId}
+    </select>
+
+    <select id="addGoodsCart" parameterType="goodsCart">
+        insert into
+            yd_goods_cart(user_id, goods_id, goods_attr_unique, num,is_new)
+        values (
+                #{goodsCart.userId},#{goodsCart.goodsId},#{goodsCart.goodsAttrUnique},#{goodsCart.num},#{goodsCart.isNew}
+               )
+    </select>
+
+    <update id="delGoodsCart" parameterType="integer">
+        update yd_goods_cart
+        set effective = '0'
+        where id = #{id};
+    </update>
+
+    <update id="updateGoodsCartGoodsNum" parameterType="integer">
+        update yd_goods_cart
+        set num = #{num}
+        where id = #{id}
+    </update>
+
+    <select id="getGoodsCart" parameterType="goodsOrderAddDto" resultType="goodsOrderAddDto">
+        select
+            *
+        from (
+            select
+                #{dto.userId} as userId,
+                a.goods_id as goodsId,
+                a.num as totalNum,
+                #{dto.cartId} as cartId,
+                a.goods_attr_unique as `unique`,
+                #{dto.playType} as playType,
+                #{dto.addressId} as addressId,
+                c.price as total_price,
+                b.postage as total_postage
+            from
+                yd_goods_cart a
+                left join yd_goods b on a.goods_id = b.id
+                left join yd_goods_attr_value c on (a.goods_id = c.goods_id and a.goods_attr_unique = c.`unique`)
+            where a.id =  #{dto.cartId}
+        ) aa
+    </select>
+
+</mapper>

@@ -1,17 +1,12 @@
-package com.hsjnb.yd_ecommerce_platform_api.mapper.app;
+package com.hsjnb.yd_ecommerce_platform_api.entity;
 
-import com.hsjnb.yd_ecommerce_platform_api.dto.GoodsAttrValueDto;
-import com.hsjnb.yd_ecommerce_platform_api.dto.GoodsDetailDto;
-import com.hsjnb.yd_ecommerce_platform_api.dto.SearchTipDto;
-import com.hsjnb.yd_ecommerce_platform_api.dto.ShopGoodsDto;
-import com.hsjnb.yd_ecommerce_platform_api.entity.GoodsCategory;
-import org.apache.ibatis.annotations.MapKey;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.util.List;
-import java.util.Map;
+import java.io.Serializable;
+import java.util.Date;
 
 /**
  * █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
@@ -26,24 +21,36 @@ import java.util.Map;
  *
  * @author : Hsj1730
  * @version : 1.0
- * @date : Created in 2022/05/09 23:35
+ * @date : Created in 2022/05/15 10:05
  * @description :
  */
 
-@Mapper
-@Repository
-public interface ShopGoodsMapper {
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class GoodsCart implements Serializable {
 
-    List<GoodsCategory> getGoodsCategoryList();
+    private Integer id;
 
-    List<ShopGoodsDto> getGoodsListByCategory(@Param("id") Integer id);
+    private Integer userId;
 
-    List<ShopGoodsDto> getGoodsList(@Param("search") String search);
+    private Integer goodsId;
 
-   GoodsDetailDto getGoodsDetail(@Param("id") Integer id);
+    private String goodsAttrUnique;
 
-    List<GoodsAttrValueDto> getGoodsAttrValue(@Param("goodsId") Integer id);
+    private Integer num;
 
-    List<SearchTipDto> getGoodsListTip(@Param("search") String search);
+    private String isPlay;
+
+    private String isNew;
+
+    private String effective;
+
+    //添加时间
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date createTime;
+    //修改时间
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date updateTime;
 
 }

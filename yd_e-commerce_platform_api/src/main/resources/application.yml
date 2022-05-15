@@ -35,7 +35,7 @@ mybatis:
 hsjnb:
   jwt:
     header: Authorization
-    expire: 86400 #1天，秒单位
+    expire: 592200 #7天，秒单位
     secret: hagxvkndkg3495mllgfgfgd1fs1dq4fs  # 秘钥随机的32位
   default:
     defaultAvatar: 9ed812a287ef4a2b888b2068addd7f98

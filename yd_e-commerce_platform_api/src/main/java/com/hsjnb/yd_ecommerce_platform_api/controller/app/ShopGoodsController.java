@@ -74,4 +74,22 @@ public class ShopGoodsController {
         return Result.success(shopGoodsService.getGoodsList(search));
     }
 
+    @AnonymousAccess
+    @PostMapping(value = "getGoodsListTip", produces = Constant.CONTENT_TYPE)
+    @ApiOperation(value = "搜索提示", httpMethod = Constant.HTTP_POST, response = Result.class)
+    public Result getGoodsListTip(String search) {
+        return Result.success(shopGoodsService.getGoodsListTip(search));
+    }
+
+    /**
+     * 获取商品详情
+     * @return Result
+     */
+    @AnonymousAccess
+    @PostMapping(value = "getGoodsDetail/{id}", produces = Constant.CONTENT_TYPE)
+    @ApiOperation(value = "获取商品详情", httpMethod = Constant.HTTP_POST, response = Result.class)
+    public Result getGoodsList(@PathVariable Integer id) {
+        return Result.success(shopGoodsService.getGoodsDetail(id));
+    }
+
 }

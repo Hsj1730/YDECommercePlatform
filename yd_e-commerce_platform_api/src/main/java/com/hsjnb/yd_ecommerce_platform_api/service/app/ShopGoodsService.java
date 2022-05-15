@@ -1,5 +1,7 @@
 package com.hsjnb.yd_ecommerce_platform_api.service.app;
 
+import com.hsjnb.yd_ecommerce_platform_api.common.Result;
+import com.hsjnb.yd_ecommerce_platform_api.dto.SearchTipDto;
 import com.hsjnb.yd_ecommerce_platform_api.dto.ShopGoodsDto;
 import com.hsjnb.yd_ecommerce_platform_api.entity.GoodsCategory;
 
@@ -29,5 +31,9 @@ public interface ShopGoodsService {
     List<ShopGoodsDto> getGoodsListByCategory(Integer id);
 
     List<ShopGoodsDto> getGoodsList(String search);
+
+    Result getGoodsDetail(Integer id);
+
+    List<SearchTipDto> getGoodsListTip(String search);
 
 }

@@ -1,17 +1,10 @@
-package com.hsjnb.yd_ecommerce_platform_api.mapper.app;
+package com.hsjnb.yd_ecommerce_platform_api.dto;
 
-import com.hsjnb.yd_ecommerce_platform_api.dto.GoodsAttrValueDto;
-import com.hsjnb.yd_ecommerce_platform_api.dto.GoodsDetailDto;
-import com.hsjnb.yd_ecommerce_platform_api.dto.SearchTipDto;
-import com.hsjnb.yd_ecommerce_platform_api.dto.ShopGoodsDto;
-import com.hsjnb.yd_ecommerce_platform_api.entity.GoodsCategory;
-import org.apache.ibatis.annotations.MapKey;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.util.List;
-import java.util.Map;
+import java.io.Serializable;
 
 /**
  * █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
@@ -26,24 +19,19 @@ import java.util.Map;
  *
  * @author : Hsj1730
  * @version : 1.0
- * @date : Created in 2022/05/09 23:35
+ * @date : Created in 2022/05/15 19:41
  * @description :
  */
 
-@Mapper
-@Repository
-public interface ShopGoodsMapper {
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class SearchTipDto implements Serializable {
 
-    List<GoodsCategory> getGoodsCategoryList();
+    private Integer goodsId;
 
-    List<ShopGoodsDto> getGoodsListByCategory(@Param("id") Integer id);
+    private String keyword;
 
-    List<ShopGoodsDto> getGoodsList(@Param("search") String search);
-
-   GoodsDetailDto getGoodsDetail(@Param("id") Integer id);
-
-    List<GoodsAttrValueDto> getGoodsAttrValue(@Param("goodsId") Integer id);
-
-    List<SearchTipDto> getGoodsListTip(@Param("search") String search);
+    private String link;
 
 }
