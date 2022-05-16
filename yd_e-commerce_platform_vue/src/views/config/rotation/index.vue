@@ -16,13 +16,18 @@
       size="small"
       style="width: 100%"
     >
-      <el-table-column prop="id" align="center" label="轮播图ID" />
+      <el-table-column prop="id" align="center" label="轮播图ID" width="80" />
       <el-table-column prop="title" align="center" label="轮播图标题" />
-      <el-table-column prop="url" align="center" label="轮播图路由" />
+      <el-table-column
+        prop="url"
+        align="center"
+        label="轮播图路由"
+        width="300"
+      />
       <el-table-column
         ref="table"
         align="center"
-        width="150"
+        width="100"
         prop="image"
         label="轮播图图片"
       >

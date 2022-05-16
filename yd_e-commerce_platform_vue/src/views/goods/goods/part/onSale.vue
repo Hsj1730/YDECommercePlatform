@@ -175,21 +175,6 @@
                   >
                 </el-popover>
               </el-dropdown-item>
-              <!--              <el-dropdown-item>-->
-              <!--                <el-button size="mini" type="success" @click="editC(scope.row)"-->
-              <!--                  >开启拼团</el-button-->
-              <!--                >-->
-              <!--              </el-dropdown-item>-->
-              <!--              <el-dropdown-item>-->
-              <!--                <el-button size="mini" type="primary" @click="editD(scope.row)"-->
-              <!--                  >开启秒杀</el-button-->
-              <!--                >-->
-              <!--              </el-dropdown-item>-->
-              <!--              <el-dropdown-item>-->
-              <!--                <el-button size="mini" type="warning" @click="editE(scope.row)"-->
-              <!--                  >开启砍价</el-button-->
-              <!--                >-->
-              <!--              </el-dropdown-item>-->
             </el-dropdown-menu>
           </el-dropdown>
         </template>

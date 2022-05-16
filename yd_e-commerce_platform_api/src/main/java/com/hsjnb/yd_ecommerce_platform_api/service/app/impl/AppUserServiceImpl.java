@@ -118,7 +118,8 @@ public class AppUserServiceImpl implements AppUserService {
         String key = qiNiuYunUtil.upload(multipartFile);
         appUser.setUserImage(key);
         appUserMapper.uploadAvatar(appUser);
-        return Result.success(200,"修改成功",null);
+        String url = qiNiuYunUtil.getDownloadUrl(key);
+        return Result.success(200,"修改成功",url);
     }
 
     @Override

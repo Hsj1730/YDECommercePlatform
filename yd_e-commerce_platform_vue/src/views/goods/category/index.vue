@@ -222,6 +222,7 @@ export default {
       });
     },
     fnAddCategory(formName) {
+      console.log(this.categoryForm.parentId);
       this.$refs[formName].validate((valid) => {
         if (valid) {
           if (this.categoryForm.parentId !== "0" && this.picArr.length === 0) {
@@ -256,11 +257,11 @@ export default {
     fnEditCategory(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          if (this.categoryForm.parentId !== "0" && this.picArr.length === 0) {
+          if (this.categoryForm.parentId !== 0 && this.picArr.length === 0) {
             this.$message.error("子分类必须选择分类图片");
             return false;
           } else {
-            if (this.categoryForm.parentId !== "0") {
+            if (this.categoryForm.parentId !== 0) {
               this.categoryForm.pic = this.picArr[0].url;
             } else {
               this.categoryForm.pic = null;

@@ -40,5 +40,5 @@ module.exports = {
   },
 
   publicPath: "/",
-  outputDir: "yd_e-commerce_platform_vue",
+  outputDir: "dist",
 };

@@ -5,33 +5,33 @@
   >
     <div class="container" style="margin-top: -20px">
       <el-tabs v-model="status" type="card" @tab-click="handleOrder">
-        <el-tab-pane name="-9">
+        <el-tab-pane name="9">
           <span slot="label"><i class="el-icon-s-order"></i> 全部订单</span>
         </el-tab-pane>
-        <el-tab-pane name="0">
+        <el-tab-pane name="8">
           <span slot="label"><i class="el-icon-bank-card"></i> 未支付</span>
         </el-tab-pane>
-        <el-tab-pane name="1">
-          <span slot="label"><i class="el-icon-refrigerator"></i> 未发货</span>
+        <el-tab-pane name="0">
+          <span slot="label"><i class="el-icon-refrigerator"></i> 待发货</span>
         </el-tab-pane>
-        <el-tab-pane name="2">
+        <el-tab-pane name="1">
           <span slot="label"><i class="el-icon-truck"></i> 待收货</span>
         </el-tab-pane>
-        <el-tab-pane name="3">
-          <span slot="label"><i class="el-icon-document"></i> 待评价</span>
+        <el-tab-pane name="2">
+          <span slot="label"><i class="el-icon-finished"></i> 已收货</span>
         </el-tab-pane>
-        <el-tab-pane name="4">
+        <el-tab-pane name="3">
           <span slot="label"
             ><i class="el-icon-circle-check"></i> 交易完成</span
           >
         </el-tab-pane>
+        <el-tab-pane name="4">
+          <span slot="label"><i class="el-icon-document"></i> 待评价</span>
+        </el-tab-pane>
+        <el-tab-pane name="5">
+          <span slot="label"><i class="el-icon-finished"></i> 已评价</span>
+        </el-tab-pane>
         <el-tab-pane name="-1">
-          <span slot="label"><i class="el-icon-back"></i> 退款中</span>
-        </el-tab-pane>
-        <el-tab-pane name="-2">
-          <span slot="label"><i class="el-icon-finished"></i> 已退款</span>
-        </el-tab-pane>
-        <el-tab-pane name="-4">
           <span slot="label"><i class="el-icon-circle-close"></i> 已删除</span>
         </el-tab-pane>
       </el-tabs>
@@ -80,19 +80,19 @@
       <div class="order-caculate">
         <a class="caculate-title"
           >订单数 :
-          <span class="caculate-num">{{ caculateInfo.orderNum }}</span></a
+          <span class="caculate-num">{{ calculateInfo.orderNum }}</span></a
         >
         <a class="caculate-title"
           >商品数 :
-          <span class="caculate-num">{{ caculateInfo.storeNum }}</span></a
+          <span class="caculate-num">{{ calculateInfo.goodsNum }}</span></a
         >
         <a class="caculate-title"
           >订单金额 :
-          <span class="caculate-num">{{ caculateInfo.orderPrice }}</span></a
+          <span class="caculate-num">{{ calculateInfo.orderPrice }}</span></a
         >
         <a class="caculate-title"
           >客户数 :
-          <span class="caculate-num">{{ caculateInfo.userNum }}</span></a
+          <span class="caculate-num">{{ calculateInfo.userNum }}</span></a
         >
       </div>
       <el-table
@@ -102,6 +102,168 @@
         size="small"
         style="width: 100%"
       >
+        <el-table-column prop="orderId" align="center" label="订单号">
+          <template slot-scope="scope">
+            <span>{{ scope.row.goodsOrderInfo.orderId }}</span>
+            <p>[普通订单]</p>
+          </template>
+        </el-table-column>
+        <el-table-column prop="userInfo" align="center" label="会员信息">
+          <template slot-scope="scope">
+            <span>{{ scope.row.userInfo.username }}</span>
+            <p>{{ scope.row.userInfo.phone }}</p>
+          </template>
+        </el-table-column>
+        <el-table-column prop="goodsInfo" align="center" label="商品信息">
+          <template slot-scope="scope">
+            <div v-if="scope.row.goodsInfo.goodsAttrInfo">
+              <span
+                ><img
+                  style="width: 30px; height: 30px; margin: 0; cursor: pointer"
+                  :src="scope.row.goodsInfo.attrInfo.image"
+              /></span>
+              <span
+                >{{ scope.row.goodsInfo.storeName }}&nbsp;{{
+                  scope.row.goodsInfo.goodsAttrInfo.sku
+                }}</span
+              >
+              <span>
+                | ￥{{ scope.row.goodsOrderInfo.totalPrice }} x
+                {{ scope.row.goodsOrderInfo.totalNum }}</span
+              >
+            </div>
+            <div v-else>
+              <span
+                ><img
+                  style="width: 30px; height: 30px; margin: 0; cursor: pointer"
+                  :src="scope.row.goodsInfo.image"
+              /></span>
+              <span>{{ scope.row.goodsInfo.storeName }}</span>
+              <span>
+                | ￥{{ scope.row.goodsOrderInfo.totalPrice }} x
+                {{ scope.row.goodsOrderInfo.totalNum }}</span
+              >
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column prop="addressInfo" align="center" label="收货信息">
+          <template slot-scope="scope">
+            <span>{{ scope.row.goodsOrderAddressInfo.realName }}</span>
+            <p>{{ scope.row.goodsOrderAddressInfo.phone }}</p>
+          </template>
+        </el-table-column>
+        <el-table-column prop="payPrice" align="center" label="实际支付">
+          <template slot-scope="scope">
+            <span>{{ scope.row.goodsOrderInfo.payPrice }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="payStatus" align="center" label="支付方式">
+          <template slot-scope="scope">
+            <el-tag v-if="scope.row.goodsOrderInfo.payType === '1'">手机支付</el-tag>
+            <el-tag v-if="scope.row.goodsOrderInfo.payType === '2'">余额支付</el-tag>
+            <span>{{ scope.row.goodsOrderInfo.payTime }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="status" align="center" label="订单状态">
+          <template slot-scope="scope">
+            <el-tag v-if="scope.row.goodsOrderInfo.status === '0'">待发货</el-tag>
+            <el-tag v-if="scope.row.goodsOrderInfo.status === '1'">待收货</el-tag>
+            <el-tag v-if="scope.row.goodsOrderInfo.status === '2'">已收货</el-tag>
+            <el-tag v-if="scope.row.goodsOrderInfo.status === '3'">交易完成</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column prop="createTime" align="center" label="创建时间">
+          <template slot-scope="scope">
+            <span>{{ formatTime(scope.row.goodsOrderInfo.createTime) }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column align="center">
+          <template slot="header">
+            <div
+              style="display: inline-block; cursor: pointer"
+              @click="toQuery"
+            >
+              操作<i class="el-icon-refresh" style="margin-left: 10px" />
+            </div>
+          </template>
+          <template slot-scope="scope">
+            <el-button
+              slot="reference"
+              type="danger"
+              size="mini"
+              @click="detail(scope.row)"
+              >订单详情</el-button
+            >
+            <el-dropdown
+              size="mini"
+              style="margin-left: 10px"
+              split-button
+              type="primary"
+              trigger="click"
+            >
+              <el-dropdown-menu>
+                <el-dropdown-item>
+                  <el-button
+                    size="mini"
+                    type="success"
+                    @click="remark(scope.row)"
+                  >
+                    订单备注</el-button
+                  >
+                </el-dropdown-item>
+                <el-dropdown-item>
+                  <el-button
+                    size="mini"
+                    type="success"
+                    @click="ship(scope.row)"
+                  >
+                    去发货</el-button
+                  >
+                </el-dropdown-item>
+                <el-dropdown-item>
+                  <el-button
+                    size="mini"
+                    type="success"
+                    @click="editOrder(scope.row)"
+                  >
+                    订单修改</el-button
+                  >
+                </el-dropdown-item>
+                <el-dropdown-item>
+                  <el-popover
+                    :ref="scope.row.orderInfo.id"
+                    placement="top"
+                    width="180"
+                  >
+                    <p>确定删除本条数据吗？</p>
+                    <div style="text-align: right; margin: 0">
+                      <el-button
+                        size="mini"
+                        type="text"
+                        @click="$refs[scope.row.orderInfo.id].doClose()"
+                        >取消</el-button
+                      >
+                      <el-button
+                        :loading="delLoading"
+                        type="primary"
+                        size="mini"
+                        @click="subDelete(scope.row.orderInfo.id)"
+                        >确定</el-button
+                      >
+                    </div>
+                    <el-button
+                      slot="reference"
+                      type="danger"
+                      icon="el-icon-delete"
+                      size="mini"
+                      >删除</el-button
+                    >
+                  </el-popover>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </template>
+        </el-table-column>
       </el-table>
       <el-pagination
         @size-change="handleSizeChange"
@@ -118,6 +280,7 @@
 </template>
 
 <script>
+import { formatTime } from "../../utils/time";
 export default {
   name: "orderList",
   components: {},
@@ -134,12 +297,14 @@ export default {
       },
       queryTypeOptions: [
         { key: "orderId", display_name: "订单号" },
+        { key: "username", display_name: "用户名" },
+        { key: "userPhone", display_name: "用户手机号" },
         { key: "realName", display_name: "收货人姓名" },
-        { key: "phone", display_name: "收货人电话" },
+        { key: "addressPhone", display_name: "收货人电话" },
       ],
-      caculateInfo: {
+      calculateInfo: {
         orderNum: 0,
-        storeNum: 0,
+        goodsNum: 0,
         orderPrice: 0,
         userNum: 0,
       },
@@ -150,8 +315,48 @@ export default {
       },
     };
   },
-  created() {},
+  created() {
+    this.init();
+  },
   methods: {
+    formatTime,
+    init() {
+      this.page = {
+        current: 1,
+        pageSize: 10,
+        total: 0,
+      };
+      this.toQuery();
+    },
+    reset() {
+      this.query = {
+        value: "",
+        type: "orderId",
+      };
+      this.init();
+    },
+    toQuery() {
+      this.loading = true;
+      this.$axios({
+        method: "post",
+        url: "/goodsOrder/getGoodsOrderList",
+        data: {
+          query: this.query,
+          pageNum: this.page.current,
+          pageSize: this.page.pageSize,
+          status: this.status,
+        },
+      })
+        .then((res) => {
+          if (res.data.code === 200) {
+            this.loading = false;
+            console.log(res.data.data);
+          }
+        })
+        .catch(() => {
+          this.loading = false;
+        });
+    },
     handleOrder(tab) {
       this.status = tab.name;
       this.toQuery();
