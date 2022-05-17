@@ -1,11 +1,11 @@
 package com.hsjnb.yd_ecommerce_platform_api.dto;
 
+import com.github.pagehelper.PageInfo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
@@ -31,6 +31,6 @@ public class GoodsOrderManageDto implements Serializable {
 
     private CalculateInfoDto calculateInfo;
 
-    private List<GoodsOrderTableData> tabData;
+    private PageInfo<GoodsOrderDetailDto> tabData;
 
 }

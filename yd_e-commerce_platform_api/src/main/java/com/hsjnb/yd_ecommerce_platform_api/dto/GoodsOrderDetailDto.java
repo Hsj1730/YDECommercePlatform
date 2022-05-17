@@ -1,4 +1,4 @@
-package com.hsjnb.yd_ecommerce_platform_api.entity;
+package com.hsjnb.yd_ecommerce_platform_api.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
@@ -22,26 +22,20 @@ import java.util.Date;
  *
  * @author : Hsj1730
  * @version : 1.0
- * @date : Created in 2022/05/15 12:25
+ * @date : Created in 2022/05/17 22:38
  * @description :
  */
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GoodsOrder implements Serializable {
+public class GoodsOrderDetailDto implements Serializable {
+
+    // ========== 商品订单表 ==========
 
     private Integer id;
 
     private String orderId;
-
-    private Integer userId;
-
-    private String realName;
-
-    private String phone;
-
-    private String address;
 
     private Integer cartId;
 
@@ -79,14 +73,6 @@ public class GoodsOrder implements Serializable {
 
     private BigDecimal refundPrice;
 
-    private String deliverySn;
-
-    private String deliveryName;
-
-    private String deliveryType;
-
-    private String deliveryId;
-
     private String mark;
 
     private String effective;
@@ -104,5 +90,53 @@ public class GoodsOrder implements Serializable {
     private String isEvaluate;
 
     private String evaluate;
+
+    // ========== 收件地址表 ==========
+
+    private String realName;
+
+    private String phone;
+
+    private String address;
+
+    // ========== 快递公司表 ==========
+
+    private String code;
+
+    private String name;
+
+    private String deliverySn;
+
+    private String deliveryName;
+
+    private String deliveryType;
+
+    private String deliveryId;
+
+    // ========== 会员表 ==========
+
+    private Integer userId;
+
+    private String username;
+
+    private String userPhone;
+
+    // ========== 商品表 ==========
+
+    private String storeName;
+
+    private String image;
+
+    private Integer goodsId;
+
+    // ========== 商品属性表 ==========
+
+    private String attrImage;
+
+    private String sku;
+
+    private Integer attrId;
+
+    private String unique;
 
 }

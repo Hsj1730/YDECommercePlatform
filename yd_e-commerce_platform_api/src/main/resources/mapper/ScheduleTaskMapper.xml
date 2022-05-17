@@ -12,4 +12,21 @@
             ) as aa
     </select>
 
+    <update id="updateGoodsOrderStatus" parameterType="string">
+        update
+            yd_goods_order
+        set
+            status = #{status}
+        where
+            effective = '1'
+            <if test="status == 2">
+                and status = '1'
+                and to_days(sysdate()) - to_days(update_time) > 15
+            </if>
+            <if test="status == 3">
+                and status = '2'
+                and to_days(sysdate()) - to_days(update_time) > 7
+            </if>
+    </update>
+
 </mapper>

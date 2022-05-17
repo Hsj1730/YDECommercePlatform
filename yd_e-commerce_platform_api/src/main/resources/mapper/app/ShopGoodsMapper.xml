@@ -52,8 +52,12 @@
     </select>
 
     <select id="getGoodsListTip" parameterType="string" resultType="searchTipDto">
-        select id as goodsId,keyword from yd_goods where effective = '1' and (store_name like concat('%',#{search},'%')
+        select distinct keyword from yd_goods where effective = '1' and (store_name like concat('%',#{search},'%')
             or keyword like concat('%',#{search},'%'))
+    </select>
+
+    <select id="getGoodsAttr" parameterType="integer" resultType="goodsAttr">
+        select * from yd_goods_attr where goods_id = #{id}
     </select>
 
 </mapper>

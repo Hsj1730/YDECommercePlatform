@@ -1,6 +1,7 @@
 package com.hsjnb.yd_ecommerce_platform_api.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -27,5 +28,7 @@ import java.util.List;
 public interface ScheduleTaskMapper {
 
     List<String> queryFailImage();
+
+    void updateGoodsOrderStatus(@Param("status") String status);
 
 }

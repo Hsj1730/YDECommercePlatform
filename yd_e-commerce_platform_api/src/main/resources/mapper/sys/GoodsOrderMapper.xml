@@ -4,4 +4,167 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hsjnb.yd_ecommerce_platform_api.mapper.sys.GoodsOrderMapper">
 
+    <select id="getCalculateInfo" parameterType="string" resultType="calculateInfoDto">
+        select
+            count( distinct a.id ) as orderNum,
+            count( distinct c.id ) as goodsNum,
+            count( distinct a.user_id ) as userNum,
+            if(sum( a.pay_price ) is not null, sum( a.pay_price ), 0) as orderPrice
+        from
+        yd_goods_order a
+        left join yd_goods_cart b on a.cart_id = b.id
+        left join yd_goods c on b.goods_id = c.id
+        left join yd_app_user d on a.user_id = d.user_id
+        <where>
+            <if test="status == -1">
+                a.effective = '0'
+            </if>
+            <if test="status != -1">
+                a.effective = '1'
+            </if>
+            <if test="status == 8">
+                and a.pay_status = '0'
+            </if>
+            <if test="status == 0 or status == 1 or status == 2 or status == 3">
+                and a.status = #{status}
+            </if>
+            <if test="status == 4">
+                and a.status = '3'
+                and a.is_evaluate = '0'
+            </if>
+            <if test="status == 5">
+                and a.status = '3'
+                and a.is_evaluate = '1'
+            </if>
+            <if test="type == 'orderId'">
+                and a.order_id like concat('%', #{value}, '%')
+            </if>
+            <if test="type == 'username'">
+                and d.username like concat('%', #{value}, '%')
+            </if>
+            <if test="type == 'userPhone'">
+                and d.phone like concat('%', #{value}, '%')
+            </if>
+            <if test="type == 'realName'">
+                and a.real_name like concat('%', #{value}, '%')
+            </if>
+            <if test="type == 'addressPhone'">
+                and a.phone like concat('%', #{value}, '%')
+            </if>
+        </where>
+    </select>
+
+    <select id="getGoodsOrderList" parameterType="string" resultType="goodsOrderDetailDto">
+        select
+            a.id,
+            a.order_id,
+            a.user_id,
+            a.real_name,
+            a.phone,
+            a.address,
+            a.cart_id,
+            a.total_num,
+            a.total_price,
+            a.total_postage,
+            a.pay_price,
+            a.pay_postage,
+            a.pay_status,
+            a.pay_time,
+            a.pay_type,
+            a.`status`,
+            a.refund_status,
+            a.refund_reason_wap_img,
+            a.refund_reason_wap_explain,
+            a.refund_reason_time,
+            a.refund_reason_wap,
+            a.refund_reason,
+            a.refund_price,
+            a.delivery_sn,
+            a.delivery_name,
+            a.delivery_type,
+            a.delivery_id,
+            a.mark,
+            a.effective,
+            a.remark,
+            a.create_time,
+            a.update_time,
+            a.is_evaluate,
+            a.evaluate,
+            b.`code`,
+            b.`name`,
+            c.username,
+            c.phone as userPhone,
+            e.store_name,
+            e.image,
+            f.sku,
+            f.image as attrImage,
+            d.goods_id,
+            f.id as attrId,
+            f.`unique`
+        from
+            yd_goods_order a
+            left join yd_express b on a.delivery_sn = b.id
+            left join yd_app_user c on a.user_id = c.user_id
+            left join yd_goods_cart d on a.cart_id = d.id
+            left join yd_goods e on d.goods_id = e.id
+            left join yd_goods_attr_value f on d.goods_attr_unique = f.`unique`
+        <where>
+            <if test="status == -1">
+                a.effective = '0'
+            </if>
+            <if test="status != -1">
+                a.effective = '1'
+            </if>
+            <if test="status == 8">
+                and a.pay_status = '0'
+            </if>
+            <if test="status == 0 or status == 1 or status == 2 or status == 3">
+                and a.status = #{status}
+            </if>
+            <if test="status == 4">
+                and a.status = '3'
+                and a.is_evaluate = '0'
+            </if>
+            <if test="status == 5">
+                and a.status = '3'
+                and a.is_evaluate = '1'
+            </if>
+            <if test="type == 'orderId'">
+                and a.order_id like concat('%', #{value}, '%')
+            </if>
+            <if test="type == 'username'">
+                and c.username like concat('%', #{value}, '%')
+            </if>
+            <if test="type == 'userPhone'">
+                and c.phone like concat('%', #{value}, '%')
+            </if>
+            <if test="type == 'realName'">
+                and a.real_name like concat('%', #{value}, '%')
+            </if>
+            <if test="type == 'addressPhone'">
+                and a.phone like concat('%', #{value}, '%')
+            </if>
+        </where>
+    </select>
+
+    <update id="saveRemark" parameterType="goodsOrder">
+        update yd_goods_order set remark = #{dto.remark} where id = #{dto.id}
+    </update>
+
+    <select id="getExpressList" resultType="express">
+        select * from yd_express where effective = '1' order by id,sort
+    </select>
+
+    <update id="saveExpress" parameterType="goodsOrder">
+        update yd_goods_order set status = '1',delivery_sn = #{dto.deliverySn},delivery_id = #{dto.deliveryId},delivery_Type = #{dto.deliveryType},delivery_name = #{dto.deliveryName} where id = #{dto.id}
+    </update>
+
+    <update id="receipt" parameterType="integer">
+        update yd_goods_order set status = '2' where id = #{id}
+    </update>
+
+    <update id="success" parameterType="integer">
+        update yd_goods_order set status = '3' where id = #{id}
+    </update>
+
 </mapper>

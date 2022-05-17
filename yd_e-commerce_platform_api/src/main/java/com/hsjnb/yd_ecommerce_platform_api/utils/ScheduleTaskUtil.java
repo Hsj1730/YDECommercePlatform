@@ -47,4 +47,12 @@ public class ScheduleTaskUtil {
         qiNiuYunUtil.deleteList(imgArray);
     }
 
+    @Scheduled(cron = "0 0 0 * * ?")
+    public void updateGoodsOrderStatus() {
+        // 更新顶到状态到确认收货
+        scheduleTaskMapper.updateGoodsOrderStatus("2");
+        // 更新顶动感状态到交易完成
+        scheduleTaskMapper.updateGoodsOrderStatus("3");
+    }
+
 }

@@ -38,7 +38,7 @@
             real_name,
             phone,
             address,
-            card_id,
+            cart_id,
             total_num,
             total_price,
             total_postage,
@@ -60,7 +60,7 @@
             #{dto.totalPostage},
             #{dto.payPrice},
             #{dto.payPostage},
-            #{dto.status},
+            #{dto.payStatus},
             SYSDATE(),
             #{dto.playType},
             #{dto.status}
@@ -97,13 +97,13 @@
 
     <select id="getGoodsOrderList" parameterType="goodsOrderSearchDto" resultType="goodsOrderResultDto">
         select
-            a.id, a.order_id, a.user_id, a.card_id,
+            a.id, a.order_id, a.user_id, a.cart_id,
         a.total_num, a.total_price, a.total_postage, a.pay_price, a.pay_postage,
         a.pay_status, a.pay_time, a.pay_type, a.status,a.effective, a.is_evaluate,
         c.store_name,d.sku,d.image,b.goods_id
         from
             yd_goods_order a
-            left join yd_goods_cart b on a.card_id = b.id
+            left join yd_goods_cart b on a.cart_id = b.id
             left join yd_goods c on b.goods_id = c.id
             left join yd_goods_attr_value d on b.goods_attr_unique = d.`unique`
         where
@@ -128,13 +128,13 @@
 
     <update id="updateAttr" parameterType="goodsOrder">
         update yd_goods_attr_value set stock = stock + #{dto.totalNum},sales = sales - #{dto.totalNum} where `unique` = (
-            select goods_attr_unique from yd_goods_cart where id = #{dto.cardId}
+            select goods_attr_unique from yd_goods_cart where id = #{dto.cartId}
             )
     </update>
 
     <update id="updateGoods2" parameterType="goodsOrder">
         update yd_goods set stock = stock + #{dto.totalNum},sales = sales - #{dto.totalNum} where id = (
-            select goods_id from yd_goods_cart where id = #{dto.cardId}
+            select goods_id from yd_goods_cart where id = #{dto.cartId}
             )
     </update>
 
@@ -154,7 +154,7 @@
             a.real_name,
             a.phone,
             a.address,
-            a.card_id,
+            a.cart_id,
             a.total_num,
             a.total_price,
             a.total_postage,
@@ -181,7 +181,7 @@
             b.goods_id
         FROM
             yd_goods_order AS a
-                LEFT JOIN yd_goods_cart AS b ON a.card_id = b.id
+                LEFT JOIN yd_goods_cart AS b ON a.cart_id = b.id
                 LEFT JOIN yd_goods AS c ON b.goods_id = c.id
                 LEFT JOIN yd_goods_attr_value AS d ON b.goods_attr_unique = d.`unique`
         WHERE

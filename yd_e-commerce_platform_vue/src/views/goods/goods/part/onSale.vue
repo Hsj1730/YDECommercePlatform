@@ -259,11 +259,13 @@ export default {
         .then((res) => {
           if (res.data.code === 200) {
             this.delLoading = false;
+            this.$refs[id].doClose()
             this.$message.success("删除成功");
             this.toQuery();
           }
         })
         .catch(() => {
+          this.$refs[id].doClose()
           this.delLoading = false;
         });
     },

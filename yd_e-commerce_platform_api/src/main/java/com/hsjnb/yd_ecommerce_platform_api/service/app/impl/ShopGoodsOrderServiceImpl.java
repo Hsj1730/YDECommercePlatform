@@ -155,7 +155,7 @@ public class ShopGoodsOrderServiceImpl implements ShopGoodsOrderService {
         switch (status) {
             case "0":
                 GoodsOrder goodsOrder = shopGoodsOrderMapper.getGoodsOrder(id);
-                AppUser user = shopGoodsOrderMapper.getUser(id);
+                AppUser user = shopGoodsOrderMapper.getUser(goodsOrder.getUserId());
                 BigDecimal nowMoney = user.getNowMoney();
                 BigDecimal payPrice = goodsOrder.getPayPrice();
                 nowMoney = nowMoney.add(payPrice);

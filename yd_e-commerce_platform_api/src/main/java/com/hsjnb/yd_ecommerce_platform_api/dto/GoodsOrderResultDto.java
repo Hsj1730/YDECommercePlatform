@@ -43,7 +43,7 @@ public class GoodsOrderResultDto implements Serializable {
 
     private Integer userId;
 
-    private Integer cardId;
+    private Integer cartId;
 
     private Integer totalNum;
 

@@ -36,7 +36,7 @@ public class GoodsOrderResultDetailDto implements Serializable {
     private String realName;
     private String phone;
     private String address;
-    private Integer cardId;
+    private Integer cartId;
     private Integer totalNum;
     private BigDecimal totalPrice;
     private BigDecimal totalPostage;

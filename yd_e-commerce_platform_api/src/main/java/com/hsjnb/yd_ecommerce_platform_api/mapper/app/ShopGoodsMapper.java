@@ -4,6 +4,7 @@ import com.hsjnb.yd_ecommerce_platform_api.dto.GoodsAttrValueDto;
 import com.hsjnb.yd_ecommerce_platform_api.dto.GoodsDetailDto;
 import com.hsjnb.yd_ecommerce_platform_api.dto.SearchTipDto;
 import com.hsjnb.yd_ecommerce_platform_api.dto.ShopGoodsDto;
+import com.hsjnb.yd_ecommerce_platform_api.entity.GoodsAttr;
 import com.hsjnb.yd_ecommerce_platform_api.entity.GoodsCategory;
 import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Mapper;
@@ -45,5 +46,7 @@ public interface ShopGoodsMapper {
     List<GoodsAttrValueDto> getGoodsAttrValue(@Param("goodsId") Integer id);
 
     List<SearchTipDto> getGoodsListTip(@Param("search") String search);
+
+    List<GoodsAttr> getGoodsAttr(@Param("id") Integer id);
 
 }

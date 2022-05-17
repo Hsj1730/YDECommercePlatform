@@ -1,7 +1,7 @@
 <template>
   <div
     class="app-container"
-    style="position: relative; height: calc(100vh - 117px)"
+    style="position: relative; height: calc(100vh - 117px); padding-left: 0"
   >
     <div class="container" style="margin-top: -20px">
       <el-tabs v-model="status" type="card" @tab-click="handleOrder">
@@ -102,82 +102,117 @@
         size="small"
         style="width: 100%"
       >
-        <el-table-column prop="orderId" align="center" label="订单号">
+        <el-table-column
+          prop="orderId"
+          align="center"
+          label="订单号"
+          width="150"
+        >
           <template slot-scope="scope">
-            <span>{{ scope.row.goodsOrderInfo.orderId }}</span>
+            <span>{{ scope.row.orderId }}</span>
             <p>[普通订单]</p>
           </template>
         </el-table-column>
-        <el-table-column prop="userInfo" align="center" label="会员信息">
+        <el-table-column
+          prop="userId"
+          align="center"
+          label="会员信息"
+          width="120"
+        >
           <template slot-scope="scope">
-            <span>{{ scope.row.userInfo.username }}</span>
-            <p>{{ scope.row.userInfo.phone }}</p>
+            <span>{{ scope.row.username }}</span>
+            <p>{{ scope.row.userPhone }}</p>
           </template>
         </el-table-column>
-        <el-table-column prop="goodsInfo" align="center" label="商品信息">
+        <el-table-column
+          prop="goodsId"
+          align="center"
+          label="商品信息"
+          width="244"
+        >
           <template slot-scope="scope">
-            <div v-if="scope.row.goodsInfo.goodsAttrInfo">
-              <span
-                ><img
+            <div v-if="scope.row.sku">
+              <div>
+                <img
                   style="width: 30px; height: 30px; margin: 0; cursor: pointer"
-                  :src="scope.row.goodsInfo.attrInfo.image"
-              /></span>
-              <span
-                >{{ scope.row.goodsInfo.storeName }}&nbsp;{{
-                  scope.row.goodsInfo.goodsAttrInfo.sku
-                }}</span
-              >
+                  :src="scope.row.attrImage"
+                />
+              </div>
+              <span>{{ scope.row.storeName }}&nbsp;{{ scope.row.sku }}</span>
               <span>
-                | ￥{{ scope.row.goodsOrderInfo.totalPrice }} x
-                {{ scope.row.goodsOrderInfo.totalNum }}</span
+                | ￥{{ scope.row.totalPrice }} x {{ scope.row.totalNum }}</span
               >
             </div>
             <div v-else>
               <span
                 ><img
                   style="width: 30px; height: 30px; margin: 0; cursor: pointer"
-                  :src="scope.row.goodsInfo.image"
+                  :src="scope.row.image"
               /></span>
-              <span>{{ scope.row.goodsInfo.storeName }}</span>
+              <span>{{ scope.row.storeName }}</span>
               <span>
-                | ￥{{ scope.row.goodsOrderInfo.totalPrice }} x
-                {{ scope.row.goodsOrderInfo.totalNum }}</span
+                | ￥{{ scope.row.totalPrice }} x {{ scope.row.totalNum }}</span
               >
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="addressInfo" align="center" label="收货信息">
+        <el-table-column
+          prop="address"
+          align="center"
+          label="收货信息"
+          width="120"
+        >
           <template slot-scope="scope">
-            <span>{{ scope.row.goodsOrderAddressInfo.realName }}</span>
-            <p>{{ scope.row.goodsOrderAddressInfo.phone }}</p>
+            <span>{{ scope.row.realName }}</span>
+            <p>{{ scope.row.phone }}</p>
           </template>
         </el-table-column>
-        <el-table-column prop="payPrice" align="center" label="实际支付">
+        <el-table-column
+          prop="payPrice"
+          align="center"
+          label="实际支付"
+          width="100"
+        >
           <template slot-scope="scope">
-            <span>{{ scope.row.goodsOrderInfo.payPrice }}</span>
+            <span>{{ scope.row.payPrice }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="payStatus" align="center" label="支付方式">
+        <el-table-column
+          prop="payStatus"
+          align="center"
+          label="支付方式"
+          width="120"
+        >
           <template slot-scope="scope">
-            <el-tag v-if="scope.row.goodsOrderInfo.payType === '1'">手机支付</el-tag>
-            <el-tag v-if="scope.row.goodsOrderInfo.payType === '2'">余额支付</el-tag>
-            <span>{{ scope.row.goodsOrderInfo.payTime }}</span>
+            <el-tag v-if="scope.row.payType === '1'">手机支付</el-tag>
+            <el-tag v-if="scope.row.payType === '2'">余额支付</el-tag>
+            <div>{{ scope.row.payTime }}</div>
           </template>
         </el-table-column>
-        <el-table-column prop="status" align="center" label="订单状态">
+        <el-table-column
+          prop="status"
+          align="center"
+          label="订单状态"
+          width="100"
+        >
           <template slot-scope="scope">
-            <el-tag v-if="scope.row.goodsOrderInfo.status === '0'">待发货</el-tag>
-            <el-tag v-if="scope.row.goodsOrderInfo.status === '1'">待收货</el-tag>
-            <el-tag v-if="scope.row.goodsOrderInfo.status === '2'">已收货</el-tag>
-            <el-tag v-if="scope.row.goodsOrderInfo.status === '3'">交易完成</el-tag>
+            <el-tag v-if="scope.row.status === '0'">待发货</el-tag>
+            <el-tag v-if="scope.row.status === '1'">待收货</el-tag>
+            <el-tag v-if="scope.row.status === '2'">已收货</el-tag>
+            <el-tag v-if="scope.row.status === '3'">交易完成</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="createTime" align="center" label="创建时间">
+        <el-table-column
+          prop="createTime"
+          align="center"
+          label="创建时间"
+          width="120"
+        >
           <template slot-scope="scope">
-            <span>{{ formatTime(scope.row.goodsOrderInfo.createTime) }}</span>
+            <span>{{ scope.row.createTime }}</span>
           </template>
         </el-table-column>
-        <el-table-column align="center">
+        <el-table-column align="center" width="200">
           <template slot="header">
             <div
               style="display: inline-block; cursor: pointer"
@@ -201,6 +236,7 @@
               type="primary"
               trigger="click"
             >
+              操作
               <el-dropdown-menu>
                 <el-dropdown-item>
                   <el-button
@@ -211,43 +247,76 @@
                     订单备注</el-button
                   >
                 </el-dropdown-item>
-                <el-dropdown-item>
+                <el-dropdown-item v-if="scope.row.status === '0'">
                   <el-button
                     size="mini"
                     type="success"
                     @click="ship(scope.row)"
                   >
-                    去发货</el-button
+                    进行发货</el-button
                   >
                 </el-dropdown-item>
-                <el-dropdown-item>
-                  <el-button
-                    size="mini"
-                    type="success"
-                    @click="editOrder(scope.row)"
-                  >
-                    订单修改</el-button
-                  >
+                <el-dropdown-item v-if="scope.row.status === '1'">
+                  <el-popover :ref="scope.row.id" placement="top" width="180">
+                    <p>确定进行收货吗？</p>
+                    <div style="text-align: right; margin: 0">
+                      <el-button
+                        size="mini"
+                        type="text"
+                        @click="$refs[scope.row.id].doClose()"
+                        >取消</el-button
+                      >
+                      <el-button
+                        :loading="delLoading"
+                        type="success"
+                        size="mini"
+                        @click="receipt(scope.row.id)"
+                        >确定</el-button
+                      >
+                    </div>
+                    <el-button slot="reference" type="success" size="mini"
+                      >进行收货</el-button
+                    >
+                  </el-popover>
                 </el-dropdown-item>
-                <el-dropdown-item>
-                  <el-popover
-                    :ref="scope.row.orderInfo.id"
-                    placement="top"
-                    width="180"
-                  >
+                <el-dropdown-item v-if="scope.row.status === '2'">
+                  <el-popover :ref="scope.row.id" placement="top" width="180">
+                    <p>确定交易完成吗？</p>
+                    <div style="text-align: right; margin: 0">
+                      <el-button
+                        size="mini"
+                        type="text"
+                        @click="$refs[scope.row.id].doClose()"
+                        >取消</el-button
+                      >
+                      <el-button
+                        :loading="delLoading"
+                        type="success"
+                        size="mini"
+                        @click="success(scope.row.id)"
+                        >确定</el-button
+                      >
+                    </div>
+                    <el-button slot="reference" type="success" size="mini"
+                      >交易完成</el-button
+                    >
+                  </el-popover>
+                </el-dropdown-item>
+                <el-dropdown-item v-if="scope.row.status === '0'">
+                  <el-popover :ref="scope.row.id" placement="top" width="180">
                     <p>确定删除本条数据吗？</p>
                     <div style="text-align: right; margin: 0">
                       <el-button
                         size="mini"
                         type="text"
-                        @click="$refs[scope.row.orderInfo.id].doClose()"
+                        @click="$refs[scope.row.id].doClose()"
                         >取消</el-button
                       >
                       <el-button
                         :loading="delLoading"
                         type="primary"
                         size="mini"
-                        @click="subDelete(scope.row.orderInfo.id)"
+                        @click="subDelete(scope.row.id)"
                         >确定</el-button
                       >
                     </div>
@@ -276,14 +345,19 @@
         style="float: right; margin-top: 10px; padding-bottom: 10px"
       />
     </div>
+    <remark ref="remark" />
+    <ship ref="ship" />
+    <detail ref="detail" />
   </div>
 </template>
 
 <script>
-import { formatTime } from "../../utils/time";
+import remark from "./part/remark";
+import ship from "./part/ship";
+import detail from "./part/detail";
 export default {
   name: "orderList",
-  components: {},
+  components: { ship, remark, detail },
   data() {
     return {
       delLoading: false,
@@ -319,7 +393,88 @@ export default {
     this.init();
   },
   methods: {
-    formatTime,
+    detail(data) {
+      const _this = this.$refs.detail;
+      _this.form = data;
+      _this.dialog = true;
+    },
+    remark(data) {
+      const _this = this.$refs.remark;
+      _this.form = {
+        id: data.id,
+        orderId: data.orderId,
+        remark: data.remark,
+      };
+      _this.dialog = true;
+    },
+    ship(data) {
+      const _this = this.$refs.ship;
+      _this.form = {
+        id: data.id,
+        deliveryName: data.deliveryName,
+        deliveryId: data.deliveryId,
+        deliveryType: "express",
+        deliverySn: data.deliverySn,
+      };
+      _this.dialog = true;
+    },
+    receipt(id) {
+      this.loading = true;
+      this.$axios({
+        method: "post",
+        url: "/goodsOrder/receipt/" + id,
+      })
+        .then((res) => {
+          if (res.data.code === 200) {
+            this.$refs[id].doClose();
+            this.delLoading = false;
+            this.$message.success("更新成功");
+            this.toQuery();
+          }
+        })
+        .catch(() => {
+          this.$refs[id].doClose();
+          this.delLoading = false;
+        });
+    },
+    success(id) {
+      this.loading = true;
+      this.$axios({
+        method: "post",
+        url: "/goodsOrder/success/" + id,
+      })
+        .then((res) => {
+          if (res.data.code === 200) {
+            this.$refs[id].doClose();
+            this.delLoading = false;
+            this.$message.success("更新成功");
+            this.toQuery();
+          }
+        })
+        .catch(() => {
+          this.$refs[id].doClose();
+          this.delLoading = false;
+        });
+    },
+    subDelete(id) {
+      this.delLoading = true;
+      this.$axios({
+        method: "post",
+        url: "/goodsOrder/deleteGoodsOrder/" + id,
+      })
+        .then((res) => {
+          if (res.data.code === 200) {
+            this.$refs[id].doClose();
+            this.delLoading = false;
+            this.$message.success("删除成功");
+            this.toQuery();
+          }
+        })
+        .catch(() => {
+          this.$refs[id].doClose();
+          this.delLoading = false;
+        });
+    },
     init() {
       this.page = {
         current: 1,
@@ -350,7 +505,11 @@ export default {
         .then((res) => {
           if (res.data.code === 200) {
             this.loading = false;
-            console.log(res.data.data);
+            this.calculateInfo = res.data.data.calculateInfo;
+            this.tableData = res.data.data.tabData.list;
+            this.page.total = res.data.data.tabData.total;
+            this.page.current = res.data.data.tabData.pageNum;
+            this.page.pageSize = res.data.data.tabData.pageSize;
           }
         })
         .catch(() => {

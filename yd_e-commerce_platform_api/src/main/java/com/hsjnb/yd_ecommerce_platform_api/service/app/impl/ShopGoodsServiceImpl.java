@@ -6,6 +6,7 @@ import com.hsjnb.yd_ecommerce_platform_api.dto.GoodsAttrValueDto;
 import com.hsjnb.yd_ecommerce_platform_api.dto.GoodsDetailDto;
 import com.hsjnb.yd_ecommerce_platform_api.dto.SearchTipDto;
 import com.hsjnb.yd_ecommerce_platform_api.dto.ShopGoodsDto;
+import com.hsjnb.yd_ecommerce_platform_api.entity.GoodsAttr;
 import com.hsjnb.yd_ecommerce_platform_api.entity.GoodsCategory;
 import com.hsjnb.yd_ecommerce_platform_api.mapper.app.ShopGoodsMapper;
 import com.hsjnb.yd_ecommerce_platform_api.service.app.ShopGoodsService;
@@ -15,7 +16,10 @@ import com.hsjnb.yd_ecommerce_platform_api.utils.TreeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
@@ -100,6 +104,7 @@ public class ShopGoodsServiceImpl implements ShopGoodsService {
             goodsAttrValueDto.setBarCode(goodsDetail.getBarCode() + goodsAttrValueDto.getBarCode());
         }
         goodsDetail.setGoodsAttrValueDtoList(goodsAttrValue);
+        goodsDetail.setSku(sku(goodsDetail));
         return Result.success(goodsDetail);
     }
 
@@ -113,5 +118,66 @@ public class ShopGoodsServiceImpl implements ShopGoodsService {
             }
         }
         return goodsListTip;
+    }
+
+    public Map<String,Object> sku(GoodsDetailDto goodsDetail) {
+        Map<String,Object> result = new HashMap<>();
+        List<GoodsAttr> goodsAttr = shopGoodsMapper.getGoodsAttr(goodsDetail.getId());
+        List<Map<String,Object>> tree = new ArrayList<>();
+        for (int i = 0; i < goodsAttr.size(); i++) {
+            Map<String,Object> treeMap = new HashMap<>();
+            treeMap.put("k",goodsAttr.get(i).getAttrName());
+            treeMap.put("k_s",goodsAttr.get(i).getId());
+            List<Map<String,Object>> l1 = new ArrayList<>();
+            String[] split = goodsAttr.get(i).getAttrValues().split(",");
+            for (int j = 0; j < split.length; j++) {
+                Map<String,Object> m1 = new HashMap<>();
+                m1.put("id",++j);
+                m1.put("name",split[j]);
+                if (i == 0) {
+                    m1.put("imgUrl",goodsDetail.getImage());
+                    m1.put("previewImgUrl",goodsDetail.getImage());
+                }
+                l1.add(m1);
+            }
+            treeMap.put("v",l1);
+            treeMap.put("largeImageMode",true);
+            tree.add(treeMap);
+        }
+        result.put("tree",tree);
+        List<GoodsAttrValueDto> goodsAttrValueDtoList = goodsDetail.getGoodsAttrValueDtoList();
+        List<Map<String,Object>> list = new ArrayList<>();
+        for (GoodsAttrValueDto goodsAttrValueDto : goodsAttrValueDtoList) {
+            Map<String,Object> listMap = new HashMap<>();
+            listMap.put("id",goodsAttrValueDto.getId());
+            listMap.put("price",goodsAttrValueDto.getPrice());
+            listMap.put("stock_num",goodsAttrValueDto.getStock());
+            listMap.put("image",goodsAttrValueDto.getImage());
+            listMap.put("unique",goodsAttrValueDto.getUnique());
+            listMap.put("barCode",goodsAttrValueDto.getBarCode());
+            listMap.put("cost",goodsAttrValueDto.getCost());
+            listMap.put("sales",goodsAttrValueDto.getSales());
+            listMap.put("sku",goodsAttrValueDto.getSku());
+            String[] split = goodsAttrValueDto.getSku().split(",");
+            for (String s : split) {
+                for (GoodsAttr attr : goodsAttr) {
+                    String[] strings = attr.getAttrValues().split(",");
+                    for (int i = 0; i < strings.length; i++) {
+                        if (s.equals(strings[i])) {
+                            listMap.put(attr.getId().toString(),++i);
+                        }
+                    }
+                }
+            }
+            list.add(listMap);
+        }
+        result.put("list",list);
+        result.put("price",goodsDetail.getPrice());
+        result.put("stock_num",goodsDetail.getStock());
+        result.put("collection_id","");
+        result.put("none_sku",false);
+        result.put("messages",null);
+        result.put("hide_stock",false);
+        return result;
     }
 }

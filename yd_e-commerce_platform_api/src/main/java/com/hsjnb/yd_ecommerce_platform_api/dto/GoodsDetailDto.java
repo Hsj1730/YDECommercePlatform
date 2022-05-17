@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 /**
  * █████▒█    ██  ▄████▄   ██ ▄█▀       ██████╗ ██╗   ██╗ ██████╗
@@ -78,5 +79,7 @@ public class GoodsDetailDto implements Serializable {
     private String description;
 
     private List<GoodsAttrValueDto> goodsAttrValueDtoList;
+
+    private Map<String,Object> sku;
 
 }
