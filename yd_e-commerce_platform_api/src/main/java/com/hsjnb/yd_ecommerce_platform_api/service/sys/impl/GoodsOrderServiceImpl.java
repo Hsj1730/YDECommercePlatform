@@ -70,6 +70,12 @@ public class GoodsOrderServiceImpl implements GoodsOrderService {
         String type = (String) map.get("type");
         String status = (String) param.get("status");
         GoodsOrderManageDto goodsOrderManageDto = new GoodsOrderManageDto();
+        List<GoodsOrderDetailDto> goodsOrderList = goodsOrderMapper.getGoodsOrderList(value, type, status);
+        for (GoodsOrderDetailDto goodsOrderDetailDto : goodsOrderList) {
+            goodsOrderDetailDto.setImage(qiNiuYunUtil.getDownloadUrl(goodsOrderDetailDto.getImage()));
+            goodsOrderDetailDto.setAttrImage(qiNiuYunUtil.getDownloadUrl(goodsOrderDetailDto.getAttrImage()));
+        }
+        goodsOrderManageDto.setTableData(new PageInfo<>(goodsOrderList));
         CalculateInfoDto calculateInfo = goodsOrderMapper.getCalculateInfo(value, type, status);
         if (calculateInfo == null) {
             calculateInfo = CalculateInfoDto
@@ -81,12 +87,6 @@ public class GoodsOrderServiceImpl implements GoodsOrderService {
                     .build();
         }
         goodsOrderManageDto.setCalculateInfo(calculateInfo);
-        List<GoodsOrderDetailDto> goodsOrderList = goodsOrderMapper.getGoodsOrderList(value, type, status);
-        for (GoodsOrderDetailDto goodsOrderDetailDto : goodsOrderList) {
-            goodsOrderDetailDto.setImage(qiNiuYunUtil.getDownloadUrl(goodsOrderDetailDto.getImage()));
-            goodsOrderDetailDto.setAttrImage(qiNiuYunUtil.getDownloadUrl(goodsOrderDetailDto.getAttrImage()));
-        }
-        goodsOrderManageDto.setTabData(new PageInfo<>(goodsOrderList));
         return goodsOrderManageDto;
     }
 

@@ -1,9 +1,6 @@
 <template>
-  <div
-    class="app-container"
-    style="position: relative; height: calc(100vh - 117px); padding-left: 0"
-  >
-    <div class="container" style="margin-top: -20px">
+  <div class="app-container" style="margin-top: -20px">
+    <div class="head-container">
       <el-tabs v-model="status" type="card" @tab-click="handleOrder">
         <el-tab-pane name="9">
           <span slot="label"><i class="el-icon-s-order"></i> 全部订单</span>
@@ -106,7 +103,7 @@
           prop="orderId"
           align="center"
           label="订单号"
-          width="150"
+          width="140"
         >
           <template slot-scope="scope">
             <span>{{ scope.row.orderId }}</span>
@@ -117,7 +114,7 @@
           prop="userId"
           align="center"
           label="会员信息"
-          width="120"
+          width="100"
         >
           <template slot-scope="scope">
             <span>{{ scope.row.username }}</span>
@@ -128,7 +125,7 @@
           prop="goodsId"
           align="center"
           label="商品信息"
-          width="244"
+          width="240"
         >
           <template slot-scope="scope">
             <div v-if="scope.row.sku">
@@ -160,7 +157,7 @@
           prop="address"
           align="center"
           label="收货信息"
-          width="120"
+          width="100"
         >
           <template slot-scope="scope">
             <span>{{ scope.row.realName }}</span>
@@ -506,10 +503,10 @@ export default {
           if (res.data.code === 200) {
             this.loading = false;
             this.calculateInfo = res.data.data.calculateInfo;
-            this.tableData = res.data.data.tabData.list;
-            this.page.total = res.data.data.tabData.total;
-            this.page.current = res.data.data.tabData.pageNum;
-            this.page.pageSize = res.data.data.tabData.pageSize;
+            this.tableData = res.data.data.tableData.list;
+            this.page.total = res.data.data.tableData.total;
+            this.page.current = res.data.data.tableData.pageNum;
+            this.page.pageSize = res.data.data.tableData.pageSize;
           }
         })
         .catch(() => {
@@ -533,25 +530,18 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.container {
-  height: calc(100% - 80px);
-  position: absolute;
-  overflow: auto;
-  width: calc(100% - 20px);
-
-  .order-caculate {
-    font-size: 14px;
-    color: #909399;
-    border-top: 1px solid #f0f0f0;
-    padding: 20px 10px;
-    .caculate-title {
-      display: inline-block;
-      margin-right: 50px;
-    }
-    .caculate-num {
-      font-size: 20px;
-      color: #ff4949;
-    }
+.order-caculate {
+  font-size: 14px;
+  color: #909399;
+  border-top: 1px solid #f0f0f0;
+  padding: 20px 10px;
+  .caculate-title {
+    display: inline-block;
+    margin-right: 50px;
+  }
+  .caculate-num {
+    font-size: 20px;
+    color: #ff4949;
   }
 
   .el-table th {

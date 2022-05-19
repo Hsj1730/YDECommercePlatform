@@ -40,12 +40,14 @@ public class GoodsCartController {
         this.goodsCartService = goodsCartService;
     }
 
+    @AnonymousAccess
     @PostMapping("getGoodsCartList/{id}")
     @ApiOperation(value = "获取购物车列表", httpMethod = Constant.HTTP_POST, response = Result.class)
     public Result getGoodsCartList(@PathVariable Integer id) {
         return goodsCartService.getGoodsCartList(id);
     }
 
+    @AnonymousAccess
     @PostMapping("addGoodsCart")
     @ApiOperation(value = "添加商品到购物车列表", httpMethod = Constant.HTTP_POST, response = Result.class)
     public Result addGoodsCart(@RequestBody GoodsCart goodsCart) {

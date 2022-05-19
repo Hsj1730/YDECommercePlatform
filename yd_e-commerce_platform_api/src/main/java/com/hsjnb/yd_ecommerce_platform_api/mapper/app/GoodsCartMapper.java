@@ -34,10 +34,14 @@ public interface GoodsCartMapper {
 
     void addGoodsCart(@Param("goodsCart")GoodsCart goodsCart);
 
+    GoodsCart queryExist(@Param("goodsCart")GoodsCart goodsCart);
+
     void delGoodsCart(@Param("id") Integer id);
 
     void updateGoodsCartGoodsNum(@Param("id") Integer id,@Param("num") Integer num);
 
     GoodsOrderAddDto getGoodsCart(@Param("dto") GoodsOrderAddDto dto);
+
+    void updateGoodsCart(@Param("dto")GoodsCart goodsCart);
 
 }

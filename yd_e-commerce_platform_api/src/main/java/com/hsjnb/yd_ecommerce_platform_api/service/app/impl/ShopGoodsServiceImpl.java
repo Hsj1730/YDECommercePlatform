@@ -132,8 +132,8 @@ public class ShopGoodsServiceImpl implements ShopGoodsService {
             String[] split = goodsAttr.get(i).getAttrValues().split(",");
             for (int j = 0; j < split.length; j++) {
                 Map<String,Object> m1 = new HashMap<>();
-                m1.put("id",++j);
                 m1.put("name",split[j]);
+                m1.put("id",j + 1);
                 if (i == 0) {
                     m1.put("imgUrl",goodsDetail.getImage());
                     m1.put("previewImgUrl",goodsDetail.getImage());

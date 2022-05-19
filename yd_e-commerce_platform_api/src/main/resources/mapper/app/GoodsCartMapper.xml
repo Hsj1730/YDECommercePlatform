@@ -20,14 +20,8 @@
             c.postage
         FROM
             yd_goods_cart AS a
-                LEFT JOIN
-            yd_goods_attr_value AS b
-            ON
-                a.goods_attr_unique = b.`unique`
-                LEFT JOIN
-            yd_goods AS c
-            ON
-                a.goods_id = c.id
+            LEFT JOIN yd_goods_attr_value AS b ON a.goods_attr_unique = b.`unique`
+            LEFT JOIN yd_goods AS c ON a.goods_id = c.id
         WHERE
             a.is_play = '0' AND
             a.is_new = '0' AND
@@ -76,5 +70,13 @@
             where a.id =  #{dto.cartId}
         ) aa
     </select>
+
+    <select id="queryExist" parameterType="goodsCart" resultType="goodsCart">
+        select * from yd_goods_cart where effective = '1' and user_id = #{goodsCart.userId} and goods_id = #{goodsCart.goodsId} and goods_attr_unique = #{goodsCart.goodsAttrUnique} and is_new = '0' and is_play = '0'
+    </select>
+
+    <update id="updateGoodsCart" parameterType="goodsCart">
+        update yd_goods_cart set num = #{dto.num} where id = #{dto.id}
+    </update>
 
 </mapper>

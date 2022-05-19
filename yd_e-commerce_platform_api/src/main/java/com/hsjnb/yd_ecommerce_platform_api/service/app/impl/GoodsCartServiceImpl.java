@@ -78,7 +78,14 @@ public class GoodsCartServiceImpl implements GoodsCartService {
         if (goodsCart.getNum() == null) {
             return Result.fail("商品数量错误");
         }
-        goodsCartMapper.addGoodsCart(goodsCart);
+        GoodsCart goodsCart1 = goodsCartMapper.queryExist(goodsCart);
+        if (goodsCart1 != null) {
+            goodsCart1.setNum(goodsCart1.getNum() + goodsCart.getNum());
+            goodsCartMapper.updateGoodsCart(goodsCart1);
+        } else {
+            goodsCartMapper.addGoodsCart(goodsCart);
+        }
+
         return Result.success(null);
     }
 

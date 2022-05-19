@@ -31,6 +31,6 @@ public class GoodsOrderManageDto implements Serializable {
 
     private CalculateInfoDto calculateInfo;
 
-    private PageInfo<GoodsOrderDetailDto> tabData;
+    private PageInfo<GoodsOrderDetailDto> tableData;
 
 }
