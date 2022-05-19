@@ -2,6 +2,7 @@ package com.hsjnb.yd_ecommerce_platform_api.service.sys.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.hsjnb.yd_ecommerce_platform_api.common.Result;
 import com.hsjnb.yd_ecommerce_platform_api.dto.RoleDto;
 import com.hsjnb.yd_ecommerce_platform_api.dto.RoleMenuDto;
 import com.hsjnb.yd_ecommerce_platform_api.entity.Menu;
@@ -103,5 +104,10 @@ public class RoleServiceImpl implements RoleService {
             roleMapper.insetRoleMenu(dto);
         }
         return 1;
+    }
+
+    @Override
+    public int checkRoleCode(RoleDto dto) {
+        return roleMapper.checkRoleCode(dto);
     }
 }

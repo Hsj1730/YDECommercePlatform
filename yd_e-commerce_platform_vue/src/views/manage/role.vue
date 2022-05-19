@@ -129,11 +129,14 @@
           prop="code"
           label-width="100px"
           clearable
-          :rules="{
-            required: true,
-            message: '请输入角色编码',
-            trigger: 'blur',
-          }"
+          :rules="[
+            {
+              required: true,
+              message: '请输入角色编码',
+              trigger: 'blur',
+            },
+            { validator: checkRoleCode },
+          ]"
         >
           <el-input
             v-model.trim="roleForm.code"
@@ -208,6 +211,20 @@ export default {
     };
   },
   methods: {
+    checkRoleCode(rule, value, callback) {
+      this.$axios({
+        method: "post",
+        url: "/role/checkRoleCode",
+        data: {
+          code: value,
+        },
+      }).then((res) => {
+        if (res.data !== 0) {
+          return callback(new Error("该角色编码不可用"));
+        }
+        callback();
+      });
+    },
     getRoleList() {
       this.$axios({
         method: "post",

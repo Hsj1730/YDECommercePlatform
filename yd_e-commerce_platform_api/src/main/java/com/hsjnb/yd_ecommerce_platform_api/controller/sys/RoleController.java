@@ -132,4 +132,14 @@ public class RoleController {
         return Result.success(roleService.saveRoleMenu(dto));
     }
 
+    /**
+     * 检查角色编码的唯一性
+     * @param dto dto
+     * @return Result
+     */
+    @PostMapping(value = "checkRoleCode", produces = Constant.CONTENT_TYPE)
+    @ApiOperation(value = "检查角色编码的唯一性", httpMethod = Constant.HTTP_POST, response = Result.class)
+    public Result checkRoleCode(@RequestBody RoleDto dto) {
+        return Result.success(roleService.checkRoleCode(dto));
+    }
 }

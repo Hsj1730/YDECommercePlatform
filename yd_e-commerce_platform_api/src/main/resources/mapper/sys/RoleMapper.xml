@@ -64,4 +64,8 @@
         </foreach>
     </insert>
 
+    <select id="checkRoleCode" parameterType="roleDto" resultType="int">
+        select count(1) from yd_role where code = #{dto.role} and effective = '1'
+    </select>
+
 </mapper>

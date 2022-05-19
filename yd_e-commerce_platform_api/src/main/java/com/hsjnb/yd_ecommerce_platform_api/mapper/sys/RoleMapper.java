@@ -52,4 +52,6 @@ public interface RoleMapper {
 
     int insetRoleMenu(@Param("dto") RoleMenuDto roleMenuDto);
 
+    int checkRoleCode(@Param("dto") RoleDto dto);
+
 }

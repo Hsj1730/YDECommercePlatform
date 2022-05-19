@@ -109,10 +109,28 @@ public class AuthenticationFilter extends BasicAuthenticationFilter {
         UsernamePasswordAuthenticationToken authenticationToken;
         if (url.startsWith("/app/")) {
             AppUser appUser = appUserMapper.getUserInfoByAccount(username);
+            if (appUser.getEnable().equals("0")) {
+                Result result = Result.fail(401, "账号被禁用，请联系管理人员",null);
+                response.setContentType("application/json;charset=utf-8");
+                PrintWriter writer = response.getWriter();
+                writer.write(new ObjectMapper().writeValueAsString(result));
+                writer.flush();
+                writer.close();
+                return;
+            }
             authenticationToken = new UsernamePasswordAuthenticationToken(appUser, null, null);
         } else {
             // 获取用户信息
             User userByUsername = userMapper.getUserByUsername(username);
+            if (userByUsername.getEnable().equals("0")) {
+                Result result = Result.fail(401, "账号被禁用，请联系管理人员",null);
+                response.setContentType("application/json;charset=utf-8");
+                PrintWriter writer = response.getWriter();
+                writer.write(new ObjectMapper().writeValueAsString(result));
+                writer.flush();
+                writer.close();
+                return;
+            }
             // 获取权限信息
             for (Map map : (List<Map>) claim.get(jwtUtil.getHeader())) {
                 authority.append(map.get("authority")).append(",");

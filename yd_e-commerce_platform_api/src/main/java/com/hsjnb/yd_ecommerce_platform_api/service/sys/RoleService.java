@@ -1,6 +1,7 @@
 package com.hsjnb.yd_ecommerce_platform_api.service.sys;
 
 import com.github.pagehelper.PageInfo;
+import com.hsjnb.yd_ecommerce_platform_api.common.Result;
 import com.hsjnb.yd_ecommerce_platform_api.dto.RoleDto;
 import com.hsjnb.yd_ecommerce_platform_api.dto.RoleMenuDto;
 import com.hsjnb.yd_ecommerce_platform_api.entity.Role;
@@ -41,5 +42,7 @@ public interface RoleService {
     int editRole(RoleDto dto);
 
     int saveRoleMenu(RoleMenuDto dto);
+
+    int checkRoleCode(RoleDto dto);
 
 }
